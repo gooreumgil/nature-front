@@ -3,6 +3,7 @@
 
     <aside class="banner">
       <div class="banner__inner">
+        <Header />
         <h2>
           <span>네이처리퍼블릭</span>은 <br>
           자연의 완벽함을 믿습니다.
@@ -10,12 +11,28 @@
       </div>
     </aside>
 
+    <section class="most-popular">
+      <div class="title-container">
+        <h3 class="main-font">Most Popular</h3>
+        <p class="sub-font">네이처리퍼블릭에서 가장 사랑받는 제품들을 소개합니다.</p>
+      </div>
+      <ul>
+        <li>
+
+        </li>
+      </ul>
+    </section>
+
   </section>
 </template>
 
 <script>
+
+import Header from "@/components/core/Header";
+
 export default {
-name: "Index"
+  name: "Index",
+  components: {Header}
 }
 </script>
 
@@ -34,6 +51,7 @@ name: "Index"
   }
 
   section aside.banner div.banner__inner {
+    position: relative;
     max-width: 1260px;
     width: 100%;
     margin: 0 auto;
@@ -47,10 +65,14 @@ name: "Index"
     color: #fff;
     font-size: 38px;
     font-weight: 300;
-    line-height: 1.2;
+    line-height: 1.3;
   }
 
   section aside.banner div.banner__inner h2 span {
     font-weight: 700;
+  }
+
+  section section.most-popular {
+    padding-top: 180px;
   }
 </style>

@@ -28,6 +28,21 @@ export default {
     width: 100%;
   }
 
+  .main-font {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 300;
+    color: #555;
+    font-size: 32px;
+  }
+
+  .sub-font {
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #a0a0a0;
+    font-size: 16px;
+    font-weight: 300;
+    margin-top: 15px;
+  }
+
   html, body {
     margin: 0 auto;
     position: relative;
