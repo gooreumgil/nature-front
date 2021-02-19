@@ -1,13 +1,13 @@
-package com.rainyheaven.nature;
+package com.rainyheaven.nature.app;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class NatureApplicationTests {
+class AppApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+	@Test
+	void contextLoads() {
+	}
 
 }
