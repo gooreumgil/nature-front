@@ -21,7 +21,10 @@
         </div>
       </li>
       <li class="logout" v-if="authenticated">
-        <img src="@/assets/image/login_fullback.png" alt="">
+        <span @click="logout">
+          <img src="@/assets/image/login_fullback.png" alt="">
+        </span>
+
       </li>
 
       <li class="login" v-if="!authenticated">
@@ -40,6 +43,13 @@ export default {
     },
     transparent: {
       value: true
+    }
+  },
+
+  methods: {
+    logout() {
+      this.$cookies.remove('token');
+      window.location.reload();
     }
   }
 }
