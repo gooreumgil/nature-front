@@ -2,7 +2,7 @@ import config from '../config'
 
 export default {
  getApiBaseUrl() {
-    const env = this.getProcessEnv() || 'default';
+    const env = this.getProcessEnv() || 'local';
     const target = config[env];
     return target.api.baseUrl;
 

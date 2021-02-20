@@ -1,5 +1,5 @@
-import defaultConfig from './default';
+import local from './local';
 
 export default {
-  default: defaultConfig
+  local
 }

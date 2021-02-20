@@ -6,7 +6,7 @@
       </router-link>
       <router-link to="/brand">브랜드</router-link>
       <router-link to="/items">상품</router-link>
-      <router-link to="/my-page">마이페이지</router-link>
+      <router-link to="/my-page" v-if="authenticated">마이페이지</router-link>
     </nav>
 
     <ul>
@@ -20,8 +20,12 @@
           <span class="count">0</span>
         </div>
       </li>
-      <li class="logout">
+      <li class="logout" v-if="authenticated">
         <img src="@/assets/image/login_fullback.png" alt="">
+      </li>
+
+      <li class="login" v-if="!authenticated">
+        <router-link to="/login" v-bind:class="{white: transparent}">로그인</router-link>
       </li>
     </ul>
   </header>
@@ -29,7 +33,15 @@
 
 <script>
 export default {
-  name: "Header"
+  name: "Header",
+  props: {
+    authenticated: {
+      value: false
+    },
+    transparent: {
+      value: true
+    }
+  }
 }
 </script>
 
@@ -112,6 +124,23 @@ export default {
     position: absolute;
     right: -7px;
     top: -5px;
+  }
+
+  header ul li.login a {
+    padding: 7px 17px;
+    display: inline-block;
+    height: auto;
+    line-height: 1.5;
+    border-radius: 100px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #71a532;
+  }
+
+  header ul li.login a.white {
+    background-color: #fff;
+    color: #555;
+    background-color: rgba(255, 255, 255, .9);
   }
 
 
