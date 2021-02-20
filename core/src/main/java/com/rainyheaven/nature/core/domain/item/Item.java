@@ -1,13 +1,18 @@
 package com.rainyheaven.nature.core.domain.item;
 
+import com.rainyheaven.nature.core.domain.itemsrc.ItemSrc;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 public class Item {
 
@@ -24,5 +29,8 @@ public class Item {
     private String description;
     private int capacity;
     private LocalDateTime registerAt;
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemSrc> itemSrcs = new ArrayList<>();
 
 }

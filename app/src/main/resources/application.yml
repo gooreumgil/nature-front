@@ -19,3 +19,12 @@ logging:
 
 server:
   port: 8060
+
+src-prefix:
+  http://localhost:8060/upload/
+
+aes:
+  secret-key: ckdcnffp12345678
+
+jwt:
+  secret: rlaejrqodhkehrmvhfptmxmwlatmdtnv

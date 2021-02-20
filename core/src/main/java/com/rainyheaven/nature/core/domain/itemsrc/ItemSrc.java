@@ -1,6 +1,7 @@
 package com.rainyheaven.nature.core.domain.itemsrc;
 
 import com.rainyheaven.nature.core.domain.item.Item;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 public class ItemSrc {
 

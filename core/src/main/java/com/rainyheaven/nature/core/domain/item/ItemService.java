@@ -14,7 +14,7 @@ public class ItemService {
     private final ItemRepository itemRepository;
 
     public Page<Item> findAll(Pageable pageable) {
-        return itemRepository.findAll(pageable);
+        return itemRepository.findAllWithItemSrc(pageable);
     }
 
 }
