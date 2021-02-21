@@ -102,6 +102,7 @@ export default {
         this.authenticated = true;
       } catch (err) {
         console.log(err);
+        this.$cookies.remove('token');
       }
     },
 

@@ -47,6 +47,11 @@ export default {
       authApi.signUp(nickname, email, password, passwordConfirm, phoneNumber, birthDay)
           .then((response) => {
             console.log(response);
+            this.$router.replace('/login');
+          })
+          .catch((err) => {
+            alert('문제가 발생하였습니다.');
+            console.log(err);
           })
     }
   }
