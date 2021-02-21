@@ -12,5 +12,8 @@ public class UserSaveRequestDto {
     private String email;
     private String name;
     private String password;
+    private String passwordConfirm;
+    private String phoneNumber;
+    private String birthDay;
 
 }

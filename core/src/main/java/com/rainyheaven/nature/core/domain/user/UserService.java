@@ -30,7 +30,8 @@ public class UserService {
     public void save(UserSaveRequestDto userSaveRequestDto) {
         userSaveRequestDto.setEmail(aes256Util.encode(userSaveRequestDto.getEmail()));
         userSaveRequestDto.setPassword(passwordEncoder.encode(userSaveRequestDto.getPassword()));
-        userRepository.save(User.create(userSaveRequestDto));
+        User user = User.create(userSaveRequestDto);
+//        userRepository.save(User.create(userSaveRequestDto));
     }
 
     public void existCheck(Long id) {
