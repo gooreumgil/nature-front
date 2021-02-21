@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 @Entity
 @Getter
@@ -46,25 +48,29 @@ public class User {
         user.name = userSaveRequestDto.getName();
         user.password = userSaveRequestDto.getPassword();
 
-        SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMdd");
-        Date date = null;
-        try {
-            date = originalFormat.parse(userSaveRequestDto.getBirthDay());
-            int year = date.getYear();
-            int month = date.getMonth() + 1;
-            int date1 = date.getDate();
+        GregorianCalendar calendar = new GregorianCalendar();
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        Date date = user.convertToDate(userSaveRequestDto.getBirthDay());
+        calendar.setTime(date);
 
-        String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
-        String s = userSaveRequestDto.getPhoneNumber().replaceAll(regEx, "$1-$2-$3");
-
+        user.birthDay = BirthDay.create(calendar);
+        user.phoneNumber = PhoneNumber.create(userSaveRequestDto.getPhoneNumber());
 
         user.userRole = UserRole.USER;
         user.userStatus = UserStatus.ACTIVE;
         return user;
+    }
+
+    private Date convertToDate(String birthDay) {
+        SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMdd");
+        Date date = null;
+        try {
+            date = originalFormat.parse(birthDay);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 
 
