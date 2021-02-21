@@ -85,34 +85,48 @@ export default {
       authenticated: false
     }
   },
-  created() {
+  async created() {
     const token = this.$cookies.get('token');
-    authApi.authenticate(token)
-        .then(() => {
-          this.authenticated = true;
-        })
-
-    itemApi.getItems(0, 4, 'likesCount,desc')
-        .then((response) => {
-          console.log(response);
-          this.popularItems = response.data.content;
-        })
-        .catch((error) => {
-          alert('문제가 발생하였습니다.');
-          console.log(error);
-        })
-
-    itemApi.getItems(0, 4, 'registerAt,desc')
-        .then((response) => {
-          this.latestItems = response.data.content;
-        })
-        .catch((error) => {
-          alert('문제가 발생하였습니다.');
-          console.log(error);
-        })
-
+    if (token) {
+      await this.setAuthenticate(token);
+    }
+    await this.setPopularItems(0, 4);
+    await this.setLatestItems(0, 4);
   },
+
   methods: {
+
+    async setAuthenticate(token) {
+      try {
+        await authApi.authenticate(token);
+        this.authenticated = true;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    // 인기상품 가져오기
+    async setPopularItems(page, size) {
+      try {
+        const res = await itemApi.getItems(page, size, 'likesCount,desc');
+        this.popularItems = res.data.content;
+      } catch (err) {
+        alert("문제가 발생하였습니다.");
+        console.log(err);
+      }
+    },
+
+    // 최신상품 가져오기
+    async setLatestItems(page, size) {
+      try {
+        const res = await itemApi.getItems(page, size, 'registerAt,desc');
+        this.latestItems = res.data.content;
+      } catch (err) {
+        alert("문제가 발생하였습니다.");
+        console.log(err);
+      }
+    }
+
   }
 }
 </script>

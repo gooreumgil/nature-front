@@ -7,10 +7,12 @@
       </div>
       <div class="form-container">
         <form @submit.prevent="signUp">
-          <input type="text" placeholder="닉네임">
-          <input type="text" placeholder="이메일">
-          <input type="text" placeholder="패스워드">
-          <input type="text" placeholder="패스워드 재입력">
+          <input type="text" v-model="nickname" placeholder="닉네임">
+          <input type="email" v-model="email" placeholder="이메일">
+          <input type="password" v-model="password" placeholder="패스워드">
+          <input type="password" v-model="passwordConfirm" placeholder="패스워드 재입력">
+          <input type="text" v-model="phoneNumber" placeholder="휴대폰번호 - 없이 입력">
+          <input type="text" v-model="birthDay" placeholder="생년월일입력 - 8자리 숫자로 입력 (ex.19920101)">
           <button type="submit">회원가입</button>
         </form>
       </div>
@@ -20,11 +22,32 @@
 </template>
 
 <script>
+import authApi from "@/api/AuthApi";
+
 export default {
   name: "SignUp",
+  data() {
+    return {
+      nickname: '덕배',
+      email: 'test@email.com',
+      password: 'aormfl123',
+      passwordConfirm: 'aormfl123',
+      phoneNumber: '0101231234',
+      birthDay: '19890407'
+    }
+  },
   methods: {
     signUp() {
-      
+      const nickname = this.nickname;
+      const email = this.email;
+      const password = this.password;
+      const passwordConfirm = this.passwordConfirm;
+      const phoneNumber = this.phoneNumber;
+      const birthDay = this.birthDay;
+      authApi.signUp(nickname, email, password, passwordConfirm, phoneNumber, birthDay)
+          .then((response) => {
+            console.log(response);
+          })
     }
   }
 }

@@ -7,6 +7,11 @@ export default {
     return axios.post(url, {email, password});
   },
 
+  signUp(nickname, email, password, passwordConfirm, phoneNumber, birthDay) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/users`;
+    return axios.post(url, {nickname, email, password, passwordConfirm, phoneNumber, birthDay});
+  },
+
   authenticate(token) {
     const url = `${commonUtils.getApiBaseUrl()}/v1/session`;
     return axios.get(url, {
