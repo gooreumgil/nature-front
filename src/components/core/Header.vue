@@ -1,74 +1,120 @@
 <template>
-  <header>
-    <nav>
-      <router-link to="/">
-        <img src="@/assets/image/NATURE REPUBLIC_fullback.png" alt="">
-      </router-link>
-      <router-link to="/brand">브랜드</router-link>
-      <router-link to="/items">상품</router-link>
-      <router-link to="/my-page" v-if="authenticated">마이페이지</router-link>
-    </nav>
+  <header v-bind:class="{fontBlack: !transparent}" v-if="init">
+    <div class="header-inner">
+      <nav>
+        <router-link to="/">
+          <img v-if="transparent" src="@/assets/image/NATURE REPUBLIC_fullback.png" alt="">
+          <img v-else src="@/assets/image/NATURE REPUBLIC_white_back.png" alt="">
+        </router-link>
+        <router-link to="/brand">브랜드</router-link>
+        <router-link to="/items">상품</router-link>
+        <router-link to="/my-page" v-if="authenticated">마이페이지</router-link>
+      </nav>
 
-    <ul>
-      <li class="search-item">
-        <input type="text">
-        <img src="@/assets/image/search_fullback.png" alt="">
-      </li>
-      <li class="cart">
-        <div class="img-box">
-          <img src="@/assets/image/cart_fullback.png" alt="">
-          <span class="count">0</span>
-        </div>
-      </li>
-      <li class="logout" v-if="authenticated">
+      <ul>
+        <li class="search-item">
+          <input type="text">
+          <img v-if="transparent" src="@/assets/image/search_fullback.png" alt="">
+          <img v-else src="@/assets/image/top_icon3.png" alt="">
+        </li>
+        <li class="cart">
+          <div class="img-box">
+            <img v-if="transparent" src="@/assets/image/cart_fullback.png" alt="">
+            <img v-else src="@/assets/image/top_icon2.png" alt="">
+            <span v-bind:class="{green: !transparent}" class="count">0</span>
+          </div>
+        </li>
+        <li class="logout" v-if="authenticated">
         <span @click="logout">
-          <img src="@/assets/image/login_fullback.png" alt="">
+          <img v-if="transparent" src="@/assets/image/login_fullback.png" alt="">
+          <img v-else src="@/assets/image/top_icon1.png" alt="">
         </span>
 
-      </li>
+        </li>
 
-      <li class="login" v-if="!authenticated">
-        <router-link to="/login" v-bind:class="{white: transparent}">로그인</router-link>
-      </li>
-    </ul>
+        <li class="login" v-if="!authenticated">
+          <router-link to="/login" v-bind:class="{white: transparent}">로그인</router-link>
+        </li>
+      </ul>
+    </div>
+
   </header>
 </template>
 
 <script>
+import authApi from "@/api/AuthApi";
+
 export default {
+  data() {
+    return {
+      init: false,
+      authenticated: false
+    }
+  },
   name: "Header",
   props: {
-    authenticated: {
-      value: false
-    },
     transparent: {
       value: true
     }
+  },
+
+  async created() {
+    const token = this.$cookies.get('token');
+    if (token) {
+      await this.setAuthenticate(token);
+    }
+    this.init = true;
   },
 
   methods: {
     logout() {
       this.$cookies.remove('token');
       window.location.reload();
-    }
+    },
+
+    async setAuthenticate(token) {
+      try {
+        await authApi.authenticate(token);
+        this.authenticated = true;
+      } catch (err) {
+        console.log(err);
+        this.$cookies.remove('token');
+      }
+    },
   }
 }
 </script>
 
 <style scoped>
   header {
-    max-width: 1260px;
     width: 100%;
     text-align: left;
-    margin: 0 auto;
     position: absolute;
+    left: 50%;
     top: 0;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+
+  header .header-inner {
+    max-width: 1260px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
   }
 
   header nav {
     height: 90px;
     display: flex;
     align-items: center;
+  }
+
+  header.fontBlack {
+    background-color: #fff;
+  }
+
+  header.fontBlack a {
+    color: #555;
   }
 
   header nav a {
@@ -124,8 +170,8 @@ export default {
   header ul li.cart div.img-box span.count {
     color: #7ebb34;
     font-size: 12px;
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -134,6 +180,11 @@ export default {
     position: absolute;
     right: -7px;
     top: -5px;
+  }
+
+  header ul li.cart div.img-box span.count.green {
+    background-color: #7ebb34;
+    color: #fff;
   }
 
   header ul li.login a {
