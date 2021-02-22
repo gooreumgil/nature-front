@@ -61,6 +61,7 @@ export default {
 
   }
   ul li div.inner-box div.img-box {
+    position: relative;
     background-color: #f6f6f6;
     height: 351px;
     display: flex;
@@ -72,6 +73,24 @@ export default {
   ul li div.description {
     padding: 0 15px 5px 5px;
 
+  }
+
+  ul li div.inner-box div.img-box:hover > div.hover-box {
+    opacity: 1;
+    vertical-align: middle;
+    pointer-events: none;
+  }
+
+  section section ul li div.inner-box div.img-box div.hover-box {
+    opacity: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    text-align: center;
+    background-color: rgba(255, 255, 255, .2);
+    transition: all .2s ease-in-out;
   }
 
   ul li div.description div.item-name {

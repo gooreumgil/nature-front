@@ -30,7 +30,7 @@
     <section class="product-container">
       <div class="product-top">
         <p>
-          전체 <span id="id_color">24</span>개의 제품이 있습니다 [<span id="id_color">12</span>]
+          전체 <span id="id_color">{{ totalElements }}</span>개의 제품이 있습니다 [<span id="id_color">{{ numberOfElements }}</span>]
         </p>
       </div>
 
@@ -70,7 +70,9 @@ export default {
           {'name': '높은가격순', 'val': 'price,desc'},
           {'name': '낮은가격순', 'val': 'price,asc'},
       ],
-      items: []
+      items: [],
+      totalElements: null,
+      numberOfElements: null
     }
   },
 
@@ -117,6 +119,8 @@ export default {
         this.currentSort = sort;
         this.currentCategory = category;
         this.items = res.data.content;
+        this.totalElements = res.data.totalElements;
+        this.numberOfElements = res.data.numberOfElements;
         console.log(res.data);
       } catch (err) {
         alert("문제가 발생하였습니다.");
