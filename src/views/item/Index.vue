@@ -18,7 +18,7 @@
 
     <nav class="category-nav">
       <ul class="category-wrapper clearfix">
-        <li class="category-list" v-for="(category, index) in categories" v-bind:key="index">
+        <li @click="setItems(0, 12, null, category.name)" class="category-list" v-for="(category, index) in categories" v-bind:key="index">
           <div v-bind:class="{active: currentCategory === category.name}" class="list-inner">
             <p>{{ category.name }}</p>
 
@@ -36,7 +36,7 @@
 
       <nav class="sort-nav">
 
-        <button type="button" v-bind:class="{active: currentSort === sort.val}" v-for="(sort, index) in sorts" v-bind:key="index">
+        <button @click="setItems(0, 12, sort.val)" type="button" v-bind:class="{active: currentSort === sort.val}" v-for="(sort, index) in sorts" v-bind:key="index">
           <span>
             <img v-if="currentSort === sort.val" src="@/assets/image/check.svg">
             <span v-else class="dot">· </span>
@@ -77,7 +77,7 @@ export default {
   async created() {
     await this.setPopularItems(0, 4);
     await this.setCategories();
-    await this.setItems();
+    await this.setItems(0, 12);
   },
   methods: {
 
@@ -102,10 +102,22 @@ export default {
       }
     },
 
-    async setItems() {
+    async setItems(page, size, sort, category) {
+
+      if (!sort) {
+        sort = 'likesCount,desc&sort=registerAt,desc';
+      }
+
+      if (!category) {
+        category = this.currentCategory;
+      }
+
       try {
-        const res = await itemApi.getItems(0, 12, this.currentSort, this.currentCategory);
+        const res = await itemApi.getItems(page, size, sort, category);
+        this.currentSort = sort;
+        this.currentCategory = category;
         this.items = res.data.content;
+        console.log(res.data);
       } catch (err) {
         alert("문제가 발생하였습니다.");
         console.log(err);
@@ -272,7 +284,6 @@ export default {
     font-size: 14px;
     color: #a0a0a0;
     font-weight: 400;
-    margin-left: 5px;
   }
 
   section.product-container nav.sort-nav button.active {
@@ -281,7 +292,8 @@ export default {
   }
 
   section.product-container nav.sort-nav button span {
-
+    width: 15px;
+    display: inline-block;
   }
   section.product-container nav.sort-nav button span img {
     width: 15px;

@@ -3,8 +3,8 @@ import axios from "axios";
 
 export default {
   getItems(page, size, sort, category) {
-    console.log(null);
-    const url = `${commonUtils.getApiBaseUrl()}/v1/items?${sort}`;
+    console.log(sort);
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items?sort=${sort}`;
     return axios.get(url, {
       params: {
         page,
