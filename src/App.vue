@@ -43,6 +43,10 @@ export default {
     margin-top: 15px;
   }
 
+  #id_color {
+    color: #7ebb34;
+  }
+
   html, body {
     margin: 0 auto;
     position: relative;

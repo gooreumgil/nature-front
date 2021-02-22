@@ -1,6 +1,6 @@
 <template>
   <ul class="clearfix">
-    <li v-for="(item, index) in items" v-bind:key="index">
+    <li v-bind:class="{categoryProduct: categoryItem}" v-for="(item, index) in items" v-bind:key="index">
       <div class="inner-box">
         <div class="img-box">
           <img v-bind:src="item.imgSrcPath" alt="">
@@ -9,6 +9,9 @@
         <div class="description">
           <div class="item-name">
             <h4>{{ item.nameKor }}</h4>
+            <div class="item-description" v-if="categoryItem">
+              <p >{{ item.description }}</p>
+            </div>
           </div>
           <span class="price" v-bind:class="{disable: item.discountPrice}">{{ item.price | price }} <span class="won" v-if="!item.discountPrice">원</span></span>
           <span class="discountPrice" v-if="item.discountPrice">{{ (item.price - item.discountPrice) | price }} <span class="won">원</span></span>
@@ -24,6 +27,9 @@ export default {
   props: {
     items: {
       value: []
+    },
+    categoryItem: {
+      value: false
     }
   }
 }
@@ -45,6 +51,10 @@ export default {
     text-align: left;
   }
 
+  ul li.categoryProduct {
+    padding-bottom: 60px;
+  }
+
 
 
   ul li div.inner-box {
@@ -60,7 +70,7 @@ export default {
   }
 
   ul li div.description {
-    padding: 0 15px 5px 15px;
+    padding: 0 15px 5px 5px;
 
   }
 
@@ -79,6 +89,23 @@ export default {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+
+  ul li div.description div.item-name div.item-description {
+
+  }
+  ul li div.description div.item-name div.item-description p {
+    font-size: 14px;
+    color: #a0a0a0;
+    font-weight: 200;
+    line-height: 1.5;
+    padding: 5px 0px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    height: calc(12px * 1.5 * 2);
   }
 
   ul li div.description span.price {

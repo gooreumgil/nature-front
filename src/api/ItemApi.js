@@ -2,8 +2,15 @@ import commonUtils from "@/utils/CommonUtils";
 import axios from "axios";
 
 export default {
-  getItems(page, size, sort) {
-    const url = `${commonUtils.getApiBaseUrl()}/v1/items?page=${page}&size=${size}&sort=${sort}`;
-    return axios.get(url);
+  getItems(page, size, sort, category) {
+    console.log(null);
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items?${sort}`;
+    return axios.get(url, {
+      params: {
+        page,
+        size,
+        category
+      }
+    });
   },
 }
