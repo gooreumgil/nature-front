@@ -33,8 +33,8 @@ public class ItemController {
 
         if (StringUtils.isNotEmpty(category) && !StringUtils.equals(category, "ALL")) {
             return ResponseEntity.ok(
-                categoryItemService.findAllByCategoryName(pageable, category)
-                        .map(categoryItem -> new ItemResponseDto(categoryItem.getItem(), imgSrcPrefix))
+                itemService.findAllByCategory(pageable, category)
+                        .map(item -> new ItemResponseDto(item, imgSrcPrefix))
             );
         }
 

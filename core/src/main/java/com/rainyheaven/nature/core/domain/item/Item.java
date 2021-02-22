@@ -34,6 +34,9 @@ public class Item {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemSrc> itemSrcs = new ArrayList<>();
 
+//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private ItemSrc mainImg;
+
     @OneToMany(mappedBy = "item")
     private List<CategoryItem> categoryItems = new ArrayList<>();
 

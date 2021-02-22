@@ -1,6 +1,7 @@
 package com.rainyheaven.nature.core.domain.item;
 
 import com.rainyheaven.nature.core.domain.categoryitem.CategoryItemService;
+import com.rainyheaven.nature.core.domain.itemsrc.ImgType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,10 @@ public class ItemService {
 
     public Page<Item> findAll(Pageable pageable) {
         return itemRepository.findAllWithItemSrc(pageable);
+    }
+
+    public Page<Item> findAllByCategory(Pageable pageable, String category) {
+        return itemRepository.findAllByCategory(pageable, category);
     }
 
 }
