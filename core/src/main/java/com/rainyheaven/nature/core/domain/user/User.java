@@ -49,13 +49,11 @@ public class User {
         user.password = userSaveRequestDto.getPassword();
 
         GregorianCalendar calendar = new GregorianCalendar();
-
         Date date = user.convertToDate(userSaveRequestDto.getBirthDay());
         calendar.setTime(date);
-
         user.birthDay = BirthDay.create(calendar);
-        user.phoneNumber = PhoneNumber.create(userSaveRequestDto.getPhoneNumber());
 
+        user.phoneNumber = PhoneNumber.create(userSaveRequestDto.getPhoneNumber());
         user.userRole = UserRole.USER;
         user.userStatus = UserStatus.ACTIVE;
         return user;

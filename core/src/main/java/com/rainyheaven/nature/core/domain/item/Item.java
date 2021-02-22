@@ -1,5 +1,6 @@
 package com.rainyheaven.nature.core.domain.item;
 
+import com.rainyheaven.nature.core.domain.categoryitem.CategoryItem;
 import com.rainyheaven.nature.core.domain.itemsrc.ItemSrc;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,5 +33,8 @@ public class Item {
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemSrc> itemSrcs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "item")
+    private List<CategoryItem> categoryItems = new ArrayList<>();
 
 }
