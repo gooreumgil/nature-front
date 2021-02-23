@@ -18,7 +18,7 @@
           <img v-else src="@/assets/image/top_icon3.png" alt="">
         </li>
         <li class="cart">
-          <div class="img-box">
+          <div @click="goCart" class="img-box">
             <img v-if="transparent" src="@/assets/image/cart_fullback.png" alt="">
             <img v-else src="@/assets/image/top_icon2.png" alt="">
             <span v-bind:class="{green: !transparent}" class="count">{{ cartTotal }}</span>
@@ -97,6 +97,10 @@ export default {
       }
 
     },
+
+    goCart() {
+      this.$router.push('/cart');
+    }
   }
 }
 </script>
