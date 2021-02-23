@@ -6,7 +6,7 @@
           <img v-bind:src="item.imgSrcPath" alt="">
           <div class="hover-box"></div>
         </div>
-        <div class="description">
+        <div class="description" v-bind:class="{borderBottom: cart}">
           <div class="item-name">
             <h4>{{ item.nameKor }}</h4>
             <div class="item-description" v-if="categoryItem">
@@ -15,7 +15,12 @@
           </div>
           <span class="price" v-bind:class="{disable: item.discountPrice}">{{ item.price | price }} <span class="won" v-if="!item.discountPrice">원</span></span>
           <span class="discountPrice" v-if="item.discountPrice">{{ (item.price - item.discountPrice) | price }} <span class="won">원</span></span>
+
+          <div class="cart-box" v-if="cart">
+            <img src="@/assets/image/list_img/list/cart.png" alt="">
+          </div>
         </div>
+
       </div>
     </li>
   </ul>
@@ -29,6 +34,9 @@ export default {
       value: []
     },
     categoryItem: {
+      value: false
+    },
+    cart: {
       value: false
     }
   }
@@ -55,7 +63,9 @@ export default {
     padding-bottom: 60px;
   }
 
-
+  ul li.categoryProduct:hover .description.borderBottom {
+    border-bottom: 2px solid #8bc545;
+  }
 
   ul li div.inner-box {
 
@@ -72,7 +82,13 @@ export default {
 
   ul li div.description {
     padding: 0 15px 5px 5px;
+    position: relative;
+  }
 
+  ul li div.description.borderBottom {
+    padding-bottom: 15px;
+    border-bottom: 2px solid #efefef;
+    transition: all .1s ease-in-out;
   }
 
   ul li div.inner-box div.img-box:hover > div.hover-box {
@@ -153,4 +169,11 @@ export default {
     color: #7ebb34;
     font-weight: 400;
   }
+
+  ul li div.cart-box {
+    position: absolute;
+    right: 10px;
+    bottom: 13px;
+  }
+
 </style>

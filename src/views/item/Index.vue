@@ -30,7 +30,7 @@
     <section class="product-container">
       <div class="product-top">
         <p>
-          전체 <span id="id_color">{{ totalElements }}</span>개의 제품이 있습니다 [<span id="id_color">{{ numberOfElements }}</span>]
+          전체 <span id="id_color">{{ totalElements }}</span>개의 제품이 있습니다 [<span id="id_color">{{ items.length }}</span>]
         </p>
       </div>
 
@@ -45,8 +45,16 @@
         </button>
       </nav>
 
-      <ItemList v-bind:items="items" v-bind:category-item="true" />
+      <ItemList v-bind:items="items" v-bind:category-item="true" v-bind:cart="true" />
+      <div class="more-view" v-if="!last">
+        <button @click="setItems(pageNum + 1, 12, null, null, true)" type="button">
+          <img src="@/assets/image/list_img/list/arrow.png" alt="">
+        </button>
+      </div>
     </section>
+
+    <Bottom />
+    <Footer />
   </section>
 </template>
 
@@ -55,9 +63,11 @@ import Header from "@/components/core/Header";
 import itemApi from "@/api/ItemApi";
 import categoryApi from "@/api/CategoryApi";
 import ItemList from "@/components/core/ItemList";
+import Bottom from "@/components/core/Bottom";
+import Footer from "@/components/core/Footer";
 export default {
   name: "Index",
-  components: {ItemList, Header},
+  components: {Footer, Bottom, ItemList, Header},
   data() {
     return {
       popularItems: [],
@@ -72,7 +82,8 @@ export default {
       ],
       items: [],
       totalElements: null,
-      numberOfElements: null
+      pageNum: 0,
+      last: false
     }
   },
 
@@ -104,8 +115,7 @@ export default {
       }
     },
 
-    async setItems(page, size, sort, category) {
-
+    async setItems(page, size, sort, category, addItems) {
       if (!sort) {
         sort = 'likesCount,desc&sort=registerAt,desc';
       }
@@ -118,22 +128,28 @@ export default {
         const res = await itemApi.getItems(page, size, sort, category);
         this.currentSort = sort;
         this.currentCategory = category;
-        this.items = res.data.content;
+        if (addItems) {
+          const content = res.data.content;
+          content.forEach(val => {
+            this.items.push(val);
+          })
+        } else {
+          this.items = res.data.content;
+        }
         this.totalElements = res.data.totalElements;
-        this.numberOfElements = res.data.numberOfElements;
-        console.log(res.data);
+        this.pageNum = res.data.pageable.pageNumber;
+        this.last = res.data.last;
       } catch (err) {
         alert("문제가 발생하였습니다.");
         console.log(err);
       }
-    }
+    },
   }
 }
 </script>
 
 <style scoped>
   section.main-container {
-    padding-bottom: 400px;
   }
 
   .top {
@@ -307,6 +323,24 @@ export default {
 
   section.product-container nav.sort-nav button span span.dot {
 
+  }
+
+  section.product-container div.more-view {
+    max-width: 1260px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  section.product-container div.more-view button {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    box-sizing: border-box;
+    padding: 0;
+    border: 1px solid #ddd;
+    background-color: transparent;
+    outline: none;
   }
 
 </style>
