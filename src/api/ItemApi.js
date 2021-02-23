@@ -13,8 +13,19 @@ export default {
     });
   },
 
+
   getItem(id, type) {
     const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}?type=${type}`;
     return axios.get(url);
-  }
+  },
+
+
+  getItemsByIds(ids) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items`;
+    return axios.get(url, {
+      params: {
+        ids: ids.join(",")
+      }
+    })
+  },
 }
