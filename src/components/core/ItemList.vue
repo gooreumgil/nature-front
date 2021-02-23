@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import itemApi from "@/api/ItemApi";
 
 export default {
   name: "ItemList",
@@ -62,6 +61,10 @@ export default {
           }
         })
 
+        if (duplicate) {
+          alert('이미 장바구니에 담은 상품입니다.');
+          return;
+        }
 
         if (!duplicate) {
           cartItemIds.push(id);
@@ -69,10 +72,17 @@ export default {
           this.setCartTotal(cartItemIds.length);
         }
       }
+
+      this.cartAddComp();
+
     },
 
     setCartTotal(num) {
       this.$store.commit('SET_CART_TOTAL', num);
+    },
+
+    cartAddComp() {
+      this.$emit('cartAddComplete');
     }
   }
 }

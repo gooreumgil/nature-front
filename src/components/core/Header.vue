@@ -65,7 +65,7 @@ export default {
 
   async created() {
 
-    this.setCartTotal()
+    await this.setCartTotal()
 
     const token = this.$cookies.get('token');
     if (token) {
@@ -90,11 +90,10 @@ export default {
       }
     },
 
-    setCartTotal() {
-
+    async setCartTotal() {
       const cartItems = JSON.parse(this.$cookies.get('cart-items'));
       if (cartItems) {
-        this.$store.commit('SET_CART_TOTAL', cartItems.length);
+        await this.$store.commit('SET_CART_TOTAL', cartItems.length);
       }
 
     },
