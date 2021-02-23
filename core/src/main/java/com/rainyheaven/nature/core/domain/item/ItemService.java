@@ -1,12 +1,13 @@
 package com.rainyheaven.nature.core.domain.item;
 
 import com.rainyheaven.nature.core.domain.categoryitem.CategoryItemService;
-import com.rainyheaven.nature.core.domain.itemsrc.ImgType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -16,8 +17,12 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final CategoryItemService categoryItemService;
 
+    public Item findByIdSimple(Long id) {
+        return itemRepository.findByIdWithMainSrc(id).orElseThrow(RuntimeException::new);
+    }
+
     public Page<Item> findAll(Pageable pageable) {
-        return itemRepository.findAllWithItemSrc(pageable);
+        return itemRepository.findAllWithItemMainSrc(pageable);
     }
 
     public Page<Item> findAllByCategory(Pageable pageable, String category) {

@@ -10,16 +10,18 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ItemResponseDto {
+public class ItemSimpleResponseDto {
 
+    private Long id;
     private String nameKor;
     private String nameEng;
     private Integer price;
     private Integer discountPrice;
-    private String imgSrcPath;
+    private String mainSrcPath;
     private String description;
 
-    public ItemResponseDto(Item item, String srcPrefix) {
+    public ItemSimpleResponseDto(Item item, String srcPrefix) {
+        this.id = item.getId();
         this.nameKor = item.getNameKor();
         this.nameEng = item.getNameEng();
         this.price = item.getPrice();
@@ -29,7 +31,7 @@ public class ItemResponseDto {
                 .filter(src -> src.getImgType().equals(ImgType.MAIN))
                 .findFirst().get();
 
-        this.imgSrcPath = srcPrefix + itemSrc.getS3Key();
+        this.mainSrcPath = srcPrefix + itemSrc.getS3Key();
         this.description = item.getDescription();
     }
 }
