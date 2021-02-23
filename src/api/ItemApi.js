@@ -12,4 +12,9 @@ export default {
       }
     });
   },
+
+  getItem(id, type) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}?type=${type}`;
+    return axios.get(url);
+  }
 }

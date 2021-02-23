@@ -21,7 +21,7 @@
           <div class="img-box">
             <img v-if="transparent" src="@/assets/image/cart_fullback.png" alt="">
             <img v-else src="@/assets/image/top_icon2.png" alt="">
-            <span v-bind:class="{green: !transparent}" class="count">0</span>
+            <span v-bind:class="{green: !transparent}" class="count">{{ cartTotal }}</span>
           </div>
         </li>
         <li class="logout" v-if="authenticated">
@@ -45,6 +45,11 @@
 import authApi from "@/api/AuthApi";
 
 export default {
+  computed: {
+    cartTotal() {
+      return this.$store.state.cartTotal;
+    }
+  },
   data() {
     return {
       init: false,
@@ -59,6 +64,9 @@ export default {
   },
 
   async created() {
+
+    this.setCartTotal()
+
     const token = this.$cookies.get('token');
     if (token) {
       await this.setAuthenticate(token);
@@ -80,6 +88,15 @@ export default {
         console.log(err);
         this.$cookies.remove('token');
       }
+    },
+
+    setCartTotal() {
+
+      const cartItems = JSON.parse(this.$cookies.get('cart-items'));
+      if (cartItems) {
+        this.$store.commit('SET_CART_TOTAL', cartItems.length);
+      }
+
     },
   }
 }

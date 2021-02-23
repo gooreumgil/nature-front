@@ -3,7 +3,7 @@
     <li v-bind:class="{categoryProduct: categoryItem}" v-for="(item, index) in items" v-bind:key="index">
       <div class="inner-box">
         <div class="img-box">
-          <img v-bind:src="item.imgSrcPath" alt="">
+          <img v-bind:src="item.mainSrcPath" alt="">
           <div class="hover-box"></div>
         </div>
         <div class="description" v-bind:class="{borderBottom: cart}">
@@ -16,7 +16,7 @@
           <span class="price" v-bind:class="{disable: item.discountPrice}">{{ item.price | price }} <span class="won" v-if="!item.discountPrice">원</span></span>
           <span class="discountPrice" v-if="item.discountPrice">{{ (item.price - item.discountPrice) | price }} <span class="won">원</span></span>
 
-          <div class="cart-box" v-if="cart">
+          <div @click="addCart(item.id)" class="cart-box" v-if="cart">
             <img src="@/assets/image/list_img/list/cart.png" alt="">
           </div>
         </div>
@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import itemApi from "@/api/ItemApi";
+
 export default {
   name: "ItemList",
   props: {
@@ -38,6 +40,39 @@ export default {
     },
     cart: {
       value: false
+    }
+  },
+
+  methods: {
+    addCart: function (id) {
+
+      const cartItems = this.$cookies.get('cart-items');
+      if (!cartItems) {
+        let ids = [];
+        ids.push(id);
+        this.$cookies.set('cart-items', JSON.stringify(ids));
+        this.setCartTotal(1);
+      } else {
+
+        let duplicate = false;
+        const cartItemIds = JSON.parse(cartItems);
+        cartItemIds.forEach(itemId => {
+          if (itemId === id) {
+            duplicate = true;
+          }
+        })
+
+
+        if (!duplicate) {
+          cartItemIds.push(id);
+          this.$cookies.set('cart-items', JSON.stringify(cartItemIds));
+          this.setCartTotal(cartItemIds.length);
+        }
+      }
+    },
+
+    setCartTotal(num) {
+      this.$store.commit('SET_CART_TOTAL', num);
     }
   }
 }

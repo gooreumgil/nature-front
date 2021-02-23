@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import {router} from "@/routes";
+import {store} from "@/store";
 import VueRouter from "vue-router";
 import VueCookie from 'vue-cookies';
 
@@ -15,5 +16,6 @@ Vue.filter("price", function(value) {
 
 new Vue({
   render: h => h(App),
-  router
+  router,
+  store
 }).$mount('#app')

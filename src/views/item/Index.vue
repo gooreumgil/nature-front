@@ -117,7 +117,8 @@ export default {
 
     async setItems(page, size, sort, category, addItems) {
       if (!sort) {
-        sort = 'likesCount,desc&sort=registerAt,desc';
+        // sort = 'likesCount,desc&sort=registerAt,desc';
+        sort = this.currentSort;
       }
 
       if (!category) {
