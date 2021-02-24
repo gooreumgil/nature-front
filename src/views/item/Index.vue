@@ -323,6 +323,7 @@ export default {
     margin: 0 auto;
   }
   nav.category-nav ul li {
+    cursor: pointer;
     float: left;
     width: 10%;
     height: 100px;
@@ -385,6 +386,7 @@ export default {
   }
 
   section.product-container nav.sort-nav button {
+    cursor: pointer;
     background: none;
     outline: none;
     font-size: 14px;
@@ -419,6 +421,7 @@ export default {
   }
 
   section.product-container div.more-view button {
+    cursor: pointer;
     border-radius: 50%;
     width: 50px;
     height: 50px;

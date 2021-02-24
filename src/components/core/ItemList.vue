@@ -116,6 +116,7 @@ export default {
 
   }
   ul li div.inner-box div.img-box {
+    cursor: pointer;
     position: relative;
     background-color: #f6f6f6;
     height: 351px;
@@ -219,6 +220,7 @@ export default {
     position: absolute;
     right: 10px;
     bottom: 13px;
+    cursor: pointer;
   }
 
 </style>

@@ -134,14 +134,25 @@ export default {
   }
 
   header.fontBlack a {
+    color: #a0a0a0;
+  }
+
+  header.fontBlack nav a:hover {
     color: #555;
   }
 
   header nav a {
+    cursor: pointer;
     margin-right: 50px;
-    color: #fff;
+    color: #e0e0e0;
     font-weight: 400;
+    transition: all .2s ease-in-out;
   }
+
+  header nav a:hover {
+    color: #fff;
+  }
+
 
   header nav a:last-child {
     margin-right: 0;
@@ -169,6 +180,10 @@ export default {
 
   }
 
+  header ul li.search-item img {
+    cursor: pointer;
+  }
+
   header ul li.search-item input {
     height: 38px;
     background-color: #f6f6f6;
@@ -182,10 +197,10 @@ export default {
   }
 
   header ul li.cart {
-
   }
   header ul li.cart div.img-box {
     position: relative;
+    cursor: pointer;
   }
   header ul li.cart div.img-box span.count {
     color: #7ebb34;
@@ -208,6 +223,7 @@ export default {
   }
 
   header ul li.login a {
+    cursor: pointer;
     padding: 7px 17px;
     display: inline-block;
     height: auto;
@@ -222,6 +238,10 @@ export default {
     background-color: #fff;
     color: #555;
     background-color: rgba(255, 255, 255, .9);
+  }
+
+  header ul li.logout span {
+    cursor: pointer;
   }
 
 
