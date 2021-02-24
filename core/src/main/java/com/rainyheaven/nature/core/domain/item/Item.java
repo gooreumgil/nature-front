@@ -29,6 +29,7 @@ public class Item {
     private int likesCount;
     private String description;
     private int capacity;
+    private int savePoints;
     private LocalDateTime registerAt;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -4,6 +4,7 @@ package com.rainyheaven.nature.app.domain.item;
 import com.rainyheaven.nature.core.domain.categoryitem.CategoryItemService;
 import com.rainyheaven.nature.core.domain.item.Item;
 import com.rainyheaven.nature.core.domain.item.ItemService;
+import com.rainyheaven.nature.core.domain.item.dto.app.ItemDetailResponseDto;
 import com.rainyheaven.nature.core.domain.item.dto.app.ItemSimpleResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,8 +26,6 @@ public class ItemController {
     private final ItemService itemService;
 
     private static final String ALL = "ALL";
-    private static final String SIMPLE = "SIMPLE";
-    private static final String DETAIL = "DETAIL";
 
     @Value("${src-prefix}")
     private String imgSrcPrefix;
@@ -44,7 +44,7 @@ public class ItemController {
             return ResponseEntity.ok(itemSimpleResponseDtos);
         }
 
-        if (!ids.isEmpty()) {
+        if (ids != null && !ids.isEmpty()) {
             List<Item> items = itemService.findByIds(ids);
             List<ItemSimpleResponseDto> ItemSimpleResponseDtos =
                     items.stream().map(item -> new ItemSimpleResponseDto(item, imgSrcPrefix)).collect(Collectors.toList());
@@ -58,15 +58,9 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> get(@PathVariable Long id, @RequestParam String type) {
-
-        if (StringUtils.isNotEmpty(type) && StringUtils.equals(type, SIMPLE)) {
-            Item item = itemService.findByIdSimple(id);
-            return ResponseEntity.ok(new ItemSimpleResponseDto(item, imgSrcPrefix));
-        }
-
-        return ResponseEntity.ok().build();
-
+    public ResponseEntity<ItemDetailResponseDto> get(@PathVariable Long id) {
+        Item item = itemService.findById(id);
+        return ResponseEntity.ok(new ItemDetailResponseDto(item, imgSrcPrefix));
     }
 
 }

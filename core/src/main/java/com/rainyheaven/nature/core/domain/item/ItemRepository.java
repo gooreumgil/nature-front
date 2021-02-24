@@ -15,6 +15,9 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query("select i from Item i join fetch i.itemSrcs isrc where i.id = :id and isrc.imgType = com.rainyheaven.nature.core.domain.itemsrc.ImgType.MAIN")
     Optional<Item> findByIdWithMainSrc(@Param("id") Long id);
 
+    @Query("select i from Item i join fetch i.itemSrcs where i.id = :id")
+    Optional<Item> findByIdWithSrcs(@Param("id") Long id);
+
     @Query(value = "select i from Item i join fetch i.itemSrcs isrc where isrc.imgType = com.rainyheaven.nature.core.domain.itemsrc.ImgType.MAIN", countQuery = "select count (i) from Item i")
     Page<Item> findAllWithItemMainSrc(Pageable pageable);
 

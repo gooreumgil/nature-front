@@ -19,8 +19,8 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final CategoryItemService categoryItemService;
 
-    public Item findByIdSimple(Long id) {
-        return itemRepository.findByIdWithMainSrc(id).orElseThrow(RuntimeException::new);
+    public Item findById(Long id) {
+        return itemRepository.findByIdWithSrcs(id).orElseThrow(RuntimeException::new);
     }
 
     public Page<Item> findAll(Pageable pageable) {
