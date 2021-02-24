@@ -2,7 +2,7 @@
   <ul class="clearfix">
     <li v-bind:class="{categoryProduct: categoryItem}" v-for="(item, index) in items" v-bind:key="index">
       <div class="inner-box">
-        <div class="img-box">
+        <div @click="goItemDetail(item.id)" class="img-box">
           <img v-bind:src="item.mainSrcPath" alt="">
           <div class="hover-box"></div>
         </div>
@@ -83,6 +83,10 @@ export default {
 
     cartAddComp() {
       this.$emit('cartAddComplete');
+    },
+
+    goItemDetail(id) {
+      this.$router.push('/items/' + id);
     }
   }
 }

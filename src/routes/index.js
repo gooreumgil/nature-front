@@ -7,6 +7,7 @@ import Brand from "@/views/Brand";
 import ItemIndex from "@/views/item/Index"
 import Cart from "@/views/item/Cart";
 import MeIndex from "@/views/me/Index"
+import Detail from "@/views/item/Detail";
 
 
 Vue.use(VueRouter);
@@ -33,6 +34,10 @@ export const router = new VueRouter({
     {
       path: '/items',
       component: ItemIndex
+    },
+    {
+      path: '/items/:id',
+      component: Detail
     },
     {
       path: '/cart',

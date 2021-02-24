@@ -14,8 +14,8 @@ export default {
   },
 
 
-  getItem(id, type) {
-    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}?type=${type}`;
+  getItem(id) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}`;
     return axios.get(url);
   },
 
