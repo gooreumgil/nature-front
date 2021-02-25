@@ -11,16 +11,16 @@
 
         </li>
         <li class="info-list detail">
-          <div class="category">
+          <div class="out-box category">
             <p>Product > {{ item.category }}</p>
           </div>
-          <div class="name-and-description">
+          <div class="out-box name-and-description">
             <h2>{{ item.nameKor }}</h2>
             <h3>{{ item.nameEng }}</h3>
             <p>{{ item.description }}</p>
           </div>
 
-          <div class="price">
+          <div class="out-box price">
             <p class="fixed-price" v-bind:class="{disable: item.discountPrice > 0}">
               <span class="label">판매가</span> {{ item.price | price}} <span class="won">원</span>
             </p>
@@ -29,7 +29,7 @@
             </p>
           </div>
 
-          <div class="capacity-and-savePoints">
+          <div class="out-box capacity-and-savePoints">
             <p class="capacity">
               <span class="label">용량</span> {{ item.capacity }} ml
             </p>
@@ -38,7 +38,7 @@
             </p>
           </div>
 
-          <div class="totalPrice">
+          <div class="out-box totalPrice">
             <p class="quantity">
               <span class="label">수량</span>
 
@@ -54,8 +54,30 @@
 
             </p>
             <p class="result-price" id="id_color">
-              <span class="label">최종금액</span> {{ getTotalPrice(item) | price }} <span class="won">원</span>
+              <span class="label">최종금액</span>{{ getTotalPrice(item) | price }} <span class="won">원</span>
             </p>
+          </div>
+
+          <div class="out-box buy clearfix">
+            <div class="buy-col like">
+              <div class="buy-inner-box">
+                <button type="button">
+                  <LikeIcon v-bind:fill="'#fff'" v-bind:stroke="'#ddd'" />
+                </button>
+
+              </div>
+
+            </div>
+            <div class="buy-col cart">
+              <div class="buy-inner-box">
+                <button type="button">장바구니</button>
+              </div>
+            </div>
+            <div class="buy-col purchase">
+              <div class="buy-inner-box">
+                <button type="button">구매하기</button>
+              </div>
+            </div>
           </div>
         </li>
       </ul>
@@ -68,9 +90,10 @@ import Header from "@/components/core/Header";
 import itemApi from "@/api/ItemApi";
 import PlusIcon from "@/components/icon/PlusIcon";
 import MinusIcon from "@/components/icon/MinusIcon";
+import LikeIcon from "@/components/icon/LikeIcon";
 export default {
   name: "Detail",
-  components: {MinusIcon, PlusIcon, Header},
+  components: {LikeIcon, MinusIcon, PlusIcon, Header},
 
   data() {
     return {
@@ -138,7 +161,7 @@ export default {
   }
 
   section.main-container section.info-container ul {
-    max-width: 1260px;
+    max-width: 1100px;
     width: 100%;
     margin: 0 auto;
     box-sizing: border-box;
@@ -149,14 +172,17 @@ export default {
     float: left;
     box-sizing: border-box;
     width: 50%;
+    padding: 20px;
   }
 
   section.main-container section.info-container ul li:first-child {
-    width: 60%;
+    width: 45%;
   }
 
   section.main-container section.info-container ul li:last-child {
-    width: 40%;
+    /*padding-left: 40px;*/
+    /*padding-right: 160px;*/
+    width: 50%;
   }
 
   section.main-container section.info-container ul li.img {
@@ -170,11 +196,12 @@ export default {
     height: 470px;
     width: 400px;
     background-color: #f6f6f6;
-    margin: 0 auto;
+    /*margin: 0 auto;*/
   }
 
   section.main-container section.info-container ul li.img div.inner-box img {
-    width: 100%;
+    max-width: 100%;
+    width: fit-content;
   }
 
   section.main-container section.info-container ul li.detail {
@@ -182,9 +209,8 @@ export default {
   }
 
   section.main-container section.info-container ul li.detail div.category {
-    padding-top: 0;
-    padding-bottom: 0;
-    border-bottom: 0;
+    padding: 0 !important;
+    border-bottom: none !important;
   }
 
   section.main-container section.info-container ul li.detail div.category p {
@@ -197,8 +223,7 @@ export default {
   section.main-container section.info-container ul li.detail div.name-and-description {
     border-bottom: 1px solid #eaeaea;
     box-sizing: border-box;
-    padding-top: 10px;
-    padding-bottom: 20px;
+    padding-top: 10px !important;
   }
 
   section.main-container section.info-container ul li.detail div.name-and-description h2 {
@@ -223,7 +248,7 @@ export default {
     line-height: 1.5;
   }
 
-  section.main-container section.info-container ul li.detail div {
+  section.main-container section.info-container ul li.detail div.out-box {
     box-sizing: border-box;
     padding: 25px 0;
     border-bottom: 1px solid #eaeaea;
@@ -262,6 +287,7 @@ export default {
 
   section.main-container section.info-container ul li.detail div.price p.fixed-price.disable {
     color: #888;
+    font-weight: 300;
     text-decoration: line-through;
   }
 
@@ -286,6 +312,7 @@ export default {
   }
 
   section.main-container section.info-container ul li.detail div.totalPrice p button {
+    cursor: pointer;
     width: 20px;
     height: 20px;
     background-color: #f1f1f1;
@@ -311,6 +338,63 @@ export default {
   section.main-container section.info-container ul li.detail div.totalPrice p.result-price {
     font-size: 24px;
     font-weight: 700;
+  }
+
+  section.main-container section.info-container ul li.detail div.buy {
+    border-bottom: none;
+  }
+
+  section.main-container section.info-container ul li.detail div.buy div.buy-col {
+    float: left;
+    box-sizing: border-box;
+    padding: 10px;
+  }
+
+
+
+  section.main-container section.info-container ul li.detail div.buy div.buy-col.like {
+    padding-left: 0;
+    width: 15%;
+  }
+
+  section.main-container section.info-container ul li.detail div.buy div.buy-col.cart {
+    width: 40%;
+  }
+
+
+  section.main-container section.info-container ul li.detail div.buy div.buy-col.purchase {
+    padding-right: 0;
+    width: 45%;
+  }
+
+  section.main-container section.info-container ul li.detail div.buy div.buy-col div.buy-inner-box {
+    background-color: #f6f6f6;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  section.main-container section.info-container ul li.detail div.buy div.buy-col div.buy-inner-box button {
+    cursor: pointer;
+    background-color: transparent;
+    box-sizing: border-box;
+    padding: 0;
+    outline: none;
+    width: 100%;
+    height: 100%;
+    font-size: 15px;
+  }
+
+  section.main-container section.info-container ul li.detail div.buy div.buy-col.purchase div.buy-inner-box button {
+    background-color: #7ebb34;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  section.main-container section.info-container ul li.detail div.buy div.buy-col.like div.buy-inner-box button svg {
+    max-width: 25px;
+    width: 100%;
   }
 
 
