@@ -85,6 +85,21 @@
       </ul>
     </section>
 
+    <section class="detail-container">
+      <nav class="detail-tab clearfix">
+        <div class="nav-inner" v-for="(tab, index) in tabs" v-bind:key="index">
+          <button type="button" @click="setCurrentTab(tab.val)" v-bind:class="{active: isCurrentTab(tab.val)}">{{ tab.name }}</button>
+        </div>
+      </nav>
+
+      <div class="detail-info-box" v-if="currentTab === 'detail'">
+        <img v-bind:src="item.detailSrcPath" alt="">
+      </div>
+
+    </section>
+
+    <Bottom />
+    <Footer />
     <CartModal v-bind:cart-add-view="cartAddView" :shopping-keep-going="shoppingKeepGoing"/>
   </section>
 </template>
@@ -98,15 +113,23 @@ import LikeIcon from "@/components/icon/LikeIcon";
 import CartIcon from "@/components/icon/CartIcon";
 import CartModal from "@/components/core/CartModal";
 import commonService from "@/service/commonService";
+import Bottom from "@/components/core/Bottom";
+import Footer from "@/components/core/Footer";
 export default {
   name: "Detail",
-  components: {CartModal, CartIcon, LikeIcon, MinusIcon, PlusIcon, Header},
+  components: {Footer, Bottom, CartModal, CartIcon, LikeIcon, MinusIcon, PlusIcon, Header},
 
   data() {
     return {
       init: false,
       item: null,
-      cartAddView: false
+      cartAddView: false,
+      currentTab: 'detail',
+      tabs: [
+        {'name': '상품정보', 'val': 'detail'},
+        {'name': '리뷰', 'val': 'review'},
+        {'name': 'Q&A', 'val': 'qna'}
+      ]
     }
   },
 
@@ -162,6 +185,14 @@ export default {
 
     shoppingKeepGoing() {
       this.cartAddView = false;
+    },
+
+    setCurrentTab(tab) {
+      this.currentTab = tab;
+    },
+
+    isCurrentTab(tab) {
+      return this.currentTab === tab;
     }
   }
 }
@@ -414,7 +445,7 @@ export default {
   }
 
   section.main-container section.info-container ul li.detail div.buy div.buy-col.like div.buy-inner-box button svg {
-    max-width: 25px;
+    max-width: 23px;
     width: 100%;
   }
 
@@ -425,12 +456,54 @@ export default {
   }
 
   section.main-container section.info-container ul li.detail div.buy div.buy-col.cart div.buy-inner-box button svg {
-    max-width: 30px;
+    max-width: 26px;
     width: 100%;
     margin-right: 10px;
     transform: translateY(-2px);
   }
 
+  section.main-container section.detail-container {
 
+  }
+
+  section.main-container section.detail-container nav {
+    max-width: 1260px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  section.main-container section.detail-container nav div.nav-inner {
+    float: left;
+    box-sizing: border-box;
+    padding: 10px;
+    margin: 0 auto;
+    width: 33.33%;
+    height: 80px;
+  }
+
+  section.main-container section.detail-container nav div.nav-inner button {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    background-color: #f1f1f1;
+    border: 3px;
+    font-size: 16px;
+    color: #555;
+    outline: none;
+    transition: all .1s ease-in-out;
+  }
+
+
+  section.main-container section.detail-container nav div.nav-inner button.active {
+    background-color: #7ebb34;
+    color: #fff;
+    font-weight: 700;
+    transition: all .1s ease-in-out;
+  }
+
+  section.main-container section.detail-container div.detail-info-box {
+    box-sizing: border-box;
+    padding: 100px 0;
+  }
 
 </style>

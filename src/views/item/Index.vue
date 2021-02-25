@@ -18,6 +18,12 @@
 
     <nav class="category-nav">
       <ul class="category-wrapper clearfix">
+        <li @click="setItems(0, 12, null, 'ALL')" class="category-list">
+          <div v-bind:class="{active: currentCategory === 'ALL'}" class="list-inner">
+            <p>ALL</p>
+          </div>
+        </li>
+
         <li @click="setItems(0, 12, null, category.name)" class="category-list" v-for="(category, index) in categories" v-bind:key="index">
           <div v-bind:class="{active: currentCategory === category.name}" class="list-inner">
             <p>{{ category.name }}</p>
