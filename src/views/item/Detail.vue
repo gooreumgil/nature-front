@@ -104,7 +104,7 @@ export default {
       if (type === 'PLUS') {
         item.quantity++;
       } else {
-        if (item.quantity === 0) {
+        if (item.quantity <= 1) {
           alert('주문수량은 1개 이상만 가능합니다.');
           return;
         }
@@ -282,6 +282,7 @@ export default {
   section.main-container section.info-container ul li.detail div.totalPrice p.quantity {
     display: flex;
     align-items: center;
+    margin-bottom: 25px;
   }
 
   section.main-container section.info-container ul li.detail div.totalPrice p button {
@@ -308,6 +309,7 @@ export default {
   }
 
   section.main-container section.info-container ul li.detail div.totalPrice p.result-price {
+    font-size: 24px;
     font-weight: 700;
   }
 
