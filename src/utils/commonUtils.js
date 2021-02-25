@@ -9,5 +9,8 @@ export default {
  },
   getProcessEnv() {
     return process.env.NODE_ENV.trim();
-  }
+  },
+
+
+
 }

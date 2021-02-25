@@ -62,7 +62,7 @@
             <div class="buy-col like">
               <div class="buy-inner-box">
                 <button type="button">
-                  <LikeIcon v-bind:fill="'#fff'" v-bind:stroke="'#ddd'" />
+                  <LikeIcon v-bind:fill="'#fff'" v-bind:stroke="'#888'" />
                 </button>
 
               </div>
@@ -70,7 +70,9 @@
             </div>
             <div class="buy-col cart">
               <div class="buy-inner-box">
-                <button type="button">장바구니</button>
+                <button @click="addCart(item.id)" type="button">
+                  <CartIcon v-bind:stroke="'#888'" />장바구니
+                </button>
               </div>
             </div>
             <div class="buy-col purchase">
@@ -82,6 +84,8 @@
         </li>
       </ul>
     </section>
+
+    <CartModal v-bind:cart-add-view="cartAddView" :shopping-keep-going="shoppingKeepGoing"/>
   </section>
 </template>
 
@@ -91,14 +95,18 @@ import itemApi from "@/api/ItemApi";
 import PlusIcon from "@/components/icon/PlusIcon";
 import MinusIcon from "@/components/icon/MinusIcon";
 import LikeIcon from "@/components/icon/LikeIcon";
+import CartIcon from "@/components/icon/CartIcon";
+import CartModal from "@/components/core/CartModal";
+import commonService from "@/service/commonService";
 export default {
   name: "Detail",
-  components: {LikeIcon, MinusIcon, PlusIcon, Header},
+  components: {CartModal, CartIcon, LikeIcon, MinusIcon, PlusIcon, Header},
 
   data() {
     return {
       init: false,
-      item: null
+      item: null,
+      cartAddView: false
     }
   },
 
@@ -141,6 +149,19 @@ export default {
 
     getTotalPrice(item) {
       return this.sumDiscountPrice(item) * item.quantity;
+    },
+
+    addCart(id) {
+      try {
+        commonService.addCart.bind(this)(id);
+        this.cartAddView = true;
+      } catch (err) {
+        alert(err.message);
+      }
+    },
+
+    shoppingKeepGoing() {
+      this.cartAddView = false;
     }
   }
 }
@@ -181,8 +202,8 @@ export default {
 
   section.main-container section.info-container ul li:last-child {
     /*padding-left: 40px;*/
-    /*padding-right: 160px;*/
-    width: 50%;
+    padding-right: 80px;
+    width: 55%;
   }
 
   section.main-container section.info-container ul li.img {
@@ -395,6 +416,19 @@ export default {
   section.main-container section.info-container ul li.detail div.buy div.buy-col.like div.buy-inner-box button svg {
     max-width: 25px;
     width: 100%;
+  }
+
+  section.main-container section.info-container ul li.detail div.buy div.buy-col.cart div.buy-inner-box button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  section.main-container section.info-container ul li.detail div.buy div.buy-col.cart div.buy-inner-box button svg {
+    max-width: 30px;
+    width: 100%;
+    margin-right: 10px;
+    transform: translateY(-2px);
   }
 
 

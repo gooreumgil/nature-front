@@ -1,4 +1,4 @@
-import commonUtils from "@/utils/CommonUtils";
+import commonUtils from "@/utils/commonUtils";
 import axios from "axios";
 
 export default {

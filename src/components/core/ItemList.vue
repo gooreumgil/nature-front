@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import commonService from "@/service/commonService";
 
 export default {
   name: "ItemList",
@@ -45,40 +46,16 @@ export default {
   methods: {
     addCart: function (id) {
 
-      const cartItems = this.$cookies.get('cart-items');
-      if (!cartItems) {
-        let ids = [];
-        ids.push(id);
-        this.$cookies.set('cart-items', JSON.stringify(ids));
-        this.setCartTotal(1);
-      } else {
-
-        let duplicate = false;
-        const cartItemIds = JSON.parse(cartItems);
-        cartItemIds.forEach(itemId => {
-          if (itemId === id) {
-            duplicate = true;
-          }
-        })
-
-        if (duplicate) {
-          alert('이미 장바구니에 담은 상품입니다.');
-          return;
-        }
-
-        if (!duplicate) {
-          cartItemIds.push(id);
-          this.$cookies.set('cart-items', JSON.stringify(cartItemIds));
-          this.setCartTotal(cartItemIds.length);
-        }
+      try {
+        commonService.addCart.bind(this)(id);
+        this.cartAddComp();
+      } catch (err) {
+        alert(err.message);
       }
-
-      this.cartAddComp();
-
     },
 
     setCartTotal(num) {
-      this.$store.commit('SET_CART_TOTAL', num);
+      commonService.setCartTotal(num);
     },
 
     cartAddComp() {
