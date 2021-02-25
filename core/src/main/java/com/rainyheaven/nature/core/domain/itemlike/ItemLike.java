@@ -1,8 +1,8 @@
-package com.rainyheaven.nature.core.domain.categoryitem;
+package com.rainyheaven.nature.core.domain.itemlike;
 
 import com.rainyheaven.nature.core.domain.base.BaseTimeEntity;
-import com.rainyheaven.nature.core.domain.category.Category;
 import com.rainyheaven.nature.core.domain.item.Item;
+import com.rainyheaven.nature.core.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,22 +13,19 @@ import javax.persistence.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryItem extends BaseTimeEntity {
+public class ItemLike extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_item_id")
+    @Column(name = "item_like_id")
     private Long id;
-
-    private String categoryName;
-    private boolean isMain;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

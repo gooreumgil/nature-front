@@ -1,5 +1,6 @@
 package com.rainyheaven.nature.core.domain.user;
 
+import com.rainyheaven.nature.core.domain.base.BaseTimeEntity;
 import com.rainyheaven.nature.core.domain.embedded.BirthDay;
 import com.rainyheaven.nature.core.domain.embedded.PhoneNumber;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserSaveRequestDto;
@@ -19,7 +20,7 @@ import java.util.GregorianCalendar;
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

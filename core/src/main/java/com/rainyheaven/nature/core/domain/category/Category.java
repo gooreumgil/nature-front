@@ -1,5 +1,6 @@
 package com.rainyheaven.nature.core.domain.category;
 
+import com.rainyheaven.nature.core.domain.base.BaseTimeEntity;
 import com.rainyheaven.nature.core.domain.categoryitem.CategoryItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category {
+public class Category extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

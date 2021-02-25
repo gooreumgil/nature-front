@@ -27,11 +27,10 @@ public class ItemSimpleResponseDto {
         this.price = item.getPrice();
         this.discountPrice = item.getDiscountPrice();
 
-        ItemSrc itemSrc = item.getItemSrcs().stream()
+        item.getItemSrcs().stream()
                 .filter(src -> src.getImgType().equals(ImgType.MAIN))
-                .findFirst().get();
+                .findFirst().ifPresent(itemSrc -> this.mainSrcPath = srcPrefix + itemSrc.getS3Key());
 
-        this.mainSrcPath = srcPrefix + itemSrc.getS3Key();
         this.description = item.getDescription();
     }
 }

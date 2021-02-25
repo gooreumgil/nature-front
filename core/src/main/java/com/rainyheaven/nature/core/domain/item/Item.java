@@ -1,5 +1,6 @@
 package com.rainyheaven.nature.core.domain.item;
 
+import com.rainyheaven.nature.core.domain.base.BaseTimeEntity;
 import com.rainyheaven.nature.core.domain.categoryitem.CategoryItem;
 import com.rainyheaven.nature.core.domain.itemsrc.ItemSrc;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Item {
+public class Item extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +31,7 @@ public class Item {
     private String description;
     private int capacity;
     private int savePoints;
-    private LocalDateTime registerAt;
+    private LocalDateTime createdDate;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemSrc> itemSrcs = new ArrayList<>();

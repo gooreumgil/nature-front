@@ -1,5 +1,6 @@
 package com.rainyheaven.nature.core.domain.itemsrc;
 
+import com.rainyheaven.nature.core.domain.base.BaseTimeEntity;
 import com.rainyheaven.nature.core.domain.item.Item;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemSrc {
+public class ItemSrc extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
