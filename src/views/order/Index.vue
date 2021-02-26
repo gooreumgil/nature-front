@@ -8,7 +8,7 @@
         <p>주문 정보를 자세히 확인해주세요.</p>
       </div>
 
-      <div class="order-info-box">
+      <div class="order-info-box" v-if="itemInit">
         <ul class="order-item-wrapper">
           <li class="order-item-list head clearfix">
             <div class="order-item-col name-and-img">
@@ -53,9 +53,130 @@
         </ul>
       </div>
 
-      <div class="delivery-info-box">
-        <div class="title-box">
-          <h3>배송정보</h3>
+      <div class="purchase-info clearfix" v-if="userInit">
+        <div class="purchase-list pay-info">
+          <div class="title">
+            <h3>결제정보</h3>
+          </div>
+          <div class="inner clearfix">
+            <div class="inner-row order-by">
+              <div class="label-box">
+                <span class="label">주문자</span>
+
+              </div>
+              <div class="content-box">
+                <p>{{ user.name }}</p>
+                <span class="divider"></span>
+                <p>{{ user.phoneNum1 }} - {{ user.phoneNum2 }} - {{ user.phoneNum3 }}</p>
+                <span class="divider"></span>
+                <p>{{ user.email }}</p>
+              </div>
+            </div>
+
+            <div class="inner-row user-address" v-if="user.addressResponseDtos.length > 0">
+              <div class="label-box">
+                <span class="label">배송지선택</span>
+
+              </div>
+              <div class="content-box">
+                <button type="button">기본배송지</button>
+                <button type="button">신규배송지</button>
+                <button type="button">배송지목록</button>
+              </div>
+            </div>
+
+            <div class="inner-row receiver-name">
+              <div class="label-box">
+                <span class="label">이름</span>
+
+              </div>
+              <div class="content-box">
+                <input type="text" v-bind:value="user.name">
+              </div>
+            </div>
+
+            <div class="inner-row phone-num">
+              <div class="label-box">
+                <span class="label">연락처</span>
+
+              </div>
+              <div class="content-box">
+                <input type="text" v-bind:value="user.phoneNum1">
+                <input type="text" v-bind:value="user.phoneNum2">
+                <input type="text" v-bind:value="user.phoneNum3">
+              </div>
+            </div>
+
+            <div class="inner-row receive-address">
+              <div class="label-box">
+                <span class="label">주소</span>
+
+              </div>
+              <div class="content-box">
+                <div class="zip-code">
+                  <input type="text" placeholder="우편번호를 입력해주세요">
+
+                </div>
+                <div class="address clearfix">
+                  <div class="address-list main">
+                    <input type="text" placeholder="주소를 입력해주세요.">
+                  </div>
+                  <div class="address-list detail">
+                    <input type="text" placeholder="상세주소">
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="inner-row user-points">
+              <div class="label-box">
+                <span class="label">포인트사용</span>
+
+              </div>
+              <div class="content-box">
+                <input type="text" v-model="usePoints" v-bind:disabled="isPointUseable">
+                <p>P</p>
+                <button type="button" v-bind:disabled="isPointUseable">사용하기</button>
+                <input type="checkbox" v-bind:disabled="isPointUseable">
+                <p class="all-points-use">모두사용 (보유포인트: <span>{{ getUserOwnPoints() | price }}P</span>)</p>
+              </div>
+            </div>
+
+            <div class="inner-row payment-method">
+              <div class="label-box">
+                <span class="label">결제수단</span>
+
+              </div>
+              <div class="content-box">
+                <div class="btn-list clearfix">
+
+                  <div class="btn-list-inner">
+                    <button @click="setPaymentMethod('신용카드')" v-bind:class="{active: isPaymentMethodThis('신용카드')}" type="button">신용카드</button>
+                  </div>
+
+                  <div class="btn-list-inner">
+                    <button @click="setPaymentMethod('무통장입금')" v-bind:class="{active: isPaymentMethodThis('무통장입금')}" type="button">무통장입금</button>
+                  </div>
+
+                  <div class="btn-list-inner">
+                    <button @click="setPaymentMethod('휴대폰결제')" v-bind:class="{active: isPaymentMethodThis('휴대폰결제')}" type="button">휴대폰결제</button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="purchase-list price-info">
+          <div class="title">
+            <h3>결제금액</h3>
+          </div>
+          <div class="inner">
+
+          </div>
         </div>
       </div>
     </section>
@@ -65,13 +186,19 @@
 <script>
 import Header from "@/components/core/Header";
 import itemApi from "@/api/ItemApi";
+import userApi from "@/api/UserApi";
 
 export default {
   name: "Index",
   components: {Header},
   data() {
     return {
-      items: []
+      items: [],
+      user: null,
+      itemInit: false,
+      userInit: false,
+      usePoints: 0,
+      paymentMethod: '신용카드'
     }
   },
 
@@ -83,7 +210,7 @@ export default {
     })
 
     await this.setItems(ids);
-
+    await this.setUser();
   },
 
   methods: {
@@ -98,6 +225,22 @@ export default {
             quantity
           })
         }
+
+        this.itemInit = true;
+      } catch (err) {
+        alert('문제가 발생하였습니다.');
+        console.log(err);
+      }
+    },
+
+    async setUser() {
+
+      const token = this.$cookies.get('token');
+
+      try {
+        const res = await userApi.getUser(token);
+        this.user = res.data;
+        this.userInit = true;
       } catch (err) {
         alert('문제가 발생하였습니다.');
         console.log(err);
@@ -124,6 +267,22 @@ export default {
 
     getItemTotalPrice(item) {
       return (item.price - item.discountPrice) * item.quantity;
+    },
+
+    getUserOwnPoints() {
+      return this.user.ownPoints === null ? 0 : this.user.ownPoints;
+    },
+
+    isPointUseable() {
+      return !this.user.ownPoints === null || this.user.ownPoints === 0;
+    },
+
+    isPaymentMethodThis(method) {
+      return this.paymentMethod === method;
+    },
+
+    setPaymentMethod(method) {
+      this.paymentMethod = method;
     }
   }
 }
@@ -184,14 +343,15 @@ export default {
   }
 
   section.main-container section.inner-container div.order-info-box ul li.head {
-    background-color: #f9f9f9;
+    background-color: #7ebb34;
     height: 60px;
     border-bottom: none;
   }
 
   section.main-container section.inner-container div.order-info-box ul li.head p {
     font-size: 15px;
-    color: #555;
+    font-weight: 700;
+    color: #fff;
   }
 
   section.main-container section.inner-container div.order-info-box ul li div.order-item-col {
@@ -258,20 +418,277 @@ export default {
     color: #888;
   }
 
-  section.main-container section.inner-container div.delivery-info-box {
-
+  section.main-container section.inner-container div.purchase-info {
+    max-width: 1260px;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 40px;
+    text-align: left;
   }
 
-  section.main-container section.inner-container div.delivery-info-box div.title-box {
+  section.main-container section.inner-container div.purchase-info div.purchase-list {
+    float: left;
     box-sizing: border-box;
-    padding-top: 40px;
+    padding: 10px;
   }
 
-  section.main-container section.inner-container div.delivery-info-box div.title-box h3 {
+  section.main-container section.inner-container div.purchase-info div.purchase-list.pay-info {
+    width: 60%;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list.price-info {
+    width: 40%;
+  }
+
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.title {
+    text-align: left;
+    box-sizing: border-box;
+    padding-bottom: 20px;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.title h3 {
     font-size: 18px;
     font-weight: 400;
     color: #555;
   }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner {
+
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row {
+    display: flex;
+    align-items: center;
+    /*height: 60px;*/
+    border-bottom: 1px solid #eaeaea;
+    font-size: 14px;
+    position: relative;
+    padding: 20px 0;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row:first-child {
+    border-top: 2px solid #7ebb34;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row div.label-box  {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding-left: 25px;
+    width: 140px;
+    background-color: #f9f9f9;
+    height: 100%;
+    position: absolute;
+    left: 0;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row div.label-box span {
+    font-weight: 700;
+    color: #555;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row div.content-box {
+    box-sizing: border-box;
+    padding-left: 165px;
+    display: flex;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row div.content-box input {
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    padding: 6px 10px;
+    border-radius: 3px;
+    outline-color: #eaeaea;
+    font-size: 14px;
+    font-weight: 400;
+    color: #555;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row div.content-box span.divider {
+    height: 10px;
+    width: 1px;
+    display: inline-block;
+    background-color: #bbb;
+    margin: 0 10px;
+    transform: translateY(3px);
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.receiver-name {
+
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.receiver-name div.content-box {
+
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.receiver-name div.content-box input {
+
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.phone-num {
+
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.phone-num .content-box {
+
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.phone-num .content-box input {
+
+    width: 80px;
+    margin-right: 10px;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.phone-num .content-box input:last-child {
+    margin-right: 0;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.receive-address {
+    /*height: 110px;*/
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.receive-address .content-box {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.receive-address .content-box div.zip-code {
+    box-sizing: border-box;
+    padding-bottom: 8px;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.receive-address .content-box div.address {
+
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.receive-address .content-box div.address div.address-list {
+    float: left;
+    box-sizing: border-box;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.receive-address
+  .content-box div.address div.address-list.main {
+    width: 60%;
+    padding-right: 8px;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.receive-address
+  .content-box div.address div.address-list.detail {
+    width: 40%;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.receive-address .content-box input {
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    padding: 6px 10px;
+    border-radius: 3px;
+    outline-color: #eaeaea;
+    font-size: 14px;
+    font-weight: 400;
+    color: #555;
+    width: 100%;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.receive-address .content-box div.zip-code input {
+    width: 40%;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.receive-address .content-box input::placeholder {
+    font-size: 13px;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.user-points {
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.user-points .content-box {
+    display: flex;
+    align-items: center;
+
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.user-points .content-box input {
+    text-align: right;
+    width: 160px;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.user-points .content-box input[type=checkbox] {
+    margin-left: 10px;
+    width: auto;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.user-points .content-box p {
+    margin: 0 10px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #333;
+
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.user-points .content-box p.all-points-use {
+    font-weight: 400;
+    color: #555;
+
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.user-points .content-box p.all-points-use span {
+    font-weight: 700;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.user-points .content-box button {
+    height: 34px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    padding: 5px 10px;
+    margin-left: 10px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    outline-color: #eaeaea;
+    color: #555;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.payment-method {
+
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.payment-method .content-box {
+    flex-direction: column;
+    width: 100%;
+    padding-left: 155px;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.payment-method .content-box div.btn-list {
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.payment-method .content-box .btn-list-inner {
+    float: left;
+    width: 33.33%;
+    box-sizing: border-box;
+    padding-left: 10px;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.payment-method .content-box .btn-list-inner:first-child {
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.payment-method .content-box .btn-list-inner button {
+    outline: none;
+    width: 100%;
+    height: 40px;
+    border-radius: 3px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list div.inner div.inner-row.payment-method .content-box .btn-list-inner button.active {
+    background-color: #555;
+    color: #fff;
+    font-weight: 700;
+    border: 0;
+  }
+
+
 
 
 

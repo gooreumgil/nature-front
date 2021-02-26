@@ -123,6 +123,7 @@ export default {
     return {
       init: false,
       item: null,
+      user: null,
       cartAddView: false,
       currentTab: 'detail',
       tabs: [
@@ -153,6 +154,8 @@ export default {
         console.log(err);
       }
     },
+
+
 
     quantitySum(item, type) {
       if (type === 'PLUS') {
