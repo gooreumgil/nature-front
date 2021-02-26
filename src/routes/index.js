@@ -8,6 +8,7 @@ import ItemIndex from "@/views/item/Index"
 import Cart from "@/views/item/Cart";
 import MeIndex from "@/views/me/Index"
 import Detail from "@/views/item/Detail";
+import OrderIndex from "@/views/order/Index"
 
 
 Vue.use(VueRouter);
@@ -46,6 +47,10 @@ export const router = new VueRouter({
     {
       path: '/my-page',
       component: MeIndex
+    },
+    {
+      path: '/order',
+      component: OrderIndex
     }
   ]
 })

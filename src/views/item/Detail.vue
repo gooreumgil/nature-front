@@ -77,7 +77,7 @@
             </div>
             <div class="buy-col purchase">
               <div class="buy-inner-box">
-                <button type="button">구매하기</button>
+                <button @click="productOrder(item)" type="button">구매하기</button>
               </div>
             </div>
           </div>
@@ -85,7 +85,7 @@
       </ul>
     </section>
 
-    <section class="detail-container">
+    <section class="detail-container" v-if="init">
       <nav class="detail-tab clearfix">
         <div class="nav-inner" v-for="(tab, index) in tabs" v-bind:key="index">
           <button type="button" @click="setCurrentTab(tab.val)" v-bind:class="{active: isCurrentTab(tab.val)}">{{ tab.name }}</button>
@@ -193,6 +193,21 @@ export default {
 
     isCurrentTab(tab) {
       return this.currentTab === tab;
+    },
+
+    productOrder(item) {
+
+      let orderItems = [];
+      let orderItem = {
+        'id': item.id,
+        'quantity': item.quantity
+      }
+
+      orderItems.push(orderItem);
+      this.$cookies.set('order-items', JSON.stringify(orderItems));
+      this.$router.push('/order');
+
+
     }
   }
 }
