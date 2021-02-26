@@ -3,6 +3,10 @@ package com.rainyheaven.nature.core.domain.user;
 import com.rainyheaven.nature.core.domain.base.BaseTimeEntity;
 import com.rainyheaven.nature.core.domain.embedded.BirthDay;
 import com.rainyheaven.nature.core.domain.embedded.PhoneNumber;
+import com.rainyheaven.nature.core.domain.itemlike.ItemLike;
+import com.rainyheaven.nature.core.domain.order.Order;
+import com.rainyheaven.nature.core.domain.review.Review;
+import com.rainyheaven.nature.core.domain.reviewlike.ReviewLike;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserSaveRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +15,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.*;
 
 @Entity
 @Getter
@@ -42,6 +44,18 @@ public class User extends BaseTimeEntity {
 
     @Embedded
     private BirthDay birthDay;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Order> orders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ItemLike> itemLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ReviewLike> reviewLikes = new ArrayList<>();
 
     public static User create(UserSaveRequestDto userSaveRequestDto) {
         User user = new User();
