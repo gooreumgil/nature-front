@@ -22,6 +22,10 @@ public class UserService {
         return userRepository.findByIdAndUserStatus(id, UserStatus.ACTIVE).orElseThrow(RuntimeException::new);
     }
 
+    public User findByIdWithAddress(Long id) {
+        return userRepository.findByIdWithAddress(id).orElseThrow(RuntimeException::new);
+    }
+
     public User findByEmail(String email) {
         return userRepository.findByEmailAndUserStatus(aes256Util.encode(email), UserStatus.ACTIVE).orElseThrow(RuntimeException::new);
     }

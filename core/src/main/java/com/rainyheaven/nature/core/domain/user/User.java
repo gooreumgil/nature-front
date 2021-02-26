@@ -1,5 +1,6 @@
 package com.rainyheaven.nature.core.domain.user;
 
+import com.rainyheaven.nature.core.domain.address.Address;
 import com.rainyheaven.nature.core.domain.base.BaseTimeEntity;
 import com.rainyheaven.nature.core.domain.embedded.BirthDay;
 import com.rainyheaven.nature.core.domain.embedded.PhoneNumber;
@@ -44,6 +45,9 @@ public class User extends BaseTimeEntity {
 
     @Embedded
     private BirthDay birthDay;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Address> addresses = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
