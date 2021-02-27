@@ -42,5 +42,9 @@ public class Item extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "item")
     private List<OrderItem> orderItems = new ArrayList<>();
-
+    
+    // 연관관계 편의 메소드
+    public void addOrderItems(OrderItem orderItem) {
+        this.orderItems.add(orderItem);
+    }
 }

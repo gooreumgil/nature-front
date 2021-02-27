@@ -20,7 +20,8 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity save(@RequestBody OrderSaveRequestDto orderSaveRequestDto, @AuthenticationPrincipal TokenUser tokenUser) {
-        return null;
+        orderService.save(orderSaveRequestDto, tokenUser.getId());
+        return ResponseEntity.ok().build();
     }
 
 }

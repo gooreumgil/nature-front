@@ -22,6 +22,9 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             countQuery = "select count (i) from Item i left join i.categoryItems ci where ci.categoryName = :categoryName")
     Page<Item> findAllByCategory(Pageable pageable, @Param("categoryName") String category);
 
+    @Query("select i from Item i where i.id in :ids")
+    List<Item> findByIdIn(@Param("ids") List<Long> ids);
+
     @Query("select i from Item i join fetch i.itemSrcs isrc where i.id in :ids and isrc.imgType = com.rainyheaven.nature.core.domain.itemsrc.ImgType.MAIN")
     List<Item> findByIdInWithMainSrc(@Param("ids") List<Long> ids);
 

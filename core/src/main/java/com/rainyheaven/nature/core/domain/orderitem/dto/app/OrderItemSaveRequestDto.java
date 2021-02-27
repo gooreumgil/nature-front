@@ -12,6 +12,8 @@ import lombok.Setter;
 public class OrderItemSaveRequestDto {
 
     private Long id;
-    private Integer quantity;
+    private Integer itemPrice;
+    private Integer itemDiscountPrice;
+    private Integer itemQuantity;
 
 }

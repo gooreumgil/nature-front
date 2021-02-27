@@ -23,6 +23,10 @@ public class ItemService {
         return itemRepository.findByIdWithSrcs(id).orElseThrow(RuntimeException::new);
     }
 
+    public List<Item> findByIds(List<Long> ids) {
+        return itemRepository.findByIdIn(ids);
+    }
+
     public Page<Item> findAll(Pageable pageable) {
         return itemRepository.findAllWithItemMainSrc(pageable);
     }
@@ -31,7 +35,7 @@ public class ItemService {
         return itemRepository.findAllByCategory(pageable, category);
     }
 
-    public List<Item> findByIds(List<Long> ids) {
+    public List<Item> findByIdsWithMainSrc(List<Long> ids) {
         return itemRepository.findByIdInWithMainSrc(ids);
     }
 

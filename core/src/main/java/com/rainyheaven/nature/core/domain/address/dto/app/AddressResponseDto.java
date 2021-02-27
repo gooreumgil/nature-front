@@ -16,11 +16,13 @@ public class AddressResponseDto {
     private String main;
     private String detail;
     private Integer zipCode;
+    private Boolean isDefault;
 
     public AddressResponseDto(Address address) {
         this.id = address.getId();
         this.main = address.getMain();
         this.detail = address.getDetail();
         this.zipCode = address.getZipCode();
+        this.isDefault = address.isDefault();
     }
 }

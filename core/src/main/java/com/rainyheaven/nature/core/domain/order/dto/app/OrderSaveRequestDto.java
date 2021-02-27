@@ -25,7 +25,8 @@ public class OrderSaveRequestDto {
     private Integer usedPoints;
     private Integer finalDiscountPrice;
     private Integer finalPrice;
-    private String paymentType;
+    private Integer deliveryPrice;
+    private String paymentMethod;
     private List<OrderItemSaveRequestDto> orderItemSaveRequestDtos = new ArrayList<>();
 
 

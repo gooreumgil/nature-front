@@ -1,7 +1,6 @@
 package com.rainyheaven.nature.app.domain.item;
 
 
-import com.rainyheaven.nature.core.domain.categoryitem.CategoryItemService;
 import com.rainyheaven.nature.core.domain.item.Item;
 import com.rainyheaven.nature.core.domain.item.ItemService;
 import com.rainyheaven.nature.core.domain.item.dto.app.ItemDetailResponseDto;
@@ -14,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,7 +43,7 @@ public class ItemController {
         }
 
         if (ids != null && !ids.isEmpty()) {
-            List<Item> items = itemService.findByIds(ids);
+            List<Item> items = itemService.findByIdsWithMainSrc(ids);
             List<ItemSimpleResponseDto> ItemSimpleResponseDtos =
                     items.stream().map(item -> new ItemSimpleResponseDto(item, imgSrcPrefix)).collect(Collectors.toList());
 
