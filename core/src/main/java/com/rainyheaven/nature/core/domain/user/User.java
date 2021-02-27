@@ -90,5 +90,8 @@ public class User extends BaseTimeEntity {
         return date;
     }
 
-
+    // 연관관계 편의 메소드
+    public void addOrders(Order order) {
+        this.orders.add(order);
+    }
 }
