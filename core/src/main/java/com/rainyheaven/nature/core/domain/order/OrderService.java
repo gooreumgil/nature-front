@@ -8,6 +8,8 @@ import com.rainyheaven.nature.core.domain.orderitem.OrderItem;
 import com.rainyheaven.nature.core.domain.orderitem.dto.app.OrderItemSaveRequestDto;
 import com.rainyheaven.nature.core.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,10 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final UserService userService;
     private final ItemService itemService;
+
+    public Page<Order> findByUserId(Long userId, Pageable pageable) {
+        return orderRepository.findByUserIdWithOrderItemsAndDelivery(userId, pageable);
+    }
 
     @Transactional
     public void save(OrderSaveRequestDto orderSaveRequestDto, Long userId) {
