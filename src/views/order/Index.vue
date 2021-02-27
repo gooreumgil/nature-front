@@ -91,7 +91,7 @@
 
               </div>
               <div class="content-box">
-                <input type="text" v-bind:value="user.name">
+                <input type="text" v-model="receiver">
               </div>
             </div>
 
@@ -114,15 +114,15 @@
               </div>
               <div class="content-box">
                 <div class="zip-code">
-                  <input type="text" placeholder="우편번호를 입력해주세요">
+                  <input type="text" placeholder="우편번호를 입력해주세요" v-model="zipCode">
 
                 </div>
                 <div class="address clearfix">
                   <div class="address-list main">
-                    <input type="text" placeholder="주소를 입력해주세요.">
+                    <input type="text" placeholder="주소를 입력해주세요." v-model="mainAddress">
                   </div>
                   <div class="address-list detail">
-                    <input type="text" placeholder="상세주소">
+                    <input type="text" placeholder="상세주소" v-model="detailAddress">
                   </div>
 
                 </div>
@@ -139,7 +139,7 @@
 
               </div>
               <div class="content-box">
-                <input type="text" v-model="usePoints" v-bind:disabled="isPointUseable">
+                <input type="text" v-model="usedPoints" v-bind:disabled="isPointUseable">
                 <p>P</p>
                 <button type="button" v-bind:disabled="isPointUseable">사용하기</button>
                 <input type="checkbox" v-bind:disabled="isPointUseable">
@@ -193,7 +193,7 @@
             </div>
             <div class="inner-row used-points">
               <span class="label">포인트 사용</span>
-              <p><span class="minus">(-)</span> {{ usePoints | price }} <span class="won">P</span></p>
+              <p><span class="minus">(-)</span> {{ usedPoints | price }} <span class="won">P</span></p>
             </div>
 
             <div class="inner-row final-price">
@@ -202,7 +202,7 @@
             </div>
 
             <div class="inner-row pay-btn">
-              <button type="button">결제하기</button>
+              <button @click="payment" type="button">결제하기</button>
             </div>
           </div>
         </div>
@@ -220,6 +220,7 @@ import itemApi from "@/api/ItemApi";
 import userApi from "@/api/UserApi";
 import Bottom from "@/components/core/Bottom";
 import Footer from "@/components/core/Footer";
+import orderApi from "@/api/OrderApi";
 
 export default {
   name: "Index",
@@ -230,9 +231,16 @@ export default {
       user: null,
       itemInit: false,
       userInit: false,
-      usePoints: 0,
+      usedPoints: 0,
       paymentMethod: '신용카드',
-      setMainAddress: false
+      setMainAddress: false,
+      receiver: null,
+      phoneNum1: null,
+      phoneNum2: null,
+      phoneNum3: null,
+      mainAddress: null,
+      detailAddress: null,
+      zipCode: null,
     }
   },
 
@@ -277,11 +285,73 @@ export default {
         if (this.user.addressResponseDtos.length === 0) {
           this.setMainAddress = true;
         }
+        this.receiver = this.user.name;
+        this.phoneNum1 = this.user.phoneNum1;
+        this.phoneNum2 = this.user.phoneNum2;
+        this.phoneNum3 = this.user.phoneNum3;
+
+        if (this.user.addressResponseDtos.length > 0) {
+          const defaultAddress = this.user.addressResponseDtos.filter(dto => {
+            return dto.isDefault
+          });
+
+          if (defaultAddress.length > 0) {
+            this.mainAddress = defaultAddress[0].main;
+            this.detailAddress = defaultAddress[0].detail;
+            this.zipCode = defaultAddress[0].zipCode;
+          }
+        }
+
         this.userInit = true;
       } catch (err) {
         alert('문제가 발생하였습니다.');
         console.log(err);
       }
+    },
+
+    payment() {
+      const token = this.$cookies.get('token');
+
+
+      const receiver = this.receiver;
+      const phoneNum1 = this.phoneNum1
+      const phoneNum2 = this.phoneNum2
+      const phoneNum3 = this.phoneNum3;
+      const zipCode = this.zipCode;
+      const mainAddress = this.mainAddress;
+      const detailAddress = this.detailAddress;
+      const usedPoints = this.usedPoints;
+      const finalDiscountPrice = this.getFinalDiscountPrice();
+      const finalPrice = this.getFinalPrice();
+      const deliveryPrice = this.getDeliveryPrice();
+      let paymentMethod = this.paymentMethod;
+      if (this.paymentMethod === '신용카드') {
+        paymentMethod = 'CREDIT_CARD';
+      } else if (this.paymentMethod === '무통장입금') {
+        paymentMethod = 'DEPOSIT'
+      } else if (this.paymentMethod === '휴대폰결제') {
+        paymentMethod = 'PHONE';
+      }
+
+      const orderItemSaveRequestDtos = [];
+      this.items.forEach(item => {
+        const orderItem = {};
+        orderItem.id = item.id;
+        orderItem.itemPrice = item.price;
+        orderItem.itemDiscountPrice = item.discountPrice;
+        orderItem.itemQuantity = item.quantity;
+
+        orderItemSaveRequestDtos.push(orderItem);
+      })
+
+      orderApi.productOrder(token, receiver, phoneNum1, phoneNum2, phoneNum3, zipCode, mainAddress, detailAddress, usedPoints, finalDiscountPrice, finalPrice, deliveryPrice, paymentMethod, orderItemSaveRequestDtos)
+      .then((res) => {
+        console.log(res);
+      }).catch((err) => {
+        console.log(err);
+      })
+
+
     },
 
     getQuantity(id) {
@@ -319,7 +389,7 @@ export default {
     },
 
     getFinalPrice() {
-      return this.getItemsTotalPrice() - this.getFinalDiscountPrice() - this.usePoints;
+      return this.getItemsTotalPrice() - this.getFinalDiscountPrice() - this.usedPoints;
     },
 
     getUserOwnPoints() {
