@@ -9,9 +9,32 @@
 
 <script>
 import Header from "@/components/core/Header";
+import orderApi from "@/api/OrderApi";
 export default {
   name: "Index",
-  components: {Header}
+  components: {Header},
+  data() {
+    return {
+      orders: []
+    }
+  },
+
+  async created() {
+    await this.setOrders();
+  },
+  methods: {
+    async setOrders() {
+      const token = this.$cookies.get('token');
+      try {
+        const res = await orderApi.getOrders(token);
+        this.orders = res.data.content;
+        console.log(this.orders);
+      } catch (err) {
+        alert('문제가 발생하였습니다.');
+        console.log(err);
+      }
+    }
+  }
 }
 </script>
 

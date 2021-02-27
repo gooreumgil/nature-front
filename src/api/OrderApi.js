@@ -23,5 +23,14 @@ export default {
         'Authorization': 'Bearer ' + token
       }
     })
+  },
+
+  getOrders(token) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/orders`;
+    return axios.get(url, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
   }
 }
