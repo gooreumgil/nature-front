@@ -28,12 +28,16 @@ public class OrderService {
     private final UserService userService;
     private final ItemService itemService;
 
+    public Order findById(Long id) {
+        return orderRepository.findByIdWithOrderItemsAndDelivery(id).orElseThrow(RuntimeException::new);
+    }
+
     public Page<Order> findByUserId(Long userId, Pageable pageable) {
         return orderRepository.findByUserIdWithOrderItemsAndDelivery(userId, pageable);
     }
 
     @Transactional
-    public void save(OrderSaveRequestDto orderSaveRequestDto, Long userId) {
+    public Order save(OrderSaveRequestDto orderSaveRequestDto, Long userId) {
 
         Order order = Order.create(orderSaveRequestDto, userService.findById(userId), Delivery.create(orderSaveRequestDto));
 
@@ -45,7 +49,7 @@ public class OrderService {
         orderItemSaveRequestDtos.forEach(dto -> items.stream().filter(item -> item.getId().equals(dto.getId()))
                 .findFirst().ifPresent(item -> OrderItem.create(dto, order, item)));
 
-        orderRepository.save(order);
+        return orderRepository.save(order);
 
     }
 
