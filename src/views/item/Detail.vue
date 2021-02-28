@@ -208,7 +208,7 @@ export default {
 
       orderItems.push(orderItem);
       this.$cookies.set('order-items', JSON.stringify(orderItems));
-      this.$router.push('/order');
+      this.$router.push('/orders');
 
 
     }

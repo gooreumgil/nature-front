@@ -347,6 +347,7 @@ export default {
       orderApi.productOrder(token, receiver, phoneNum1, phoneNum2, phoneNum3, zipCode, mainAddress, detailAddress, usedPoints, finalDiscountPrice, finalPrice, deliveryPrice, paymentMethod, orderItemSaveRequestDtos)
       .then((res) => {
         console.log(res);
+        this.$router.replace(res.data + '/complete');
       }).catch((err) => {
         console.log(err);
       })
@@ -466,7 +467,6 @@ export default {
   }
 
   section.main-container section.inner-container div.order-info-box ul li {
-    border-radius: 3px;
     height: 180px;
     border-bottom: 1px solid #eaeaea;
   }

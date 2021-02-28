@@ -9,6 +9,7 @@ import Cart from "@/views/item/Cart";
 import MeIndex from "@/views/me/Index"
 import Detail from "@/views/item/Detail";
 import OrderIndex from "@/views/order/Index"
+import OrderComplete from "@/views/order/Complete";
 
 
 Vue.use(VueRouter);
@@ -49,8 +50,12 @@ export const router = new VueRouter({
       component: MeIndex
     },
     {
-      path: '/order',
+      path: '/orders',
       component: OrderIndex
+    },
+    {
+      path: '/orders/:id/complete',
+      component: OrderComplete
     }
   ]
 })
