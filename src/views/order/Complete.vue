@@ -1,11 +1,12 @@
 <template>
   <section class="main-container">
     <Header />
-    <div class="inner-container">
+    <div class="inner-container" v-if="init">
       <div class="title-box">
         <OrderCompleteIcon />
         <h1>주문완료</h1>
-        <p>상품 주문이 완료되었습니다.</p>
+        <h3>{{ order.orderItemResponseDtos[0].itemNameKor }}의</h3>
+        <p>주문이 완료되었습니다.</p>
       </div>
 
       <div class="btn-box">
@@ -24,11 +25,36 @@ import Header from "@/components/core/Header";
 import Bottom from "@/components/core/Bottom";
 import Footer from "@/components/core/Footer";
 import OrderCompleteIcon from "@/components/icon/OrderCompleteIcon";
+import orderApi from "@/api/OrderApi";
 
 export default {
   name: "Complete",
   components: {OrderCompleteIcon, Footer, Bottom, Header},
+  data() {
+    return {
+      init: false,
+      order: null
+    }
+  },
+
+  async created() {
+    await this.setOrder();
+  },
+
   methods: {
+    async setOrder() {
+      const id = this.$route.params.id;
+      const token = this.$cookies.get('token');
+      try {
+        const res = await orderApi.getOrder(token, id);
+        this.order = res.data;
+        this.init = true;
+      } catch (err) {
+        alert('문제가 발생하였습니다.');
+        console.log(err);
+      }
+    },
+
     goOrderInfo() {
       const id = this.$route.params.id;
       this.$router.push('/orders/' + id);
@@ -71,10 +97,17 @@ export default {
   }
 
   section.main-container div.inner-container div.title-box h1 {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 400;
-    color: #555;
+    color: #888;
     margin-top: 30px;
+  }
+
+  section.main-container div.inner-container div.title-box h3 {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #333;
+    font-weight: 700;
   }
 
   section.main-container div.inner-container div.title-box p {
