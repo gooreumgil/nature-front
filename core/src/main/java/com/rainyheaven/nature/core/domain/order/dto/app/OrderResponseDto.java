@@ -2,10 +2,15 @@ package com.rainyheaven.nature.core.domain.order.dto.app;
 
 import com.rainyheaven.nature.core.domain.delivery.dto.app.DeliveryResponseDto;
 import com.rainyheaven.nature.core.domain.order.Order;
+import com.rainyheaven.nature.core.domain.orderitem.OrderItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -19,6 +24,7 @@ public class OrderResponseDto {
     private int usedPoints;
     private int savedPoints;
     private DeliveryResponseDto deliveryResponseDto;
+    private List<OrderItemResponseDto> orderItemResponseDtos = new ArrayList<>();
 
     public OrderResponseDto(Order order) {
         this.id = order.getId();
@@ -27,6 +33,9 @@ public class OrderResponseDto {
         this.usedPoints = order.getUsedPoints();
         this.savedPoints = order.getSavedPoints();
         this.deliveryResponseDto = new DeliveryResponseDto(order.getDelivery());
+        orderItemResponseDtos = order.getOrderItems().stream()
+                .map(OrderItemResponseDto::new)
+                .collect(Collectors.toList());
 
     }
 }

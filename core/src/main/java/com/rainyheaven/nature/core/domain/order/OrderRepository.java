@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    @Query("select o from Order o join fetch o.orderItems join fetch o.delivery where o.id = :id")
+    @Query("select o from Order o join fetch o.orderItems oi join fetch oi.item join fetch o.delivery where o.id = :id")
     Optional<Order> findByIdWithOrderItemsAndDelivery(@Param("id") Long id);
 
     @Query(value = "select o from Order o join fetch o.orderItems join fetch o.delivery where o.user.id = :userId",
