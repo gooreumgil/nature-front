@@ -24,6 +24,7 @@ public class DeliveryResponseDto {
     private String mainAddress;
     private String detailAddress;
     private String zipCode;
+    private String status;
 
     public DeliveryResponseDto(Delivery delivery) {
         this.id = delivery.getId();
@@ -40,5 +41,7 @@ public class DeliveryResponseDto {
         this.mainAddress = orderAddress.getMain();
         this.detailAddress = orderAddress.getDetail();
         this.zipCode = orderAddress.getZipCode();
+
+        this.status = delivery.getDeliveryStatus().name();
     }
 }

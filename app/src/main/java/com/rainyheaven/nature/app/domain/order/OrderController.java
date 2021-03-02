@@ -40,5 +40,10 @@ public class OrderController {
         return ResponseEntity.created(uri).build();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id, @AuthenticationPrincipal TokenUser tokenUser) {
+        orderService.delete(id, tokenUser.getId());
+        return ResponseEntity.ok().build();
+    }
 
 }

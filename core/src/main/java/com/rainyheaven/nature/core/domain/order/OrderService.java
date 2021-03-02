@@ -58,4 +58,8 @@ public class OrderService {
         return orderRepository.countAllByUserIdAndDeliveryDeliveryStatus(userId, DeliveryStatus.valueOf(deliveryStatus));
     }
 
+    @Transactional
+    public void delete(Long id, Long userId) {
+        orderRepository.deleteByIdAndUserId(id, userId);
+    }
 }

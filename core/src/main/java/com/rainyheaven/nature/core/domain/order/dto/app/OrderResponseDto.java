@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +24,7 @@ public class OrderResponseDto {
     private int finalPrice;
     private int usedPoints;
     private int savedPoints;
+    private LocalDateTime orderAt;
     private DeliveryResponseDto deliveryResponseDto;
     private List<OrderItemResponseDto> orderItemResponseDtos = new ArrayList<>();
 
@@ -32,6 +34,7 @@ public class OrderResponseDto {
         this.finalPrice = order.getFinalPrice();
         this.usedPoints = order.getUsedPoints();
         this.savedPoints = order.getSavedPoints();
+        this.orderAt = order.getCreatedDate();
         this.deliveryResponseDto = new DeliveryResponseDto(order.getDelivery());
 
     }
