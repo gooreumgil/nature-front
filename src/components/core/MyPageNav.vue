@@ -9,23 +9,23 @@
 
       <div class="tab">
         <div class="tab-list">
-          <button type="button">주문배송조회</button>
+          <button v-bind:class="{active: isCurrentTabThis('orderAndDelivery')}" type="button">주문배송조회</button>
         </div>
 
         <div class="tab-list">
-          <button type="button">찜리스트</button>
+          <button v-bind:class="{active: isCurrentTabThis('likes')}" type="button">찜리스트</button>
         </div>
 
         <div class="tab-list">
-          <button type="button">상품 Q&A</button>
+          <button v-bind:class="{active: isCurrentTabThis('qna')}" type="button">상품 Q&A</button>
         </div>
 
         <div class="tab-list">
-          <button type="button">구매후기</button>
+          <button v-bind:class="{active: isCurrentTabThis('review')}" type="button">구매후기</button>
         </div>
 
         <div class="tab-list">
-          <button type="button">회원정보수정</button>
+          <button v-bind:class="{active: isCurrentTabThis('profileUpdate')}" type="button">회원정보수정</button>
         </div>
       </div>
     </div>
@@ -39,6 +39,15 @@ export default {
     user: {
       value: null
     },
+    currentTab: {
+      default: 'orderAndDelivery'
+    }
+  },
+
+  methods: {
+    isCurrentTabThis(tab) {
+      return this.currentTab === tab;
+    }
   }
 }
 </script>
@@ -93,9 +102,15 @@ export default {
     display: inline-block;
     cursor: pointer;
     background-color: transparent;
-    color: #555;
+    color: #888;
+    font-weight: 400;
     font-size: 15px;
     text-align: left;
+  }
+
+  nav div.nav-inner .tab button.active {
+    color: #333;
+    font-weight: 700;
   }
 
 </style>

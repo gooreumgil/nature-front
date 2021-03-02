@@ -127,6 +127,7 @@ export default {
     height: 90px;
     display: flex;
     align-items: center;
+    padding-left: 10px;
   }
 
   header.fontBlack {
