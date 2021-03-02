@@ -17,7 +17,6 @@ import java.util.Optional;
 public class ItemService {
 
     private final ItemRepository itemRepository;
-    private final CategoryItemService categoryItemService;
 
     public Item findById(Long id) {
         return itemRepository.findByIdWithSrcs(id).orElseThrow(RuntimeException::new);
@@ -28,15 +27,12 @@ public class ItemService {
     }
 
     public Page<Item> findAll(Pageable pageable) {
-        return itemRepository.findAllWithItemMainSrc(pageable);
+        return itemRepository.findAll(pageable);
     }
 
     public Page<Item> findAllByCategory(Pageable pageable, String category) {
         return itemRepository.findAllByCategory(pageable, category);
     }
 
-    public List<Item> findByIdsWithMainSrc(List<Long> ids) {
-        return itemRepository.findByIdInWithMainSrc(ids);
-    }
 
 }

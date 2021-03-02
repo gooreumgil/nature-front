@@ -43,9 +43,10 @@ public class ItemController {
         }
 
         if (ids != null && !ids.isEmpty()) {
-            List<Item> items = itemService.findByIdsWithMainSrc(ids);
-            List<ItemSimpleResponseDto> ItemSimpleResponseDtos =
-                    items.stream().map(item -> new ItemSimpleResponseDto(item, imgSrcPrefix)).collect(Collectors.toList());
+            List<Item> items = itemService.findByIds(ids);
+            List<ItemSimpleResponseDto> ItemSimpleResponseDtos = items.stream()
+                            .map(item -> new ItemSimpleResponseDto(item, imgSrcPrefix))
+                            .collect(Collectors.toList());
 
             return ResponseEntity.ok(ItemSimpleResponseDtos);
 

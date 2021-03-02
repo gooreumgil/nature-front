@@ -1,5 +1,6 @@
 package com.rainyheaven.nature.core.domain.order.dto.app;
 
+import com.rainyheaven.nature.core.domain.itemsrc.ImgType;
 import com.rainyheaven.nature.core.domain.orderitem.OrderItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,8 +20,9 @@ public class OrderItemResponseDto {
     private Integer itemPrice;
     private Integer itemDiscountPrice;
     private Integer itemQuantity;
+    private String mainSrcPath;
 
-    public OrderItemResponseDto(OrderItem orderItem) {
+    public OrderItemResponseDto(OrderItem orderItem, String srcPrefix) {
         this.id = orderItem.getId();
         this.itemId = orderItem.getId();
         this.itemNameKor = orderItem.getItem().getNameKor();
@@ -28,5 +30,6 @@ public class OrderItemResponseDto {
         this.itemPrice = orderItem.getItemPrice();
         this.itemDiscountPrice = orderItem.getItemDiscountPrice();
         this.itemQuantity = orderItem.getItemQuantity();
+        this.mainSrcPath = srcPrefix + orderItem.getItem().getMainSrcPath();
     }
 }

@@ -11,7 +11,7 @@ import com.rainyheaven.nature.core.domain.user.dto.app.UserResponseDto;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserSaveRequestDto;
 import com.rainyheaven.nature.core.utils.AES256Util;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -29,6 +29,9 @@ public class UserController {
     private final AES256Util aes256Util;
     private final OrderService orderService;
     private final ReviewService reviewService;
+
+    @Value("${src-prefix}")
+    private String imgSrcPrefix;
 
     @GetMapping
     public ResponseEntity<UserResponseDto> get(@AuthenticationPrincipal TokenUser tokenUser) {
@@ -48,7 +51,12 @@ public class UserController {
             @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Order> orderPages = orderService.findByUserId(tokenUser.getId(), pageable);
-        return ResponseEntity.ok(orderPages.map(OrderResponseDto::new));
+        Page<OrderResponseDto> orderResponseDtoPages = orderPages.map(order -> {
+            OrderResponseDto orderResponseDto = new OrderResponseDto(order);
+            orderResponseDto.addAllOrderItems(order.getOrderItems(), imgSrcPrefix);
+            return orderResponseDto;
+        });
+        return ResponseEntity.ok(orderResponseDtoPages);
 
     }
 

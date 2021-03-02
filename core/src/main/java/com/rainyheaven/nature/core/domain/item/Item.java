@@ -25,6 +25,7 @@ public class Item extends BaseTimeEntity {
     private Long id;
     private String nameKor;
     private String nameEng;
+    private String mainSrcPath;
     private int price;
     private int discountPrice;
     private int stockQuantity;
@@ -32,7 +33,6 @@ public class Item extends BaseTimeEntity {
     private String description;
     private int capacity;
     private int savePoints;
-    private LocalDateTime createdDate;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemSrc> itemSrcs = new ArrayList<>();
