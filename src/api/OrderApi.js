@@ -34,13 +34,13 @@ export default {
     })
   },
 
-  getOrders(token) {
-    const url = `${commonUtils.getApiBaseUrl()}/v1/orders`;
-    return axios.get(url, {
+  cancelOrder(token, id) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/orders/${id}`;
+    return axios.delete(url, {
       headers: {
         'Authorization': 'Bearer ' + token
       }
     })
-  },
+  }
 
 }

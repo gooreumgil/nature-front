@@ -137,7 +137,7 @@ export default {
     max-width: 1260px;
     width: 100%;
     margin: 0 auto;
-    margin-top: 60px;
+    margin-top: 40px;
   }
 
   section.main-container .inner-container div.my-page-wrapper div.my-page-list {
@@ -168,11 +168,10 @@ export default {
   section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.basic-info div.title h3 {
     font-size: 16px;
     font-weight: 400;
-    color: #555;
+    color: #888;
   }
 
   section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.basic-info div.title h3 span {
-    font-size: 20px;
     font-weight: 700;
     color: #333;
   }

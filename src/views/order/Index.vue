@@ -379,13 +379,13 @@ export default {
 
     getItemsTotalPrice() {
       let sum = 0;
-      this.items.forEach(item => sum += item.price);
+      this.items.forEach(item => sum += item.price * item.quantity);
       return sum;
     },
 
     getFinalDiscountPrice() {
       let sum = 0;
-      this.items.forEach(item => sum += item.discountPrice);
+      this.items.forEach(item => sum += item.discountPrice * item.quantity);
       return sum;
     },
 
