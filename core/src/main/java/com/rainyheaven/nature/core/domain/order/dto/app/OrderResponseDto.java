@@ -2,7 +2,6 @@ package com.rainyheaven.nature.core.domain.order.dto.app;
 
 import com.rainyheaven.nature.core.domain.delivery.dto.app.DeliveryResponseDto;
 import com.rainyheaven.nature.core.domain.order.Order;
-import com.rainyheaven.nature.core.domain.orderitem.OrderItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,9 +32,13 @@ public class OrderResponseDto {
         this.usedPoints = order.getUsedPoints();
         this.savedPoints = order.getSavedPoints();
         this.deliveryResponseDto = new DeliveryResponseDto(order.getDelivery());
-        orderItemResponseDtos = order.getOrderItems().stream()
-                .map(OrderItemResponseDto::new)
-                .collect(Collectors.toList());
+        this.orderItemResponseDtos.addAll(getOrderItemsDtos(order));
 
+    }
+
+    private List<OrderItemResponseDto> getOrderItemsDtos(Order order) {
+        return order.getOrderItems().stream()
+        .map(OrderItemResponseDto::new)
+        .collect(Collectors.toList());
     }
 }

@@ -6,10 +6,6 @@ import com.rainyheaven.nature.core.domain.order.dto.app.OrderResponseDto;
 import com.rainyheaven.nature.core.domain.order.dto.app.OrderSaveRequestDto;
 import com.rainyheaven.nature.core.domain.user.TokenUser;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -28,16 +24,6 @@ public class OrderController {
     public ResponseEntity<OrderResponseDto> get(@PathVariable Long id) {
         Order order = orderService.findById(id);
         return ResponseEntity.ok(new OrderResponseDto(order));
-    }
-
-    @GetMapping
-    public ResponseEntity<Page<OrderResponseDto>> pageByUser(
-            @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable,
-            @AuthenticationPrincipal TokenUser tokenUser) {
-
-        Page<Order> orderPages = orderService.findByUserId(tokenUser.getId(), pageable);
-        return ResponseEntity.ok(orderPages.map(OrderResponseDto::new));
-
     }
 
     @PostMapping

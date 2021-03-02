@@ -1,6 +1,7 @@
 package com.rainyheaven.nature.core.domain.order;
 
 import com.rainyheaven.nature.core.domain.delivery.Delivery;
+import com.rainyheaven.nature.core.domain.delivery.DeliveryStatus;
 import com.rainyheaven.nature.core.domain.item.Item;
 import com.rainyheaven.nature.core.domain.item.ItemService;
 import com.rainyheaven.nature.core.domain.order.dto.app.OrderSaveRequestDto;
@@ -51,6 +52,10 @@ public class OrderService {
 
         return orderRepository.save(order);
 
+    }
+
+    public int countAllByUserAndDeliveryStatus(Long userId, String deliveryStatus) {
+        return orderRepository.countAllByUserIdAndDeliveryDeliveryStatus(userId, DeliveryStatus.valueOf(deliveryStatus));
     }
 
 }
