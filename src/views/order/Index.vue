@@ -346,7 +346,6 @@ export default {
 
       orderApi.productOrder(token, receiver, phoneNum1, phoneNum2, phoneNum3, zipCode, mainAddress, detailAddress, usedPoints, finalDiscountPrice, finalPrice, deliveryPrice, paymentMethod, orderItemSaveRequestDtos)
       .then((res) => {
-        console.log(res);
         this.$router.replace(res.data + '/complete');
       }).catch((err) => {
         console.log(err);
@@ -411,7 +410,7 @@ export default {
 
     getDeliveryPrice() {
       return this.getItemsTotalPrice() > 50000 ? 0 : 2500;
-    },
+    }
 
 
   }

@@ -31,7 +31,7 @@
             </div>
           </div>
 
-          <OrderList v-bind:orders="orders" />
+          <OrderList v-bind:orders="orders" v-bind:cancel-order="cancelOrder"/>
         </div>
       </div>
     </div>
@@ -113,6 +113,19 @@ export default {
 
     getOwnPoints() {
       return this.user.ownPoints === null ? 0 : this.user.ownPoints;
+    },
+
+    cancelOrder(orderId) {
+      if (!confirm('정말 주문을 취소하시겠습니까?')) return;
+
+      const token = this.$cookies.get('token');
+      try {
+        orderApi.cancelOrder(token, orderId)
+        alert('주문 취소가 완료되었습니다.');
+      } catch (err) {
+        alert('문제가 발생하였습니다.');
+        console.log(err);
+      }
     }
 
   }
@@ -189,7 +202,7 @@ export default {
     justify-content: center;
     width: 100px;
     height: 80px;
-    background-color: #f9f9f9;
+    /*background-color: #f9f9f9;*/
     border-radius: 5px;
     margin-right: 10px;
     border: 1px solid #eaeaea;

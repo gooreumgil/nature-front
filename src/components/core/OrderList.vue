@@ -46,12 +46,14 @@
 
 <script>
 import commonUtils from "@/utils/commonUtils";
-import orderApi from "@/api/OrderApi";
 export default {
   name: "OrderList",
   props: {
     orders: {
       value: []
+    },
+    cancelOrder: {
+      type: Function
     }
   },
 
@@ -71,19 +73,7 @@ export default {
       return this.orders.deliveryResponseDto.status === 'READY';
     },
 
-    cancelOrder(orderId) {
-      const confirm = confirm('정말로 주문을 취소하시겠습니까?');
-      if (!confirm) return;
 
-      const token = this.$cookies.get('token');
-      try {
-        orderApi.cancelOrder(token, orderId);
-        alert('주문 취소가 완료되었습니다.');
-      } catch (err) {
-        alert('문제가 발생하였습니다.');
-        console.log(err);
-      }
-    }
   },
 
 
