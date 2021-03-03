@@ -65,7 +65,10 @@ public class UserController {
     }
 
     @GetMapping("/count/orders/{deliveryStatus}")
-    public ResponseEntity<Integer> getTotalByDeliveryStatus(@PathVariable String deliveryStatus, @AuthenticationPrincipal TokenUser tokenUser) {
+    public ResponseEntity<Integer> getTotalByDeliveryStatus(
+            @PathVariable String deliveryStatus,
+            @AuthenticationPrincipal TokenUser tokenUser) {
+
         return ResponseEntity.ok(orderService.countAllByUserAndDeliveryStatus(tokenUser.getId(), deliveryStatus));
     }
 
