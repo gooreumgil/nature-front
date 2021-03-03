@@ -2,6 +2,7 @@ package com.rainyheaven.nature.core.domain.item;
 
 import com.rainyheaven.nature.core.domain.base.BaseTimeEntity;
 import com.rainyheaven.nature.core.domain.categoryitem.CategoryItem;
+import com.rainyheaven.nature.core.domain.itemlike.ItemLike;
 import com.rainyheaven.nature.core.domain.itemsrc.ItemSrc;
 import com.rainyheaven.nature.core.domain.orderitem.OrderItem;
 import lombok.AllArgsConstructor;
@@ -42,9 +43,16 @@ public class Item extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "item")
     private List<OrderItem> orderItems = new ArrayList<>();
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    private List<ItemLike> itemLikes = new ArrayList<>();
     
     // 연관관계 편의 메소드
     public void addOrderItems(OrderItem orderItem) {
         this.orderItems.add(orderItem);
+    }
+
+    public void addItemLike(ItemLike itemLike) {
+        this.itemLikes.add(itemLike);
     }
 }

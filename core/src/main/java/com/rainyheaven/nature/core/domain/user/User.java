@@ -55,7 +55,7 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<ItemLike> itemLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -93,5 +93,10 @@ public class User extends BaseTimeEntity {
     // 연관관계 편의 메소드
     public void addOrders(Order order) {
         this.orders.add(order);
+    }
+
+    // 연관관계 편의 메소드
+    public void addItemLike(ItemLike itemLike) {
+        this.itemLikes.add(itemLike);
     }
 }

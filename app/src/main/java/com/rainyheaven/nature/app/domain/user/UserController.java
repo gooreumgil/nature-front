@@ -1,5 +1,6 @@
 package com.rainyheaven.nature.app.domain.user;
 
+import com.rainyheaven.nature.core.domain.itemlike.ItemLikeService;
 import com.rainyheaven.nature.core.domain.order.Order;
 import com.rainyheaven.nature.core.domain.order.OrderService;
 import com.rainyheaven.nature.core.domain.order.dto.app.OrderResponseDto;
@@ -29,6 +30,7 @@ public class UserController {
     private final AES256Util aes256Util;
     private final OrderService orderService;
     private final ReviewService reviewService;
+    private final ItemLikeService itemLikeService;
 
     @Value("${src-prefix}")
     private String imgSrcPrefix;
@@ -70,6 +72,12 @@ public class UserController {
         int totalUserReviews = reviewService.getTotalUserReviews(tokenUser.getId());
         return ResponseEntity.ok(totalUserReviews);
 
+    }
+
+    @GetMapping("/check/item-likes")
+    public ResponseEntity<Boolean> checkHasItemLike(@RequestParam Long itemId, @AuthenticationPrincipal TokenUser tokenUser) {
+        boolean isExist = itemLikeService.existCheck(itemId, tokenUser.getId());
+        return ResponseEntity.ok(isExist);
     }
 
 }

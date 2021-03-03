@@ -1,15 +1,16 @@
 package com.rainyheaven.nature.core.domain.item;
 
-import com.rainyheaven.nature.core.domain.categoryitem.CategoryItemService;
+import com.rainyheaven.nature.core.domain.itemlike.ItemLike;
+import com.rainyheaven.nature.core.domain.itemlike.ItemLikeService;
+import com.rainyheaven.nature.core.domain.user.User;
+import com.rainyheaven.nature.core.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.agent.builder.AgentBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -17,8 +18,13 @@ import java.util.Optional;
 public class ItemService {
 
     private final ItemRepository itemRepository;
+    private final UserService userService;
 
-    public Item findById(Long id) {
+    private Item findById(Long id) {
+        return itemRepository.findById(id).orElseThrow(RuntimeException::new);
+    }
+
+    public Item findByIdWithSrcs(Long id) {
         return itemRepository.findByIdWithSrcs(id).orElseThrow(RuntimeException::new);
     }
 
@@ -34,5 +40,12 @@ public class ItemService {
         return itemRepository.findAllByCategory(pageable, category);
     }
 
+    @Transactional
+    public void addItemLike(Long id, Long userId) {
+        Item item = findById(id);
+        User user = userService.findById(userId);
+        ItemLike.create(item, user);
+        itemRepository.save(item);
+    }
 
 }
