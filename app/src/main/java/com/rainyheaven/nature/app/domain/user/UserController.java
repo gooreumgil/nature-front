@@ -1,5 +1,7 @@
 package com.rainyheaven.nature.app.domain.user;
 
+import com.rainyheaven.nature.core.domain.item.dto.app.ItemSimpleResponseDto;
+import com.rainyheaven.nature.core.domain.itemlike.ItemLike;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLikeService;
 import com.rainyheaven.nature.core.domain.order.Order;
 import com.rainyheaven.nature.core.domain.order.OrderService;
@@ -71,6 +73,19 @@ public class UserController {
     public ResponseEntity<Integer> getReviews(@AuthenticationPrincipal TokenUser tokenUser) {
         int totalUserReviews = reviewService.getTotalUserReviews(tokenUser.getId());
         return ResponseEntity.ok(totalUserReviews);
+
+    }
+
+    @GetMapping("/item-likes")
+    public ResponseEntity<Page<ItemSimpleResponseDto>> getLikeItems(
+            @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable,
+            @AuthenticationPrincipal TokenUser tokenUser) {
+
+        Page<ItemLike> itemLikePage = itemLikeService.pageByUser(tokenUser.getId(), pageable);
+        Page<ItemSimpleResponseDto> itemLikePageMap = itemLikePage
+                .map(itemLike -> new ItemSimpleResponseDto(itemLike.getItem(), imgSrcPrefix));
+
+        return ResponseEntity.ok(itemLikePageMap);
 
     }
 
