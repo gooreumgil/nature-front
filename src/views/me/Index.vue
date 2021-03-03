@@ -62,7 +62,8 @@ export default {
       currentTab: 'orderAndDelivery',
       deliveryOnGoingTotal: 0,
       reviewTotal: 0,
-      likeItems: []
+      likeItems: [],
+      qnaList: []
     }
   },
 
@@ -149,6 +150,19 @@ export default {
       }
     },
 
+    async setQnaList() {
+      const token = this.$cookies.get('token');
+      try {
+        const res = await userApi.getQnaList(token);
+        this.qnaList = res.data.content;
+        console.log(this.qnaList);
+      } catch (err) {
+        alert('문제가 발생하였습니다.');
+        console.log(err);
+      }
+
+    },
+
     getOwnPoints() {
       return this.user.ownPoints === null ? 0 : this.user.ownPoints;
     },
@@ -176,6 +190,9 @@ export default {
       }
       else if (tab === 'likes') {
         this.setLikeItems();
+      }
+      else if (tab === 'qna') {
+        this.setQnaList();
       }
     }
 

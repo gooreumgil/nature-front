@@ -17,7 +17,7 @@
         </div>
 
         <div class="tab-list">
-          <button v-bind:class="{active: isCurrentTabThis('qna')}" type="button">상품 Q&A</button>
+          <button @click="setCurrentTab('qna')" v-bind:class="{active: isCurrentTabThis('qna')}" type="button">상품 Q&A</button>
         </div>
 
         <div class="tab-list">

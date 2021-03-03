@@ -57,5 +57,14 @@ export default {
         'Authorization': 'Bearer ' + token
       }
     })
+  },
+
+  getQnaList(token) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/users/qnas`;
+    return axios.get(url, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
   }
 }
