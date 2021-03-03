@@ -106,6 +106,10 @@
             <textarea cols="30" rows="15" placeholder="문의할 내용을 입력해주세요." v-model="qnaContent"></textarea>
             <button type="submit">쓰기</button>
             <button type="reset">취소</button>
+            <div class="secret-check">
+              <span>비밀글</span>
+              <input type="checkbox" v-model="isQnaSecret">
+            </div>
           </form>
         </div>
       </div>
@@ -147,7 +151,8 @@ export default {
         {'name': 'Q&A', 'val': 'qna'}
       ],
       userLike: false,
-      qnaContent: null
+      qnaContent: null,
+      isQnaSecret: true
     }
   },
 
@@ -189,6 +194,17 @@ export default {
 
     },
 
+    async setQnaList() {
+      const id = this.item.id;
+      try {
+        const res = await itemApi.getQnaList(id);
+        console.log(res.data);
+      } catch (err) {
+        alert('문제가 발생했습니다.');
+        console.log(err);
+      }
+    },
+
     itemLike() {
       const id = this.item.id;
       const token = this.$cookies.get('token');
@@ -215,6 +231,28 @@ export default {
         }
       }
 
+
+    },
+
+    saveQna() {
+      const token = this.$cookies.get('token');
+      if (!token) {
+        alert('로그인해주세요.');
+        return;
+      }
+
+      const qnaContent = this.qnaContent;
+      const qnaSecret = this.isQnaSecret;
+      const id = this.item.id;
+
+      try {
+        const res = itemApi.addQna(token, id, qnaContent, qnaSecret);
+        console.log(res);
+
+      } catch (err) {
+        alert('문제가 발생하였습니다.');
+        console.log(err);
+      }
 
     },
 
@@ -619,6 +657,7 @@ export default {
   section.main-container section.detail-container div.item-qna-box .item-qna-inner form {
     margin-top: 20px;
     max-width: 60%;
+    position: relative;
   }
 
   section.main-container section.detail-container div.item-qna-box .item-qna-inner form textarea {
@@ -651,6 +690,26 @@ export default {
     color: #555;
     font-weight: 400;
     border: 1px solid #ddd;
+  }
+
+  section.main-container section.detail-container div.item-qna-box .item-qna-inner form div.secret-check {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    position: absolute;
+    right: 0;
+    bottom: 10px;
+  }
+
+  section.main-container section.detail-container div.item-qna-box .item-qna-inner form div.secret-check input {
+
+  }
+
+  section.main-container section.detail-container div.item-qna-box .item-qna-inner form div.secret-check span {
+    display: inline-block;
+    margin-right: 5px;
+    color: #555;
+    font-weight: 400;
   }
 
 </style>

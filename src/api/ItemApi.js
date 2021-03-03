@@ -44,5 +44,22 @@ export default {
         'Authorization': 'Bearer ' + token
       }
     })
+  },
+
+  addQna(token, id, qnaContent, qnaSecret) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/qnas`;
+    return axios.post(url, {
+      content: qnaContent,
+      isSecret: qnaSecret
+    }, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
+  },
+
+  getQnaList(id) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/qnas`;
+    return axios.get(url);
   }
 }

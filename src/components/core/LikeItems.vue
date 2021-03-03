@@ -46,7 +46,7 @@ export default {
 <style scoped>
   ul {
     box-sizing: border-box;
-    padding-top: 50px;
+    padding-top: 60px;
   }
 
   ul div.title-box {

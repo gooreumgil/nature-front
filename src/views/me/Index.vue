@@ -36,6 +36,9 @@
         </div>
       </div>
     </div>
+
+    <Bottom />
+    <Footer />
   </section>
 </template>
 
@@ -46,9 +49,11 @@ import MyPageNav from "@/components/core/MyPageNav";
 import userApi from "@/api/UserApi";
 import OrderList from "@/components/core/OrderList";
 import LikeItems from "@/components/core/LikeItems";
+import Bottom from "@/components/core/Bottom";
+import Footer from "@/components/core/Footer";
 export default {
   name: "Index",
-  components: {LikeItems, OrderList, MyPageNav, Header},
+  components: {Footer, Bottom, LikeItems, OrderList, MyPageNav, Header},
   data() {
     return {
       init: false,

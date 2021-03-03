@@ -83,6 +83,8 @@ export default {
   ul {
     box-sizing: border-box;
     padding-top: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   ul div.title-box {
