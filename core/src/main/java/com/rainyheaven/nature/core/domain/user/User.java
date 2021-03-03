@@ -6,6 +6,7 @@ import com.rainyheaven.nature.core.domain.embedded.BirthDay;
 import com.rainyheaven.nature.core.domain.embedded.PhoneNumber;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLike;
 import com.rainyheaven.nature.core.domain.order.Order;
+import com.rainyheaven.nature.core.domain.qna.Qna;
 import com.rainyheaven.nature.core.domain.review.Review;
 import com.rainyheaven.nature.core.domain.reviewlike.ReviewLike;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserSaveRequestDto;
@@ -61,6 +62,9 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ReviewLike> reviewLikes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Qna> qnaList = new ArrayList<>();
+
     public static User create(UserSaveRequestDto userSaveRequestDto) {
         User user = new User();
         user.email = userSaveRequestDto.getEmail();
@@ -98,5 +102,10 @@ public class User extends BaseTimeEntity {
     // 연관관계 편의 메소드
     public void addItemLike(ItemLike itemLike) {
         this.itemLikes.add(itemLike);
+    }
+
+    // 연관관계 편의 메소드
+    public void addQna(Qna qna) {
+        this.qnaList.add(qna);
     }
 }

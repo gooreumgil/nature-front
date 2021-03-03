@@ -6,12 +6,18 @@ import com.rainyheaven.nature.core.domain.item.ItemService;
 import com.rainyheaven.nature.core.domain.item.dto.app.ItemDetailResponseDto;
 import com.rainyheaven.nature.core.domain.item.dto.app.ItemSimpleResponseDto;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLikeService;
+import com.rainyheaven.nature.core.domain.qna.Qna;
+import com.rainyheaven.nature.core.domain.qna.QnaService;
+import com.rainyheaven.nature.core.domain.qna.dto.app.QnaResponseDto;
+import com.rainyheaven.nature.core.domain.qna.dto.app.QnaSaveRequestDto;
 import com.rainyheaven.nature.core.domain.user.TokenUser;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +32,7 @@ public class ItemController {
 
     private final ItemService itemService;
     private final ItemLikeService itemLikeService;
+    private final QnaService qnaService;
 
     private static final String ALL = "ALL";
 
@@ -76,6 +83,29 @@ public class ItemController {
     public ResponseEntity<Void> deleteItemLike(@PathVariable Long id, @AuthenticationPrincipal TokenUser tokenUser) {
         itemLikeService.deleteByItemAndUser(id, tokenUser.getId());
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}/qnas")
+    public ResponseEntity<Page<QnaResponseDto>> getQnas(
+            @PathVariable Long id,
+            @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Page<Qna> qnaPage = qnaService.pageByItem(id, pageable);
+        Page<QnaResponseDto> qnaResponseDtos = qnaPage.map(QnaResponseDto::new);
+
+        return ResponseEntity.ok(qnaResponseDtos);
+
+    }
+
+    @PostMapping("/{id}/qnas")
+    public ResponseEntity<Void> addQna(
+            @PathVariable Long id,
+            @RequestBody QnaSaveRequestDto qnaSaveRequestDto,
+            @AuthenticationPrincipal TokenUser tokenUser) {
+
+        itemService.addQna(qnaSaveRequestDto, id, tokenUser.getId());
+        return ResponseEntity.ok().build();
+
     }
 
 }

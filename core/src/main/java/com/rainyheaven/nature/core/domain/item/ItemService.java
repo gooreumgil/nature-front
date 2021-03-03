@@ -2,6 +2,8 @@ package com.rainyheaven.nature.core.domain.item;
 
 import com.rainyheaven.nature.core.domain.itemlike.ItemLike;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLikeService;
+import com.rainyheaven.nature.core.domain.qna.Qna;
+import com.rainyheaven.nature.core.domain.qna.dto.app.QnaSaveRequestDto;
 import com.rainyheaven.nature.core.domain.user.User;
 import com.rainyheaven.nature.core.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -48,4 +50,11 @@ public class ItemService {
         itemRepository.save(item);
     }
 
+    @Transactional
+    public void addQna(QnaSaveRequestDto qnaSaveRequestDto, Long id, Long userId) {
+        Item item = findById(id);
+        User user = userService.findById(userId);
+        Qna.create(qnaSaveRequestDto, item, user);
+        itemRepository.save(item);
+    }
 }
