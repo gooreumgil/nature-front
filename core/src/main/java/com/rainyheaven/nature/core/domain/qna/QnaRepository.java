@@ -12,4 +12,8 @@ public interface QnaRepository extends JpaRepository<Qna, Long> {
             countQuery = "select count (q) from Qna q where q.item.id = :itemId")
     Page<Qna> findByItemIdWithUser(@Param("itemId") Long itemId, Pageable pageable);
 
+    @Query(value = "select q from Qna q join fetch q.item where q.user.id = :userId",
+            countQuery = "select count (q) from Qna q where q.user.id = :userId")
+    Page<Qna> findByUserWithItem(@Param("userId") Long userId, Pageable pageable);
+
 }

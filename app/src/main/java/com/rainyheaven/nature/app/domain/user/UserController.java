@@ -6,6 +6,7 @@ import com.rainyheaven.nature.core.domain.itemlike.ItemLikeService;
 import com.rainyheaven.nature.core.domain.order.Order;
 import com.rainyheaven.nature.core.domain.order.OrderService;
 import com.rainyheaven.nature.core.domain.order.dto.app.OrderResponseDto;
+import com.rainyheaven.nature.core.domain.qna.QnaService;
 import com.rainyheaven.nature.core.domain.review.ReviewService;
 import com.rainyheaven.nature.core.domain.user.TokenUser;
 import com.rainyheaven.nature.core.domain.user.User;
@@ -33,6 +34,7 @@ public class UserController {
     private final OrderService orderService;
     private final ReviewService reviewService;
     private final ItemLikeService itemLikeService;
+    private final QnaService qnaService;
 
     @Value("${src-prefix}")
     private String imgSrcPrefix;
@@ -96,6 +98,16 @@ public class UserController {
     public ResponseEntity<Boolean> checkHasItemLike(@RequestParam Long itemId, @AuthenticationPrincipal TokenUser tokenUser) {
         boolean isExist = itemLikeService.existCheck(itemId, tokenUser.getId());
         return ResponseEntity.ok(isExist);
+    }
+
+    @GetMapping("/qnas")
+    public ResponseEntity getQnaPage(
+            @AuthenticationPrincipal TokenUser tokenUser,
+            @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        qnaService.pageByUser(tokenUser.getId(), pageable);
+        return null;
+
     }
 
 }

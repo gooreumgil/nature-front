@@ -17,4 +17,7 @@ public class QnaService {
         return qnaRepository.findByItemIdWithUser(itemId, pageable);
     }
 
+    public Page<Qna> pageByUser(Long userId, Pageable pageable) {
+        return qnaRepository.findByItemIdWithUser(userId, pageable);
+    }
 }
