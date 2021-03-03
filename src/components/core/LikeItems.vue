@@ -9,7 +9,7 @@
           <img v-bind:src="likeItem.mainSrcPath" alt="">
           <div class="hover-box"></div>
         </div>
-        <div class="description">
+        <div class="description borderBottom">
           <div class="item-name">
             <h4>{{ likeItem.nameKor }}</h4>
           </div>
@@ -64,6 +64,7 @@ export default {
     width: 25%;
     box-sizing: border-box;
     padding: 10px;
+    padding-bottom: 30px;
   }
 
   ul li div.inner-box {
@@ -74,7 +75,7 @@ export default {
     cursor: pointer;
     position: relative;
     background-color: #f6f6f6;
-    height: 300px;
+    height: 280px;
     display: flex;
     animation: ce;
     justify-content: center;
@@ -96,13 +97,17 @@ export default {
     transition: all .1s ease-in-out;
   }
 
+  ul li:hover .description.borderBottom {
+    border-bottom: 2px solid #8bc545;
+  }
+
   ul li div.inner-box div.img-box:hover > div.hover-box {
     opacity: 1;
     vertical-align: middle;
     pointer-events: none;
   }
 
-  section section ul li div.inner-box div.img-box div.hover-box {
+  ul li div.inner-box div.img-box div.hover-box {
     opacity: 0;
     position: absolute;
     height: 100%;

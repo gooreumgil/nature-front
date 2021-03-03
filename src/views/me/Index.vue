@@ -61,8 +61,21 @@ export default {
     }
   },
 
+  computed: {
+    currentMyPageStoreTab() {
+      return this.$store.state.currentMyPageTab;
+    }
+  },
+
   async created() {
-    await this.setOrders();
+
+    const currentMyPageStoreTab = this.currentMyPageStoreTab;
+    if (!currentMyPageStoreTab || currentMyPageStoreTab === 'orderAndDelivery') {
+      await this.setOrders();
+    } else if (currentMyPageStoreTab === 'likes') {
+      await this.setLikeItems();
+    }
+
     await this.setUser();
     await this.setDeliveryTotal();
     await this.setReviewsTotal();
@@ -74,6 +87,9 @@ export default {
       try {
         const res = await userApi.getUserOrders(token);
         this.orders = res.data.content;
+        const tab = 'orderAndDelivery';
+        this.currentTab = tab;
+        this.$store.commit('SET_CURRENT_MY_PAGE_TAB', tab);
       } catch (err) {
         alert('문제가 발생하였습니다.');
         console.log(err);
@@ -119,6 +135,9 @@ export default {
       try {
         const res = await userApi.getLikeItems(token);
         this.likeItems = res.data.content;
+        const tab = 'likes';
+        this.currentTab = tab;
+        this.$store.commit('SET_CURRENT_MY_PAGE_TAB', tab);
       } catch (err) {
         alert('문제가 발생하였습니다.');
         console.log(err);
@@ -147,8 +166,10 @@ export default {
     },
 
     setCurrentTab(tab) {
-      this.currentTab = tab;
-      if (tab === 'likes') {
+      if (tab === 'orderAndDelivery') {
+        this.setOrders();
+      }
+      else if (tab === 'likes') {
         this.setLikeItems();
       }
     }

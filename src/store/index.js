@@ -7,6 +7,7 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
   state: {
     cartTotal: 0,
+    currentMyPageTab: null
   },
   mutations
 })

@@ -62,18 +62,6 @@
     <Bottom />
     <Footer />
 
-<!--    <div v-if="cartAddView" class="cart-add-modal">-->
-<!--      <div class="modal-inner">-->
-<!--        <CartIcon />-->
-<!--        <h3>장바구니에 담았습니다.</h3>-->
-
-<!--        <div class="btn-box">-->
-<!--          <button type="button" @click="shoppingKeepGoing">계속쇼핑</button>-->
-<!--          <button type="button" @click="goCart">장바구니</button>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-
     <CartModal v-bind:cart-add-view="cartAddView" :shopping-keep-going="shoppingKeepGoing"/>
   </section>
 </template>

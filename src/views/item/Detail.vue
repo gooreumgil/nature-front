@@ -96,6 +96,20 @@
         <img v-bind:src="item.detailSrcPath" alt="">
       </div>
 
+      <div class="item-qna-box" v-if="currentTab === 'qna'">
+        <div class="item-qna-inner">
+          <div class="title-box">
+            <h3>상품문의</h3>
+            <p></p>
+          </div>
+          <form @submit.prevent="saveQna">
+            <textarea cols="30" rows="15" placeholder="문의할 내용을 입력해주세요." v-model="qnaContent"></textarea>
+            <button type="submit">쓰기</button>
+            <button type="reset">취소</button>
+          </form>
+        </div>
+      </div>
+
     </section>
 
     <Bottom />
@@ -132,7 +146,8 @@ export default {
         {'name': '리뷰', 'val': 'review'},
         {'name': 'Q&A', 'val': 'qna'}
       ],
-      userLike: false
+      userLike: false,
+      qnaContent: null
     }
   },
 
@@ -283,6 +298,7 @@ export default {
   section.main-container section.info-container {
     box-sizing: border-box;
     padding: 90px;
+    padding-bottom: 40px;
   }
 
   section.main-container section.info-container ul {
@@ -577,6 +593,64 @@ export default {
   section.main-container section.detail-container div.detail-info-box {
     box-sizing: border-box;
     padding: 100px 0;
+  }
+
+  section.main-container section.detail-container div.item-qna-box {
+    text-align: left;
+  }
+
+  section.main-container section.detail-container div.item-qna-box .item-qna-inner {
+    max-width: 1260px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 60px 25px;
+    padding-top: 20px;
+  }
+
+  section.main-container section.detail-container div.item-qna-box .item-qna-inner div.title-box {
+    margin-top: 30px;
+  }
+
+  section.main-container section.detail-container div.item-qna-box .item-qna-inner div.title-box h3 {
+    font-size: 20px;
+  }
+
+  section.main-container section.detail-container div.item-qna-box .item-qna-inner form {
+    margin-top: 20px;
+    max-width: 60%;
+  }
+
+  section.main-container section.detail-container div.item-qna-box .item-qna-inner form textarea {
+    outline-color: #ddd;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 3px;
+    font-size: 14px;
+  }
+
+  section.main-container section.detail-container div.item-qna-box .item-qna-inner form button {
+    box-sizing: border-box;
+    padding: 8px 15px;
+    font-size: 14px;
+    border-radius: 3px;
+    margin-top: 20px;
+  }
+
+  section.main-container section.detail-container div.item-qna-box .item-qna-inner form button[type=submit] {
+    background-color: #7ebb34;
+    color: #fff;
+    font-weight: 700;
+    margin-right: 10px;
+  }
+
+  section.main-container section.detail-container div.item-qna-box .item-qna-inner form button[type=reset] {
+    background: #fff;
+    color: #555;
+    font-weight: 400;
+    border: 1px solid #ddd;
   }
 
 </style>

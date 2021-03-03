@@ -59,7 +59,6 @@ export default {
 
   methods: {
     getOrderAt(time) {
-      console.log(time);
       return commonUtils.localDateTimeToYearMonthDay(time);
     },
 
