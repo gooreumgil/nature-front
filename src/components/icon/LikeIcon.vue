@@ -20,7 +20,8 @@ export default {
     fill: {
       default: '#fff'
     }
-  }
+  },
+
 }
 </script>
 

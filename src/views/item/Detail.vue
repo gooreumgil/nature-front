@@ -61,8 +61,8 @@
           <div class="out-box buy clearfix">
             <div class="buy-col like">
               <div class="buy-inner-box">
-                <button type="button">
-                  <LikeIcon v-bind:fill="'#fff'" v-bind:stroke="'#888'" />
+                <button @click="itemLike" type="button">
+                  <LikeIcon v-bind:stroke="getStroke()" v-bind:fill="getFill()" />
                 </button>
 
               </div>
@@ -115,6 +115,7 @@ import CartModal from "@/components/core/CartModal";
 import commonService from "@/service/commonService";
 import Bottom from "@/components/core/Bottom";
 import Footer from "@/components/core/Footer";
+import userApi from "@/api/UserApi";
 export default {
   name: "Detail",
   components: {Footer, Bottom, CartModal, CartIcon, LikeIcon, MinusIcon, PlusIcon, Header},
@@ -130,13 +131,15 @@ export default {
         {'name': '상품정보', 'val': 'detail'},
         {'name': '리뷰', 'val': 'review'},
         {'name': 'Q&A', 'val': 'qna'}
-      ]
+      ],
+      userLike: false
     }
   },
 
   async created() {
     const id = this.$route.params.id;
     await this.setItem(id);
+    await this.checkItemLike();
   },
 
   methods: {
@@ -155,7 +158,59 @@ export default {
       }
     },
 
+    async checkItemLike() {
+      const token = this.$cookies.get('token');
+      if (!token) return;
+      const itemId = this.item.id;
 
+      try {
+        const res = await userApi.checkItemLike(token, itemId);
+        if (res.data === true) this.userLike = true;
+        console.log(this.userLike);
+      } catch (err) {
+        alert('문제가 발생하였습니다.');
+        console.log(err);
+      }
+
+    },
+
+    itemLike() {
+      const id = this.item.id;
+      const token = this.$cookies.get('token');
+      if (!token) {
+        alert('상품을 찜하시려면 로그인을 해주세요.');
+        return;
+      }
+
+      if (!this.userLike) {
+        try {
+          itemApi.itemLike(token, id);
+          this.userLike = true;
+        } catch (err) {
+          alert('문제가 발생하였습니다.');
+          console.log(err);
+        }
+      } else {
+        try {
+          itemApi.itemLikeDelete(token, id);
+          this.userLike = false;
+        } catch (err) {
+          alert('문제가 발생하였습니다.');
+          console.log(err);
+        }
+      }
+
+
+    },
+
+    getStroke() {
+      return this.userLike === true ? 'none' : '#a0a0a0';
+    },
+
+    getFill() {
+      return this.userLike === true ? '#ff1a5a' : '#fff';
+
+    },
 
     quantitySum(item, type) {
       if (type === 'PLUS') {

@@ -28,4 +28,21 @@ export default {
       }
     })
   },
+
+  itemLike(token, id) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/item-likes`;
+    return axios.post(url, {}, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
+  },
+  itemLikeDelete(token, id) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/item-likes`;
+    return axios.delete(url, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
+  }
 }
