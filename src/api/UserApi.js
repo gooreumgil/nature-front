@@ -48,5 +48,14 @@ export default {
         'Authorization': 'Bearer ' + token
       }
     })
+  },
+
+  getLikeItems(token) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/users/item-likes`;
+    return axios.get(url, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
   }
 }

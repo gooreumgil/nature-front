@@ -4,7 +4,7 @@
     <div class="inner-container" v-if="init">
       <div class="my-page-wrapper clearfix">
         <div class="my-page-list nav">
-          <MyPageNav v-bind:user="user" />
+          <MyPageNav v-bind:user="user" v-bind:set-current-tab="setCurrentTab" v-bind:current-tab="currentTab"/>
 
         </div>
         <div class="my-page-list content">
@@ -31,7 +31,8 @@
             </div>
           </div>
 
-          <OrderList v-bind:orders="orders" v-bind:cancel-order="cancelOrder"/>
+          <OrderList v-bind:orders="orders" v-bind:cancel-order="cancelOrder" v-if="isCurrentTabThis('orderAndDelivery')"/>
+          <LikeItems v-if="isCurrentTabThis('likes')" v-bind:like-items="likeItems"/>
         </div>
       </div>
     </div>
@@ -44,9 +45,10 @@ import orderApi from "@/api/OrderApi";
 import MyPageNav from "@/components/core/MyPageNav";
 import userApi from "@/api/UserApi";
 import OrderList from "@/components/core/OrderList";
+import LikeItems from "@/components/core/LikeItems";
 export default {
   name: "Index",
-  components: {OrderList, MyPageNav, Header},
+  components: {LikeItems, OrderList, MyPageNav, Header},
   data() {
     return {
       init: false,
@@ -54,7 +56,8 @@ export default {
       user: null,
       currentTab: 'orderAndDelivery',
       deliveryOnGoingTotal: 0,
-      reviewTotal: 0
+      reviewTotal: 0,
+      likeItems: []
     }
   },
 
@@ -111,6 +114,17 @@ export default {
       }
     },
 
+    async setLikeItems() {
+      const token = this.$cookies.get('token');
+      try {
+        const res = await userApi.getLikeItems(token);
+        this.likeItems = res.data.content;
+      } catch (err) {
+        alert('문제가 발생하였습니다.');
+        console.log(err);
+      }
+    },
+
     getOwnPoints() {
       return this.user.ownPoints === null ? 0 : this.user.ownPoints;
     },
@@ -125,6 +139,17 @@ export default {
       } catch (err) {
         alert('문제가 발생하였습니다.');
         console.log(err);
+      }
+    },
+
+    isCurrentTabThis(tab) {
+      return this.currentTab === tab;
+    },
+
+    setCurrentTab(tab) {
+      this.currentTab = tab;
+      if (tab === 'likes') {
+        this.setLikeItems();
       }
     }
 
@@ -172,6 +197,8 @@ export default {
   section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.basic-info {
     box-sizing: border-box;
     padding-top: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.basic-info div.title {

@@ -9,11 +9,11 @@
 
       <div class="tab">
         <div class="tab-list">
-          <button v-bind:class="{active: isCurrentTabThis('orderAndDelivery')}" type="button">주문배송조회</button>
+          <button @click="setCurrentTab('orderAndDelivery')" v-bind:class="{active: isCurrentTabThis('orderAndDelivery')}" type="button">주문배송조회</button>
         </div>
 
         <div class="tab-list">
-          <button v-bind:class="{active: isCurrentTabThis('likes')}" type="button">찜리스트</button>
+          <button @click="setCurrentTab('likes')" v-bind:class="{active: isCurrentTabThis('likes')}" type="button">찜리스트</button>
         </div>
 
         <div class="tab-list">
@@ -41,6 +41,9 @@ export default {
     },
     currentTab: {
       default: 'orderAndDelivery'
+    },
+    setCurrentTab: {
+      type: Function
     }
   },
 
