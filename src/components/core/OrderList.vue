@@ -2,6 +2,7 @@
   <ul class="order-list-wrapper">
     <div class="title-box">
       <h3>주문/배송조회</h3>
+      <p>고객님의 주문 내역입니다.</p>
     </div>
     <li class="order-list clearfix head">
       <div class="inner-col no">
@@ -82,7 +83,7 @@ export default {
 <style scoped>
   ul {
     box-sizing: border-box;
-    padding-top: 50px;
+    padding-top: 30px;
     padding-left: 10px;
     padding-right: 10px;
   }
@@ -93,7 +94,13 @@ export default {
   }
 
   ul div.title-box h3 {
-    font-size: 20px;
+    font-size: 18px;
+  }
+
+  ul div.title-box p {
+    font-size: 15px;
+    color: #777;
+    margin-top: 6px;
   }
 
   ul li {

@@ -2,6 +2,7 @@
   <ul class="like-item-wrapper clearfix">
     <div class="title-box">
       <h3>찜리스트</h3>
+      <p>고객님의 위시리스트 상품입니다.</p>
     </div>
     <li class="like-item-list" v-for="(likeItem, index) in likeItems" v-bind:key="index">
       <div class="inner-box">
@@ -46,7 +47,7 @@ export default {
 <style scoped>
   ul {
     box-sizing: border-box;
-    padding-top: 60px;
+    padding-top: 20px;
   }
 
   ul div.title-box {
@@ -56,8 +57,14 @@ export default {
   }
 
   ul div.title-box h3 {
-    font-size: 20px;
+    font-size: 18px;
   }
+  ul div.title-box p {
+    font-size: 15px;
+    color: #777;
+    margin-top: 6px;
+  }
+
 
   ul li {
     float: left;

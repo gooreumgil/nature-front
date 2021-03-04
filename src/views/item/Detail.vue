@@ -103,7 +103,7 @@
             <p></p>
           </div>
           <form @submit.prevent="saveQna">
-            <textarea cols="30" rows="15" placeholder="문의할 내용을 입력해주세요." v-model="qnaContent"></textarea>
+            <textarea cols="30" rows="10" placeholder="문의할 내용을 입력해주세요." v-model="qnaContent"></textarea>
             <button type="submit">쓰기</button>
             <button type="reset">취소</button>
             <div class="secret-check">
@@ -112,6 +112,29 @@
             </div>
           </form>
         </div>
+
+        <ul class="qna-wrapper">
+          <li @click="qnaShowContentToggle(qna)" class="qna-list clearfix" v-bind:class="{contentShow: qna.showContent}" v-for="(qna, index) in qnaList" v-bind:key="index">
+            <div class="list-inner">
+              <div class="status">
+                <p>{{ getQnaStatus(qna.status) }}</p>
+              </div>
+              <div class="content">
+                <p>{{ qnaContentSlice(qna.content) }}</p>
+              </div>
+              <div class="writer">
+                <p>{{ qna.writer }}</p>
+              </div>
+              <div class="wroteAt">
+                <p>{{ convertTime(qna.wroteAt) }}</p>
+              </div>
+            </div>
+
+            <div class="qna-content" v-if="qna.showContent">
+              <p>{{ qna.content }}</p>
+            </div>
+          </li>
+        </ul>
       </div>
 
     </section>
@@ -134,6 +157,7 @@ import commonService from "@/service/commonService";
 import Bottom from "@/components/core/Bottom";
 import Footer from "@/components/core/Footer";
 import userApi from "@/api/UserApi";
+import commonUtils from "@/utils/commonUtils";
 export default {
   name: "Detail",
   components: {Footer, Bottom, CartModal, CartIcon, LikeIcon, MinusIcon, PlusIcon, Header},
@@ -152,7 +176,8 @@ export default {
       ],
       userLike: false,
       qnaContent: null,
-      isQnaSecret: true
+      isQnaSecret: true,
+      qnaList: []
     }
   },
 
@@ -198,7 +223,10 @@ export default {
       const id = this.item.id;
       try {
         const res = await itemApi.getQnaList(id);
-        console.log(res.data);
+        const qnaList = res.data.content;
+        qnaList.forEach(qna => qna.showContent = false);
+
+        this.qnaList = qnaList;
       } catch (err) {
         alert('문제가 발생했습니다.');
         console.log(err);
@@ -300,6 +328,9 @@ export default {
 
     setCurrentTab(tab) {
       this.currentTab = tab;
+      if (tab === 'qna') {
+        this.setQnaList();
+      }
     },
 
     isCurrentTab(tab) {
@@ -319,6 +350,22 @@ export default {
       this.$router.push('/orders');
 
 
+    },
+
+    qnaShowContentToggle(qna) {
+      qna.showContent = !qna.showContent;
+    },
+
+    qnaContentSlice(qnaContent) {
+      return qnaContent.substring(0, 80);
+    },
+
+    getQnaStatus(qnaStatus) {
+      return qnaStatus === 'WAIT' ? '답변대기' : '답변완료'
+    },
+
+    convertTime(time) {
+      return commonUtils.localDateTimeToYearMonthDay(time);
     }
   }
 }
@@ -375,7 +422,7 @@ export default {
     height: 470px;
     width: 400px;
     background-color: #f6f6f6;
-    /*margin: 0 auto;*/
+    margin: 0 auto;
   }
 
   section.main-container section.info-container ul li.img div.inner-box img {
@@ -594,7 +641,7 @@ export default {
   }
 
   section.main-container section.detail-container nav {
-    max-width: 1260px;
+    max-width: 1100px;
     width: 100%;
     margin: 0 auto;
   }
@@ -622,7 +669,7 @@ export default {
 
 
   section.main-container section.detail-container nav div.nav-inner button.active {
-    background-color: #7ebb34;
+    background-color: #555;
     color: #fff;
     font-weight: 700;
     transition: all .1s ease-in-out;
@@ -638,7 +685,7 @@ export default {
   }
 
   section.main-container section.detail-container div.item-qna-box .item-qna-inner {
-    max-width: 1260px;
+    max-width: 1100px;
     width: 100%;
     margin: 0 auto;
     box-sizing: border-box;
@@ -647,16 +694,16 @@ export default {
   }
 
   section.main-container section.detail-container div.item-qna-box .item-qna-inner div.title-box {
-    margin-top: 30px;
+    margin-top: 20px;
   }
 
   section.main-container section.detail-container div.item-qna-box .item-qna-inner div.title-box h3 {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   section.main-container section.detail-container div.item-qna-box .item-qna-inner form {
     margin-top: 20px;
-    max-width: 60%;
+    max-width: 50%;
     position: relative;
   }
 
@@ -671,9 +718,10 @@ export default {
   }
 
   section.main-container section.detail-container div.item-qna-box .item-qna-inner form button {
+    outline: none;
     box-sizing: border-box;
-    padding: 8px 15px;
-    font-size: 14px;
+    padding: 5px 13px;
+    font-size: 13px;
     border-radius: 3px;
     margin-top: 20px;
   }
@@ -708,8 +756,75 @@ export default {
   section.main-container section.detail-container div.item-qna-box .item-qna-inner form div.secret-check span {
     display: inline-block;
     margin-right: 5px;
-    color: #555;
+    color: #333;
     font-weight: 400;
+    font-size: 14px;
+  }
+
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper {
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 0 10px;
+  }
+
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list {
+    box-sizing: border-box;
+    border-bottom: 1px solid #eaeaea;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list.contentShow {
+    padding-bottom: 0;
+  }
+
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list:first-child {
+    border-top: 1px solid #eaeaea;
+  }
+
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.list-inner {
+    display: flex;
+    align-items: center;
+    padding: 30px 20px;
+
+  }
+
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.status {
+    width: 10%;
+  }
+
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.content {
+    width: 70%;
+  }
+
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.content p {
+    width: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.writer {
+    width: 10%;
+  }
+
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.wroteAt {
+    width: 10%;
+    text-align: right;
+  }
+
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.writer p {
+  }
+
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.qna-content {
+    background-color: #f9f9f9;
+    padding: 30px;
+  }
+
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.qna-content p {
+    line-height: 1.4;
   }
 
 </style>

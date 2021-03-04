@@ -8,7 +8,7 @@
 
         </div>
         <div class="my-page-list content">
-          <div class="basic-info">
+          <div class="basic-info" v-if="basicInfoView">
             <div class="title">
               <h3>
                 <span>{{ user.name }}</span>님 환영합니다!
@@ -33,6 +33,7 @@
 
           <OrderList v-bind:orders="orders" v-bind:cancel-order="cancelOrder" v-if="isCurrentTabThis('orderAndDelivery')"/>
           <LikeItems v-if="isCurrentTabThis('likes')" v-bind:like-items="likeItems"/>
+          <UserQnaList v-if="isCurrentTabThis('qna')" v-bind:qna-list="qnaList"/>
         </div>
       </div>
     </div>
@@ -51,9 +52,10 @@ import OrderList from "@/components/core/OrderList";
 import LikeItems from "@/components/core/LikeItems";
 import Bottom from "@/components/core/Bottom";
 import Footer from "@/components/core/Footer";
+import UserQnaList from "@/components/core/UserQnaList";
 export default {
   name: "Index",
-  components: {Footer, Bottom, LikeItems, OrderList, MyPageNav, Header},
+  components: {UserQnaList, Footer, Bottom, LikeItems, OrderList, MyPageNav, Header},
   data() {
     return {
       init: false,
@@ -63,7 +65,8 @@ export default {
       deliveryOnGoingTotal: 0,
       reviewTotal: 0,
       likeItems: [],
-      qnaList: []
+      qnaList: [],
+      basicInfoView: true
     }
   },
 
@@ -96,6 +99,7 @@ export default {
         const tab = 'orderAndDelivery';
         this.currentTab = tab;
         this.$store.commit('SET_CURRENT_MY_PAGE_TAB', tab);
+        this.basicInfoView = true;
       } catch (err) {
         alert('문제가 발생하였습니다.');
         console.log(err);
@@ -142,8 +146,10 @@ export default {
         const res = await userApi.getLikeItems(token);
         this.likeItems = res.data.content;
         const tab = 'likes';
+
         this.currentTab = tab;
         this.$store.commit('SET_CURRENT_MY_PAGE_TAB', tab);
+        this.basicInfoView = false;
       } catch (err) {
         alert('문제가 발생하였습니다.');
         console.log(err);
@@ -153,9 +159,14 @@ export default {
     async setQnaList() {
       const token = this.$cookies.get('token');
       try {
+
         const res = await userApi.getQnaList(token);
-        this.qnaList = res.data.content;
-        console.log(this.qnaList);
+        const qnaList = res.data.content;
+        qnaList.forEach(qna => qna.showContent = false);
+        this.qnaList = qnaList;
+
+        this.currentTab = 'qna';
+        this.basicInfoView = false;
       } catch (err) {
         alert('문제가 발생하였습니다.');
         console.log(err);
@@ -194,7 +205,7 @@ export default {
       else if (tab === 'qna') {
         this.setQnaList();
       }
-    }
+    },
 
   }
 }
