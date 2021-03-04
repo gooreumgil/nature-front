@@ -4,12 +4,15 @@ import com.rainyheaven.nature.core.domain.base.BaseTimeEntity;
 import com.rainyheaven.nature.core.domain.item.Item;
 import com.rainyheaven.nature.core.domain.order.Order;
 import com.rainyheaven.nature.core.domain.orderitem.dto.app.OrderItemSaveRequestDto;
+import com.rainyheaven.nature.core.domain.review.Review;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,12 +36,14 @@ public class OrderItem extends BaseTimeEntity {
     private int itemPrice;
     private int itemDiscountPrice;
     private int itemQuantity;
+    private boolean leaveReview;
 
     public static OrderItem create(OrderItemSaveRequestDto dto, Order order, Item item) {
         OrderItem orderItem = new OrderItem();
         orderItem.itemPrice = dto.getItemPrice();
         orderItem.itemDiscountPrice = dto.getItemDiscountPrice();
         orderItem.itemQuantity = dto.getItemQuantity();
+        orderItem.leaveReview = false;
         orderItem.setOrder(order);
         orderItem.setItem(item);
         orderItem.setCreatedDate(LocalDateTime.now());

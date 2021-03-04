@@ -3,6 +3,7 @@ package com.rainyheaven.nature.core.domain.order.dto.app;
 import com.rainyheaven.nature.core.domain.delivery.dto.app.DeliveryResponseDto;
 import com.rainyheaven.nature.core.domain.order.Order;
 import com.rainyheaven.nature.core.domain.orderitem.OrderItem;
+import com.rainyheaven.nature.core.domain.orderitem.dto.app.OrderItemResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

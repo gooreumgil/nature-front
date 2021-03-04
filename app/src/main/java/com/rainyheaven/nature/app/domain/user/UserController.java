@@ -1,11 +1,15 @@
 package com.rainyheaven.nature.app.domain.user;
 
+import com.rainyheaven.nature.core.domain.delivery.DeliveryStatus;
 import com.rainyheaven.nature.core.domain.item.dto.app.ItemSimpleResponseDto;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLike;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLikeService;
 import com.rainyheaven.nature.core.domain.order.Order;
 import com.rainyheaven.nature.core.domain.order.OrderService;
 import com.rainyheaven.nature.core.domain.order.dto.app.OrderResponseDto;
+import com.rainyheaven.nature.core.domain.orderitem.OrderItem;
+import com.rainyheaven.nature.core.domain.orderitem.OrderItemService;
+import com.rainyheaven.nature.core.domain.orderitem.dto.app.OrderItemResponseDto;
 import com.rainyheaven.nature.core.domain.qna.Qna;
 import com.rainyheaven.nature.core.domain.qna.QnaService;
 import com.rainyheaven.nature.core.domain.qna.dto.app.QnaResponseDto;
@@ -37,6 +41,7 @@ public class UserController {
     private final ReviewService reviewService;
     private final ItemLikeService itemLikeService;
     private final QnaService qnaService;
+    private final OrderItemService orderItemService;
 
     @Value("${src-prefix}")
     private String imgSrcPrefix;
@@ -82,6 +87,19 @@ public class UserController {
         return ResponseEntity.ok(totalUserReviews);
 
     }
+
+    @GetMapping("/order-items")
+    public ResponseEntity<Page<OrderItemResponseDto>> getOrderItems(
+            @AuthenticationPrincipal TokenUser tokenUser,
+            @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Page<OrderItem> orderItemPage = orderItemService.pageByUserIdAndDeliveryStatus(tokenUser.getId(), DeliveryStatus.COMP, pageable);
+        Page<OrderItemResponseDto> orderItemPageMap = orderItemPage.map(orderItem -> new OrderItemResponseDto(orderItem, imgSrcPrefix));
+
+        return ResponseEntity.ok(orderItemPageMap);
+
+    }
+
 
     @GetMapping("/item-likes")
     public ResponseEntity<Page<ItemSimpleResponseDto>> getLikeItems(
