@@ -6,7 +6,9 @@ import com.rainyheaven.nature.core.domain.itemlike.ItemLikeService;
 import com.rainyheaven.nature.core.domain.order.Order;
 import com.rainyheaven.nature.core.domain.order.OrderService;
 import com.rainyheaven.nature.core.domain.order.dto.app.OrderResponseDto;
+import com.rainyheaven.nature.core.domain.qna.Qna;
 import com.rainyheaven.nature.core.domain.qna.QnaService;
+import com.rainyheaven.nature.core.domain.qna.dto.app.QnaResponseDto;
 import com.rainyheaven.nature.core.domain.review.ReviewService;
 import com.rainyheaven.nature.core.domain.user.TokenUser;
 import com.rainyheaven.nature.core.domain.user.User;
@@ -101,12 +103,14 @@ public class UserController {
     }
 
     @GetMapping("/qnas")
-    public ResponseEntity getQnaPage(
+    public ResponseEntity<Page<QnaResponseDto>> getQnaPage(
             @AuthenticationPrincipal TokenUser tokenUser,
             @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        qnaService.pageByUser(tokenUser.getId(), pageable);
-        return null;
+        Page<Qna> qnaPage = qnaService.pageByUser(tokenUser.getId(), pageable);
+        Page<QnaResponseDto> qnaPageMap = qnaPage.map(qna -> new QnaResponseDto(qna, imgSrcPrefix));
+
+        return ResponseEntity.ok(qnaPageMap);
 
     }
 

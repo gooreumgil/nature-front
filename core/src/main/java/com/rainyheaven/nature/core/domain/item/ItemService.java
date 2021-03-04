@@ -22,7 +22,7 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final UserService userService;
 
-    private Item findById(Long id) {
+    public Item findById(Long id) {
         return itemRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
@@ -47,6 +47,7 @@ public class ItemService {
         Item item = findById(id);
         User user = userService.findById(userId);
         ItemLike.create(item, user);
+        item.plusLikesCount();
         itemRepository.save(item);
     }
 

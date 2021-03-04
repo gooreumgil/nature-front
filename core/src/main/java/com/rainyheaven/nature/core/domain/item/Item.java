@@ -65,4 +65,14 @@ public class Item extends BaseTimeEntity {
     public void addQna(Qna qna) {
         this.qnaList.add(qna);
     }
+
+    // item like 추가할 때 likesCount 증가
+    public void plusLikesCount() {
+        this.likesCount++;
+    }
+
+    // item like 삭제할 때 likesCount 감소
+    public void minusLikesCount() {
+        this.likesCount--;
+    }
 }
