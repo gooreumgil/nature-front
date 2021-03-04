@@ -114,8 +114,8 @@
         </div>
 
         <ul class="qna-wrapper">
-          <li @click="qnaShowContentToggle(qna)" class="qna-list clearfix" v-bind:class="{contentShow: qna.showContent}" v-for="(qna, index) in qnaList" v-bind:key="index">
-            <div class="list-inner">
+          <li class="qna-list clearfix" v-bind:class="{contentShow: qna.showContent}" v-for="(qna, index) in qnaList" v-bind:key="index">
+            <div class="list-inner" @click="qnaShowContentToggle(qna)">
               <div class="status">
                 <p>{{ getQnaStatus(qna.status) }}</p>
               </div>
@@ -785,6 +785,7 @@ export default {
   }
 
   section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.list-inner {
+    cursor: pointer;
     display: flex;
     align-items: center;
     padding: 30px 20px;
@@ -819,6 +820,7 @@ export default {
   }
 
   section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.qna-content {
+    cursor: auto;
     background-color: #f9f9f9;
     padding: 30px;
   }

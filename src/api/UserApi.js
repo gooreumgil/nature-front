@@ -66,5 +66,14 @@ export default {
         'Authorization': 'Bearer ' + token
       }
     })
+  },
+
+  getCanReviewItems(token) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/users/order-items`;
+    return axios.get(url, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
   }
 }

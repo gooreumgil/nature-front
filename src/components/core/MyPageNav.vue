@@ -21,7 +21,7 @@
         </div>
 
         <div class="tab-list">
-          <button v-bind:class="{active: isCurrentTabThis('review')}" type="button">구매후기</button>
+          <button @click="setCurrentTab('review')" v-bind:class="{active: isCurrentTabThis('review')}" type="button">구매후기</button>
         </div>
 
         <div class="tab-list">

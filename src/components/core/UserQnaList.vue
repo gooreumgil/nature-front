@@ -6,8 +6,8 @@
     </div>
     <div class="divider"></div>
 
-    <li @click="showContentToggle(qna)" v-bind:class="{showContent: qna.showContent}" class="qna-list" v-for="(qna, index) in qnaList" v-bind:key="index">
-      <div class="list-inner">
+    <li v-bind:class="{showContent: qna.showContent}" class="qna-list" v-for="(qna, index) in qnaList" v-bind:key="index">
+      <div class="list-inner" @click="showContentToggle(qna)">
         <div class="img-box">
           <img v-bind:src="qna.itemResponseDto.mainSrcPath" alt="">
         </div>
@@ -105,6 +105,7 @@ export default {
 
 
   ul li div.list-inner {
+    cursor: pointer;
     position: relative;
     display: flex;
     align-items: center;

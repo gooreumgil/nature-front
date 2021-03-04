@@ -66,7 +66,8 @@ export default {
       reviewTotal: 0,
       likeItems: [],
       qnaList: [],
-      basicInfoView: true
+      basicInfoView: true,
+      canReviewItems: []
     }
   },
 
@@ -174,6 +175,19 @@ export default {
 
     },
 
+    async setCanReviewItems() {
+      const token = this.$cookies.get('token');
+      try {
+        const res = await userApi.getCanReviewItems(token);
+        this.canReviewItems = res.data.content;
+        console.log(this.canReviewItems);
+        this.currentTab = 'review';
+      } catch (err) {
+        alert('문제가 발생하였습니다.');
+        console.log(err);
+      }
+    },
+
     getOwnPoints() {
       return this.user.ownPoints === null ? 0 : this.user.ownPoints;
     },
@@ -204,6 +218,9 @@ export default {
       }
       else if (tab === 'qna') {
         this.setQnaList();
+      }
+      else if (tab === 'review') {
+        this.setCanReviewItems();
       }
     },
 
