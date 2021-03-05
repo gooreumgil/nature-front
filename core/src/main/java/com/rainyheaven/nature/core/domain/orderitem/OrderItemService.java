@@ -1,6 +1,6 @@
 package com.rainyheaven.nature.core.domain.orderitem;
 
-import com.rainyheaven.nature.core.domain.delivery.DeliveryStatus;
+import com.rainyheaven.nature.core.domain.order.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,8 +14,8 @@ public class OrderItemService {
 
     private final OrderItemRepository orderItemRepository;
 
-    public Page<OrderItem> pageByUserIdAndDeliveryStatus(Long userId, DeliveryStatus deliveryStatus, Pageable pageable) {
-        return orderItemRepository.findAllByUserIdAndDeliveryStatus(userId, deliveryStatus, pageable);
+    public Page<OrderItem> pageByUserIdAndOrderStatus(Long userId, OrderStatus orderStatus, Pageable pageable) {
+        return orderItemRepository.findAllByUserIdAndOrderStatus(userId, orderStatus, pageable);
     }
 
 }

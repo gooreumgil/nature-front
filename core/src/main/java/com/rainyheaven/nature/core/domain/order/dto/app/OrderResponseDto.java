@@ -25,6 +25,7 @@ public class OrderResponseDto {
     private int finalPrice;
     private int usedPoints;
     private int savedPoints;
+    private String status;
     private LocalDateTime orderAt;
     private DeliveryResponseDto deliveryResponseDto;
     private List<OrderItemResponseDto> orderItemResponseDtos = new ArrayList<>();
@@ -35,6 +36,7 @@ public class OrderResponseDto {
         this.finalPrice = order.getFinalPrice();
         this.usedPoints = order.getUsedPoints();
         this.savedPoints = order.getSavedPoints();
+        this.status = order.getOrderStatus().name();
         this.orderAt = order.getCreatedDate();
         this.deliveryResponseDto = new DeliveryResponseDto(order.getDelivery());
 

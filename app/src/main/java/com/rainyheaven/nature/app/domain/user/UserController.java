@@ -1,11 +1,11 @@
 package com.rainyheaven.nature.app.domain.user;
 
-import com.rainyheaven.nature.core.domain.delivery.DeliveryStatus;
 import com.rainyheaven.nature.core.domain.item.dto.app.ItemSimpleResponseDto;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLike;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLikeService;
 import com.rainyheaven.nature.core.domain.order.Order;
 import com.rainyheaven.nature.core.domain.order.OrderService;
+import com.rainyheaven.nature.core.domain.order.OrderStatus;
 import com.rainyheaven.nature.core.domain.order.dto.app.OrderResponseDto;
 import com.rainyheaven.nature.core.domain.orderitem.OrderItem;
 import com.rainyheaven.nature.core.domain.orderitem.OrderItemService;
@@ -105,7 +105,7 @@ public class UserController {
             @AuthenticationPrincipal TokenUser tokenUser,
             @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        Page<OrderItem> orderItemPage = orderItemService.pageByUserIdAndDeliveryStatus(tokenUser.getId(), DeliveryStatus.COMP, pageable);
+        Page<OrderItem> orderItemPage = orderItemService.pageByUserIdAndOrderStatus(tokenUser.getId(), OrderStatus.COMP, pageable);
         Page<OrderItemResponseDto> orderItemPageMap = orderItemPage
                 .map(orderItem -> {
                     OrderItemResponseDto orderItemResponseDto = new OrderItemResponseDto(orderItem, imgSrcPrefix);
