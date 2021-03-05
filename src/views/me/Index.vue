@@ -34,7 +34,10 @@
           <OrderList v-bind:orders="orders" v-bind:cancel-order="cancelOrder" v-if="isCurrentTabThis('orderAndDelivery')"/>
           <LikeItems v-if="isCurrentTabThis('likes')" v-bind:like-items="likeItems"/>
           <UserQnaList v-if="isCurrentTabThis('qna')" v-bind:qna-list="qnaList"/>
-          <UserReviews v-if="isCurrentTabThis('review')" v-bind:can-review-items="canReviewItems" v-bind:set-review-nav="setReviewNav" v-bind:review-nav="reviewNav"/>
+          <UserReviews v-if="isCurrentTabThis('review')"
+                       v-bind:can-review-items="canReviewItems"
+                       v-bind:set-review-nav="setReviewNav"
+                       v-bind:review-nav="reviewNav" v-bind:convert-time-to-str="convertTimeToStr"/>
         </div>
       </div>
     </div>
@@ -55,6 +58,7 @@ import Bottom from "@/components/core/Bottom";
 import Footer from "@/components/core/Footer";
 import UserQnaList from "@/components/core/UserQnaList";
 import UserReviews from "@/components/core/UserReviews";
+import commonUtils from "@/utils/commonUtils";
 export default {
   name: "Index",
   components: {UserReviews, UserQnaList, Footer, Bottom, LikeItems, OrderList, MyPageNav, Header},
@@ -250,6 +254,10 @@ export default {
         else this.setMyReviews();
       }
     },
+
+    convertTimeToStr(time) {
+      return commonUtils.localDateTimeToYearMonthDay(time);
+    }
 
   }
 }

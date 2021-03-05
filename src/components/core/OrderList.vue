@@ -38,8 +38,8 @@
         <p>{{ order.deliveryResponseDto.deliveryPrice  | price}}</p>
       </div>
       <div class="inner-col delivery-status">
-        <p>{{ getDeliveryStatus(order.deliveryResponseDto.status) }}</p>
-        <button @click="cancelOrder(order.id)" type="button" v-if="isDeliveryStatusReady">주문취소</button>
+        <p v-bind:class="{active: isOrderStatusComp(order)}">{{ getDeliveryStatus(order) }}</p>
+        <button @click="cancelOrder(order.id)" type="button" v-if="isDeliveryStatusReady(order)">주문취소</button>
       </div>
     </li>
   </ul>
@@ -63,16 +63,23 @@ export default {
       return commonUtils.localDateTimeToYearMonthDay(time);
     },
 
-    getDeliveryStatus(status) {
-      if (status === 'READY') return '결제완료';
-      else if (status === 'ONGOING') return '배송중';
-      else return '배송완료'
+    getDeliveryStatus(order) {
+      const deliveryStatus = order.deliveryResponseDto.status;
+
+      if (order.status === 'COMP') return '구매확정';
+      else if (deliveryStatus === 'READY') return '결제완료';
+      else if (deliveryStatus === 'ONGOING') return '배송중';
+      else return '배송완료';
     },
 
-    isDeliveryStatusReady() {
-      return this.orders.deliveryResponseDto.status === 'READY';
+    isDeliveryStatusReady(order) {
+      return order.deliveryResponseDto.status === 'READY';
     },
 
+    isOrderStatusComp(order) {
+      console.log(order);
+      return order.status === 'COMP';
+    }
 
   },
 
@@ -94,13 +101,13 @@ export default {
   }
 
   ul div.title-box h3 {
-    font-size: 18px;
+    font-size: 17px;
   }
 
   ul div.title-box p {
-    font-size: 15px;
+    font-size: 14px;
     color: #777;
-    margin-top: 6px;
+    margin-top: 10px;
   }
 
   ul li {
@@ -156,6 +163,11 @@ export default {
   ul li div.inner-col.delivery-status {
     flex-direction: column;
     width: 15%;
+  }
+
+  ul li div.inner-col.delivery-status p.active {
+    font-weight: 700;
+    color: #7ebb34;
   }
 
   ul li div.inner-col.no p {

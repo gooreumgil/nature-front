@@ -11,6 +11,13 @@
           <div class="img-box">
             <img v-bind:src="item.mainSrcPath" alt="">
           </div>
+          <div class="info-box">
+            <h4>{{ item.itemNameKor }}</h4>
+            <p>주문날짜: {{ convertTimeToStr(item.orderedAt) }}</p>
+          </div>
+          <div class="btn-box">
+            <button type="button">리뷰쓰기</button>
+          </div>
         </div>
       </div>
     </div>
@@ -39,6 +46,9 @@ export default {
     setReviewNav: {
       type: Function
     },
+    convertTimeToStr: {
+      type: Function
+    }
   },
 
   methods: {
@@ -71,7 +81,7 @@ export default {
 
   ul div.title-box nav {
     cursor: pointer;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 400;
     color: #888;
     margin-right: 10px;
@@ -91,15 +101,17 @@ export default {
   }
 
   ul div.title-box p {
-    font-size: 15px;
+    font-size: 14px;
     color: #777;
-    margin-top: 6px;
+    margin-top: 10px;
   }
 
   ul div.can-review-container {
     border-top: 1px solid #eaeaea;
     box-sizing: border-box;
-    padding-top: 25px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eaeaea;
   }
 
   ul div.can-review-items {
@@ -119,21 +131,69 @@ export default {
   ul div.can-review-items div.inner-box {
     display: flex;
     align-items: center;
+    position: relative;
   }
 
   ul div.can-review-items div.inner-box div.img-box {
-    width: 80px;
+    width: 100px;
   }
 
   ul div.can-review-items div.inner-box div.img-box img {
-    max-width: 80px;
+    max-width: 100px;
     width: 100%;
+  }
+
+  ul div.can-review-items div.inner-box div.info-box {
+    box-sizing: border-box;
+    padding-left: 20px;
+  }
+
+  ul div.can-review-items div.inner-box div.info-box h4 {
+    font-size: 16px;
+    font-weight: 400;
+    color: #333;
+  }
+
+  ul div.can-review-items div.inner-box div.info-box p {
+    font-size: 14px;
+    font-weight: 400;
+    color: #888;
+    margin-top: 8px;
+  }
+
+  ul div.can-review-items div.inner-box div.btn-box {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+  }
+
+  ul div.can-review-items div.inner-box div.btn-box button {
+    outline: none;
+    font-size: 13px;
+    cursor: pointer;
+    color: #7ebb34;
+    box-sizing: border-box;
+    padding: 8px 13px;
+    border-radius: 3px;
+    border: 1px solid #7ebb34;
+    background-color: #fff;
   }
 
   ul div.my-review-container {
     border-top: 1px solid #eaeaea;
     box-sizing: border-box;
     padding-top: 25px;
+  }
+
+  ul div.my-review-container div.reviewEmpty {
+
+  }
+
+  ul div.my-review-container div.reviewEmpty p {
+    font-size: 15px;
+    font-weight: 400;
+    color: #555;
   }
 
 </style>

@@ -78,13 +78,13 @@ export default {
   }
 
   ul div.title-box h3 {
-    font-size: 18px;
+    font-size: 17px;
   }
 
   ul div.title-box p {
-    font-size: 15px;
+    font-size: 14px;
     color: #777;
-    margin-top: 6px;
+    margin-top: 10px;
   }
 
   ul div.divider {
