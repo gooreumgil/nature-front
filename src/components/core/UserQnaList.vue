@@ -129,8 +129,8 @@ export default {
 
   ul li div.list-inner div.info-box h4 {
     width: 75%;
-    font-size: 16px;
-    font-weight: 700;
+    font-size: 15px;
+    font-weight: 400;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -139,6 +139,7 @@ export default {
   ul li div.list-inner div.info-box h5 {
     font-weight: 400;
     margin-top: 8px;
+    color: #888;
   }
 
   ul li div.list-inner div.info-box p {

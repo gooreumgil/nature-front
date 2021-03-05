@@ -75,5 +75,16 @@ export default {
         'Authorization': 'Bearer ' + token
       }
     })
+  },
+
+  getReviews(token) {
+
+    const url = `${commonUtils.getApiBaseUrl()}/v1/users/reviews`;
+    return axios.get(url, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
+
   }
 }

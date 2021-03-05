@@ -34,6 +34,7 @@
           <OrderList v-bind:orders="orders" v-bind:cancel-order="cancelOrder" v-if="isCurrentTabThis('orderAndDelivery')"/>
           <LikeItems v-if="isCurrentTabThis('likes')" v-bind:like-items="likeItems"/>
           <UserQnaList v-if="isCurrentTabThis('qna')" v-bind:qna-list="qnaList"/>
+          <UserReviews v-if="isCurrentTabThis('review')" v-bind:can-review-items="canReviewItems" v-bind:set-review-nav="setReviewNav" v-bind:review-nav="reviewNav"/>
         </div>
       </div>
     </div>
@@ -53,9 +54,10 @@ import LikeItems from "@/components/core/LikeItems";
 import Bottom from "@/components/core/Bottom";
 import Footer from "@/components/core/Footer";
 import UserQnaList from "@/components/core/UserQnaList";
+import UserReviews from "@/components/core/UserReviews";
 export default {
   name: "Index",
-  components: {UserQnaList, Footer, Bottom, LikeItems, OrderList, MyPageNav, Header},
+  components: {UserReviews, UserQnaList, Footer, Bottom, LikeItems, OrderList, MyPageNav, Header},
   data() {
     return {
       init: false,
@@ -67,7 +69,8 @@ export default {
       likeItems: [],
       qnaList: [],
       basicInfoView: true,
-      canReviewItems: []
+      canReviewItems: [],
+      reviewNav: 'myReviews'
     }
   },
 
@@ -180,12 +183,35 @@ export default {
       try {
         const res = await userApi.getCanReviewItems(token);
         this.canReviewItems = res.data.content;
-        console.log(this.canReviewItems);
+
         this.currentTab = 'review';
+        this.reviewNav = 'canReview';
+        this.basicInfoView = false;
       } catch (err) {
         alert('문제가 발생하였습니다.');
         console.log(err);
       }
+    },
+
+    async setMyReviews() {
+
+      const token = this.$cookies.get('token');
+
+      try {
+        const res = await userApi.getReviews(token);
+        this.currentTab = 'review';
+        this.reviewNav = 'myReviews';
+        this.basicInfoView = false;
+      } catch (err) {
+        alert('문제가 발생하였습니다.');
+        console.log(err);
+      }
+
+    },
+
+    setReviewNav(nav) {
+      if (nav === 'myReviews') this.setMyReviews();
+      else this.setCanReviewItems();
     },
 
     getOwnPoints() {
@@ -220,7 +246,8 @@ export default {
         this.setQnaList();
       }
       else if (tab === 'review') {
-        this.setCanReviewItems();
+        if (this.reviewNav === 'canReview') this.setCanReviewItems();
+        else this.setMyReviews();
       }
     },
 
