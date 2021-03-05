@@ -13,6 +13,7 @@ import com.rainyheaven.nature.core.domain.orderitem.dto.app.OrderItemResponseDto
 import com.rainyheaven.nature.core.domain.qna.Qna;
 import com.rainyheaven.nature.core.domain.qna.QnaService;
 import com.rainyheaven.nature.core.domain.qna.dto.app.QnaResponseDto;
+import com.rainyheaven.nature.core.domain.review.Review;
 import com.rainyheaven.nature.core.domain.review.ReviewService;
 import com.rainyheaven.nature.core.domain.user.TokenUser;
 import com.rainyheaven.nature.core.domain.user.User;
@@ -81,9 +82,20 @@ public class UserController {
         return ResponseEntity.ok(orderService.countAllByUserAndDeliveryStatus(tokenUser.getId(), deliveryStatus));
     }
 
+    @GetMapping("/reviews")
+    public ResponseEntity getReviews(
+            @AuthenticationPrincipal TokenUser tokenUser,
+            @PageableDefault(sort = "createdDate",  direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Page<Review> reviewPage = reviewService.getPageByUser(tokenUser.getId(), pageable);
+        return null;
+
+
+    }
+
     @GetMapping("/count/reviews")
-    public ResponseEntity<Integer> getReviews(@AuthenticationPrincipal TokenUser tokenUser) {
-        int totalUserReviews = reviewService.getTotalUserReviews(tokenUser.getId());
+    public ResponseEntity<Integer> getTotalReviews(@AuthenticationPrincipal TokenUser tokenUser) {
+        int totalUserReviews = reviewService.getTotalByUser(tokenUser.getId());
         return ResponseEntity.ok(totalUserReviews);
 
     }
@@ -94,7 +106,12 @@ public class UserController {
             @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<OrderItem> orderItemPage = orderItemService.pageByUserIdAndDeliveryStatus(tokenUser.getId(), DeliveryStatus.COMP, pageable);
-        Page<OrderItemResponseDto> orderItemPageMap = orderItemPage.map(orderItem -> new OrderItemResponseDto(orderItem, imgSrcPrefix));
+        Page<OrderItemResponseDto> orderItemPageMap = orderItemPage
+                .map(orderItem -> {
+                    OrderItemResponseDto orderItemResponseDto = new OrderItemResponseDto(orderItem, imgSrcPrefix);
+                    orderItemResponseDto.setOrderedAt(orderItem.getOrder().getCreatedDate());
+                    return orderItemResponseDto;
+                });
 
         return ResponseEntity.ok(orderItemPageMap);
 

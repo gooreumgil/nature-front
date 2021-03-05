@@ -1,11 +1,15 @@
 package com.rainyheaven.nature.core.domain.orderitem.dto.app;
 
 import com.rainyheaven.nature.core.domain.itemsrc.ImgType;
+import com.rainyheaven.nature.core.domain.order.Order;
+import com.rainyheaven.nature.core.domain.order.dto.app.OrderResponseDto;
 import com.rainyheaven.nature.core.domain.orderitem.OrderItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -21,6 +25,7 @@ public class OrderItemResponseDto {
     private Integer itemDiscountPrice;
     private Integer itemQuantity;
     private String mainSrcPath;
+    private LocalDateTime orderedAt;
 
     public OrderItemResponseDto(OrderItem orderItem, String srcPrefix) {
         this.id = orderItem.getId();
