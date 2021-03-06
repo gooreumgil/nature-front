@@ -30,11 +30,11 @@ export default {
   data() {
     return {
       stars: [
-        {'idx': 0, 'checked': false, stroke: '#202020', fill: 'none'},
-        {'idx': 1, 'checked': false, stroke: '#202020', fill: 'none'},
-        {'idx': 2, 'checked': false, stroke: '#202020', fill: 'none'},
-        {'idx': 3, 'checked': false, stroke: '#202020', fill: 'none'},
-        {'idx': 4, 'checked': false, stroke: '#202020', fill: 'none'}
+        {'idx': 0, 'checked': false, rating: 1, stroke: '#202020', fill: 'none'},
+        {'idx': 1, 'checked': false, rating: 2, stroke: '#202020', fill: 'none'},
+        {'idx': 2, 'checked': false, rating: 3, stroke: '#202020', fill: 'none'},
+        {'idx': 3, 'checked': false, rating: 4, stroke: '#202020', fill: 'none'},
+        {'idx': 4, 'checked': false, rating: 5, stroke: '#202020', fill: 'none'}
       ],
     }
   },
