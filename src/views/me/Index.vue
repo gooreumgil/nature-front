@@ -37,10 +37,12 @@
           <UserReviews v-if="isCurrentTabThis('review')"
                        v-bind:can-review-items="canReviewItems"
                        v-bind:set-review-nav="setReviewNav"
-                       v-bind:review-nav="reviewNav" v-bind:convert-time-to-str="convertTimeToStr"/>
+                       v-bind:review-nav="reviewNav" v-bind:convert-time-to-str="convertTimeToStr" v-bind:write-modal-view-toggle="writeModalViewToggle"/>
         </div>
       </div>
     </div>
+
+    <WriteReviewModal v-if="writeModalView" v-bind:review-item="reviewItem"/>
 
     <Bottom />
     <Footer />
@@ -59,9 +61,10 @@ import Footer from "@/components/core/Footer";
 import UserQnaList from "@/components/core/UserQnaList";
 import UserReviews from "@/components/core/UserReviews";
 import commonUtils from "@/utils/commonUtils";
+import WriteReviewModal from "@/components/core/WriteReviewModal";
 export default {
   name: "Index",
-  components: {UserReviews, UserQnaList, Footer, Bottom, LikeItems, OrderList, MyPageNav, Header},
+  components: {WriteReviewModal, UserReviews, UserQnaList, Footer, Bottom, LikeItems, OrderList, MyPageNav, Header},
   data() {
     return {
       init: false,
@@ -74,7 +77,9 @@ export default {
       qnaList: [],
       basicInfoView: true,
       canReviewItems: [],
-      reviewNav: 'myReviews'
+      reviewNav: 'myReviews',
+      writeModalView: false,
+      reviewItem: null
     }
   },
 
@@ -257,6 +262,11 @@ export default {
 
     convertTimeToStr(time) {
       return commonUtils.localDateTimeToYearMonthDay(time);
+    },
+
+    writeModalViewToggle(item) {
+      this.reviewItem = item;
+      this.writeModalView = !this.writeModalView;
     }
 
   }

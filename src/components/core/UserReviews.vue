@@ -16,7 +16,7 @@
             <p>주문날짜: {{ convertTimeToStr(item.orderedAt) }}</p>
           </div>
           <div class="btn-box">
-            <button type="button">리뷰쓰기</button>
+            <button @click="writeModalViewToggle(item)" type="button">리뷰쓰기</button>
           </div>
         </div>
       </div>
@@ -47,6 +47,9 @@ export default {
       type: Function
     },
     convertTimeToStr: {
+      type: Function
+    },
+    writeModalViewToggle: {
       type: Function
     }
   },
