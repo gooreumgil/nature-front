@@ -15,9 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 public class ReviewSaveRequestDto {
 
-    private Long itemId;
-    private String content;
     private Integer rating;
+    private String content;
     private List<MultipartFile> files = new ArrayList<>();
 
 

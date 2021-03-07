@@ -2,14 +2,16 @@ package com.rainyheaven.nature.core.domain.review;
 
 import com.rainyheaven.nature.core.domain.base.BaseTimeEntity;
 import com.rainyheaven.nature.core.domain.item.Item;
+import com.rainyheaven.nature.core.domain.review.dto.app.ReviewSaveRequestDto;
 import com.rainyheaven.nature.core.domain.reviewlike.ReviewLike;
-import com.rainyheaven.nature.core.domain.reviewsrc.ReviewSrc;
+import com.rainyheaven.nature.core.domain.reviewimage.ReviewImage;
 import com.rainyheaven.nature.core.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,11 +38,39 @@ public class Review extends BaseTimeEntity {
     private User user;
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
-    private List<ReviewSrc> reviewSrcs = new ArrayList<>();
+    private List<ReviewImage> reviewImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     private List<ReviewLike> reviewLikes = new ArrayList<>();
 
 
+    public static Review create(ReviewSaveRequestDto reviewSaveRequestDto, Item item, User user) {
+        Review review = new Review();
+        review.content = reviewSaveRequestDto.getContent();
+        review.rating = reviewSaveRequestDto.getRating();
+        review.setItem(item);
+        review.setUser(user);
+        review.setCreatedDate(LocalDateTime.now());
+        review.setLastModifiedDate(LocalDateTime.now());
+        return review;
+    }
 
+    // 연관관계 편의 메소드
+    private void setItem(Item item) {
+        this.item = item;
+        item.addReview(this);
+    }
+
+    // 연관관계 편의 메소드
+    private void setUser(User user) {
+        this.user = user;
+        user.addReview(this);
+    }
+
+    // 이미지 추가
+    public void addAllReviewImages(List<ReviewImage> reviewImages) {
+        this.reviewImages.addAll(reviewImages);
+        reviewImages.forEach(reviewImage -> reviewImage.setReview(this));
+
+    }
 }

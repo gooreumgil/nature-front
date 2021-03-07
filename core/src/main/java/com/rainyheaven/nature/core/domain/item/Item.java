@@ -3,15 +3,15 @@ package com.rainyheaven.nature.core.domain.item;
 import com.rainyheaven.nature.core.domain.base.BaseTimeEntity;
 import com.rainyheaven.nature.core.domain.categoryitem.CategoryItem;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLike;
-import com.rainyheaven.nature.core.domain.itemsrc.ItemSrc;
+import com.rainyheaven.nature.core.domain.itemimage.ItemImage;
 import com.rainyheaven.nature.core.domain.orderitem.OrderItem;
 import com.rainyheaven.nature.core.domain.qna.Qna;
+import com.rainyheaven.nature.core.domain.review.Review;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class Item extends BaseTimeEntity {
     private Long id;
     private String nameKor;
     private String nameEng;
-    private String mainSrcPath;
+    private String mainImgPath;
     private int price;
     private int discountPrice;
     private int stockQuantity;
@@ -37,7 +37,7 @@ public class Item extends BaseTimeEntity {
     private int savePoints;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ItemSrc> itemSrcs = new ArrayList<>();
+    private List<ItemImage> itemImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "item")
     private List<CategoryItem> categoryItems = new ArrayList<>();
@@ -50,6 +50,9 @@ public class Item extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<Qna> qnaList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    private List<Review> reviews = new ArrayList<>();
     
     // 연관관계 편의 메소드
     public void addOrderItems(OrderItem orderItem) {
@@ -74,5 +77,10 @@ public class Item extends BaseTimeEntity {
     // item like 삭제할 때 likesCount 감소
     public void minusLikesCount() {
         this.likesCount--;
+    }
+
+    // 연관관계 편의 메소드
+    public void addReview(Review review) {
+        this.reviews.add(review);
     }
 }

@@ -12,6 +12,10 @@ spring:
         format_sql: true
       dialect: org.hibernate.dialect.MySQL8Dialect
       default_batch_size: 100
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 10MB
 
 logging:
   level:
@@ -28,3 +32,12 @@ aes:
 
 jwt:
   secret: rlaejrqodhkehrmvhfptmxmwlatmdtnv
+
+aws:
+  s3:
+    bucket-name: nature-portfolio
+    access-key: AKIA5HDDOS7EDIY5B6YX
+    secret-key: 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
+
+custom:
+  upload-path: ./upload/

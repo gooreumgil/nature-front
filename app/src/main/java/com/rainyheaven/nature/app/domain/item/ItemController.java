@@ -69,7 +69,7 @@ public class ItemController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ItemDetailResponseDto> get(@PathVariable Long id) {
-        Item item = itemService.findByIdWithSrcs(id);
+        Item item = itemService.findByIdWithImages(id);
         return ResponseEntity.ok(new ItemDetailResponseDto(item, imgSrcPrefix));
     }
 

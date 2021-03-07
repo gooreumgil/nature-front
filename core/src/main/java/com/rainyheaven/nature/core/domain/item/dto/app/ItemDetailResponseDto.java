@@ -2,13 +2,12 @@ package com.rainyheaven.nature.core.domain.item.dto.app;
 
 import com.rainyheaven.nature.core.domain.categoryitem.CategoryItem;
 import com.rainyheaven.nature.core.domain.item.Item;
-import com.rainyheaven.nature.core.domain.itemsrc.ImgType;
-import com.rainyheaven.nature.core.domain.itemsrc.ItemSrc;
+import com.rainyheaven.nature.core.domain.itemimage.ImgType;
+import com.rainyheaven.nature.core.domain.itemimage.ItemImage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.util.ObjectUtils;
 
 import java.util.function.Predicate;
 
@@ -28,8 +27,8 @@ public class ItemDetailResponseDto {
     private Integer capacity;
     private Integer savePoints;
 
-    private String mainSrcPath;
-    private String detailSrcPath;
+    private String mainImgPath;
+    private String detailImgPath;
 
     public ItemDetailResponseDto(Item item, String srcPrefix) {
 
@@ -46,17 +45,17 @@ public class ItemDetailResponseDto {
         this.capacity = item.getCapacity();
         this.savePoints = item.getSavePoints();
 
-        item.getItemSrcs()
+        item.getItemImages()
                 .stream().filter(filterImgType(ImgType.MAIN))
-                .findFirst().ifPresent(itemSrc -> this.mainSrcPath = srcPrefix + itemSrc.getS3Key());
+                .findFirst().ifPresent(itemImage -> this.mainImgPath = srcPrefix + itemImage.getS3Key());
 
-        item.getItemSrcs()
+        item.getItemImages()
                 .stream().filter(filterImgType(ImgType.DETAIL))
-                .findFirst().ifPresent(itemSrc -> this.detailSrcPath = srcPrefix + itemSrc.getS3Key());
+                .findFirst().ifPresent(itemImage -> this.detailImgPath = srcPrefix + itemImage.getS3Key());
 
     }
 
-    private Predicate<ItemSrc> filterImgType(ImgType imgType) {
-        return (itemSrc) -> itemSrc.getImgType().equals(imgType);
+    private Predicate<ItemImage> filterImgType(ImgType imgType) {
+        return (itemImage) -> itemImage.getImgType().equals(imgType);
     }
 }

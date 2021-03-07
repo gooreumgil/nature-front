@@ -1,7 +1,6 @@
 package com.rainyheaven.nature.core.domain.item;
 
 import com.rainyheaven.nature.core.domain.itemlike.ItemLike;
-import com.rainyheaven.nature.core.domain.itemlike.ItemLikeService;
 import com.rainyheaven.nature.core.domain.qna.Qna;
 import com.rainyheaven.nature.core.domain.qna.dto.app.QnaSaveRequestDto;
 import com.rainyheaven.nature.core.domain.user.User;
@@ -26,8 +25,8 @@ public class ItemService {
         return itemRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
-    public Item findByIdWithSrcs(Long id) {
-        return itemRepository.findByIdWithSrcs(id).orElseThrow(RuntimeException::new);
+    public Item findByIdWithImages(Long id) {
+        return itemRepository.findByIdWithImages(id).orElseThrow(RuntimeException::new);
     }
 
     public List<Item> findByIds(List<Long> ids) {

@@ -15,6 +15,7 @@ import com.rainyheaven.nature.core.domain.qna.QnaService;
 import com.rainyheaven.nature.core.domain.qna.dto.app.QnaResponseDto;
 import com.rainyheaven.nature.core.domain.review.Review;
 import com.rainyheaven.nature.core.domain.review.ReviewService;
+import com.rainyheaven.nature.core.domain.review.dto.app.ReviewResponseDto;
 import com.rainyheaven.nature.core.domain.user.TokenUser;
 import com.rainyheaven.nature.core.domain.user.User;
 import com.rainyheaven.nature.core.domain.user.UserService;
@@ -83,12 +84,13 @@ public class UserController {
     }
 
     @GetMapping("/reviews")
-    public ResponseEntity getReviews(
+    public ResponseEntity<Page<ReviewResponseDto>> getReviews(
             @AuthenticationPrincipal TokenUser tokenUser,
             @PageableDefault(sort = "createdDate",  direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Review> reviewPage = reviewService.getPageByUser(tokenUser.getId(), pageable);
-        return null;
+        Page<ReviewResponseDto> reviewPageMap = reviewPage.map(review -> new ReviewResponseDto(review, imgSrcPrefix));
+        return ResponseEntity.ok(reviewPageMap);
 
 
     }

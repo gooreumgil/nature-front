@@ -63,4 +63,8 @@ public class OrderItem extends BaseTimeEntity {
         order.addOrderItems(this);
     }
 
+    // 리뷰를 남겼는지 안 남겼는지
+    public void setLeaveReview(boolean leaveReview) {
+        this.leaveReview = leaveReview;
+    }
 }

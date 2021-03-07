@@ -1,8 +1,6 @@
 package com.rainyheaven.nature.core.domain.item.dto.app;
 
 import com.rainyheaven.nature.core.domain.item.Item;
-import com.rainyheaven.nature.core.domain.itemsrc.ImgType;
-import com.rainyheaven.nature.core.domain.itemsrc.ItemSrc;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +15,7 @@ public class ItemSimpleResponseDto {
     private String nameEng;
     private Integer price;
     private Integer discountPrice;
-    private String mainSrcPath;
+    private String mainImgPath;
     private String description;
 
     public ItemSimpleResponseDto(Item item, String srcPrefix) {
@@ -26,7 +24,7 @@ public class ItemSimpleResponseDto {
         this.nameEng = item.getNameEng();
         this.price = item.getPrice();
         this.discountPrice = item.getDiscountPrice();
-        this.mainSrcPath = srcPrefix + item.getMainSrcPath();
+        this.mainImgPath = srcPrefix + item.getMainImgPath();
         this.description = item.getDescription();
     }
 }

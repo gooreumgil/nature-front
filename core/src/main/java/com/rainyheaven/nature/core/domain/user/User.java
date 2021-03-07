@@ -8,6 +8,7 @@ import com.rainyheaven.nature.core.domain.itemlike.ItemLike;
 import com.rainyheaven.nature.core.domain.order.Order;
 import com.rainyheaven.nature.core.domain.qna.Qna;
 import com.rainyheaven.nature.core.domain.review.Review;
+import com.rainyheaven.nature.core.domain.reviewimage.ReviewImage;
 import com.rainyheaven.nature.core.domain.reviewlike.ReviewLike;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserSaveRequestDto;
 import lombok.AllArgsConstructor;
@@ -107,5 +108,10 @@ public class User extends BaseTimeEntity {
     // 연관관계 편의 메소드
     public void addQna(Qna qna) {
         this.qnaList.add(qna);
+    }
+
+    // 연관관계 편의 메소드
+    public void addReview(Review review) {
+        this.reviews.add(review);
     }
 }
