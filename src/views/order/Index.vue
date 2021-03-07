@@ -30,7 +30,7 @@
 
           <li class="order-item-list clearfix" v-for="(item, index) in items" v-bind:key="index">
             <div class="order-item-col name-and-img">
-              <img v-bind:src="item.mainSrcPath" alt="">
+              <img v-bind:src="item.mainImgPath" alt="">
               <div class="name-box">
                 <p>{{ item.nameKor }}</p>
                 <p>{{ item.nameEng }}</p>

@@ -7,7 +7,7 @@
     <li class="like-item-list" v-for="(likeItem, index) in likeItems" v-bind:key="index">
       <div class="inner-box">
         <div @click="goItemDetail(likeItem.id)" class="img-box">
-          <img v-bind:src="likeItem.mainSrcPath" alt="">
+          <img v-bind:src="likeItem.mainImgPath" alt="">
           <div class="hover-box"></div>
         </div>
         <div class="description borderBottom">

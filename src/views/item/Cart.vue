@@ -37,7 +37,7 @@
         </div>
         <div class="cart-col info">
           <div class="info-inner">
-            <img v-bind:src="item.mainSrcPath" alt="">
+            <img v-bind:src="item.mainImgPath" alt="">
             <p>{{ item.nameKor }}</p>
 
           </div>

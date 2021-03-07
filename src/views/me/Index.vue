@@ -36,13 +36,15 @@
           <UserQnaList v-if="isCurrentTabThis('qna')" v-bind:qna-list="qnaList"/>
           <UserReviews v-if="isCurrentTabThis('review')"
                        v-bind:can-review-items="canReviewItems"
+                       v-bind:my-reviews="myReviews"
+                       v-bind:is-reviews-empty="isReviewsEmpty"
                        v-bind:set-review-nav="setReviewNav"
                        v-bind:review-nav="reviewNav" v-bind:convert-time-to-str="convertTimeToStr" v-bind:write-modal-view-toggle="writeModalViewToggle"/>
         </div>
       </div>
     </div>
 
-    <WriteReviewModal v-if="writeModalView" v-bind:review-item="reviewItem"/>
+    <WriteReviewModal v-if="writeModalView" v-bind:review-item="reviewItem" v-bind:write-modal-view-toggle="writeModalViewToggle"/>
 
     <Bottom />
     <Footer />
@@ -79,7 +81,8 @@ export default {
       canReviewItems: [],
       reviewNav: 'myReviews',
       writeModalView: false,
-      reviewItem: null
+      reviewItem: null,
+      myReviews: []
     }
   },
 
@@ -210,12 +213,18 @@ export default {
         const res = await userApi.getReviews(token);
         this.currentTab = 'review';
         this.reviewNav = 'myReviews';
+        this.myReviews = res.data.content;
+        console.log(this.myReviews);
         this.basicInfoView = false;
       } catch (err) {
         alert('문제가 발생하였습니다.');
         console.log(err);
       }
 
+    },
+
+    isReviewsEmpty() {
+      return this.myReviews.length === 0;
     },
 
     setReviewNav(nav) {

@@ -9,7 +9,7 @@
     <li v-bind:class="{showContent: qna.showContent}" class="qna-list" v-for="(qna, index) in qnaList" v-bind:key="index">
       <div class="list-inner" @click="showContentToggle(qna)">
         <div class="img-box">
-          <img v-bind:src="qna.itemResponseDto.mainSrcPath" alt="">
+          <img v-bind:src="qna.itemResponseDto.mainImgPath" alt="">
         </div>
         <div class="info-box">
           <h4>{{ qnaContentSlice(qna.content) }}</h4>

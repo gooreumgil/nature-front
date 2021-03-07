@@ -3,7 +3,7 @@
     <li v-bind:class="{categoryProduct: categoryItem}" v-for="(item, index) in items" v-bind:key="index">
       <div class="inner-box">
         <div @click="goItemDetail(item.id)" class="img-box">
-          <img v-bind:src="item.mainSrcPath" alt="">
+          <img v-bind:src="item.mainImgPath" alt="">
           <div class="hover-box"></div>
         </div>
         <div class="description" v-bind:class="{borderBottom: cart}">

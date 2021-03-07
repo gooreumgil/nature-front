@@ -2,7 +2,7 @@
   <div class="modal-container">
     <div class="modal-inner">
       <div class="info-box">
-        <img v-bind:src="reviewItem.mainSrcPath" alt="">
+        <img v-bind:src="reviewItem.mainImgPath" alt="">
         <h3>{{ reviewItem.itemNameKor }}</h3>
         <div class="rating-img">
           <span v-for="(star, index) in stars" v-bind:key="index">
@@ -33,8 +33,8 @@
 
           <input id="file-selector" ref="file" type="file" multiple="multiple" @change="handleFileUpload" accept="image/*">
 
-          <ul class="image-wrapper">
-            <li class="image-list" v-for="(uploadImage, index) in uploadImageFile" v-bind:key="uploadImage.idx">
+          <ul class="image-wrapper clearfix">
+            <li class="image-list" v-for="(uploadImage, index) in uploadImageFile" v-bind:key="index">
               <div class="imageItem" :style="'backgroundImage: url('+ uploadImage.result + ')'">
                 <button type="button" v-if="uploadImage.result" @click="imageDelete(index)" class="img-delete">
                 </button>
@@ -48,6 +48,8 @@
             </li>
           </ul>
         </div>
+
+        <button @click="writeReview" type="button">등록</button>
       </div>
     </div>
   </div>
@@ -64,6 +66,9 @@ export default {
   props: {
     reviewItem: {
       value: null
+    },
+    writeModalViewToggle: {
+      type: Function
     }
   },
 
@@ -84,10 +89,59 @@ export default {
   },
 
   created() {
-    console.log(this.stars);
+    console.log('reviewItem', this.reviewItem);
   },
 
   methods: {
+    writeReview() {
+
+      const checkedStar = this.stars.filter(star => star.checked === true);
+
+      if (checkedStar.length === 0) {
+        alert('평점을 입력해주세요');
+        return;
+      }
+
+      if (!this.reviewContent) {
+        alert('리뷰 내용을 입력해주세요');
+        return;
+      }
+
+      this.files.forEach(file => {
+        if (file.size > 10485760) {
+          alert('리뷰 이미지는 10MB를 넘길 수 업습니다.');
+          return;
+        }
+      });
+
+      const form = new FormData();
+
+      const token = this.$cookies.get('token');
+      const itemId = this.reviewItem.itemId;
+
+      const rating = checkedStar[0].rating;
+      const reviewContent = this.reviewContent;
+      const files = this.files;
+
+      form.append('rating', rating);
+      form.append('content', reviewContent);
+      files.forEach(file => {
+        form.append('files', file)
+      })
+
+      try {
+        reviewApi.writeReview(token, itemId, form);
+        alert('완료');
+        this.writeModalViewToggle(this.reviewItem);
+
+      } catch (err) {
+        alert('문제가 발생하였습니다.');
+        console.log(err);
+      }
+
+
+    },
+
     handleFileUpload(event) {
       const files = event.target.files;
       let maxFileSizeCheck = false;
@@ -225,42 +279,6 @@ export default {
 
     isReviewModalNavThis(nav) {
       return this.reviewModalNav === nav;
-    },
-
-    writeReview() {
-      const checkedStar = this.stars.filter(star => star.checked === true);
-      if (checkedStar.length === 0) {
-        alert('평점을 입력해주세요');
-        return;
-      }
-
-      if (!this.reviewContent) {
-        alert('리뷰 내용을 입력해주세요');
-        return;
-      }
-
-      this.files.forEach(file => {
-        if (file.size > 10485760) {
-          alert('리뷰 이미지는 10MB를 넘길 수 업습니다.');
-          return;
-        }
-      });
-
-      const token = this.$cookies.get('token');
-      const itemId = this.reviewItem.id;
-      const rating = checkedStar[0].rating;
-      const reviewContent = this.reviewContent;
-      const files = this.files;
-
-      try {
-        reviewApi.writeReview(token, itemId, rating, reviewContent, files);
-        alert('완료');
-      } catch (err) {
-        alert('문제가 발생하였습니다.');
-        console.log(err);
-      }
-
-
     }
   }
 }
@@ -331,13 +349,12 @@ export default {
 
   div.modal-container div.modal-inner div.content-box div.review-text textarea {
     width: 100%;
-    border: none;
     box-sizing: border-box;
-    outline: none;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
     font-size: 14px;
-    padding: 0;
+    outline-color: #eaeaea;
+    padding: 15px;
+    border: 1px solid #eaeaea;
+    border-radius: 5px;
   }
 
   div.modal-container div.modal-inner div.content-box div.review-img {
@@ -353,12 +370,12 @@ export default {
   }
 
   div.modal-container div.modal-inner div.content-box nav.review-modal-nav {
-    cursor: pointer;
     text-align: left;
     padding-bottom: 15px;
   }
 
   div.modal-container div.modal-inner div.content-box nav.review-modal-nav button {
+    cursor: pointer;
     width: 32px;
     height: 32px;
     background-color: #fff;
@@ -386,6 +403,7 @@ export default {
   }
 
   div.modal-container div.modal-inner div.content-box div.review-img label {
+    cursor: pointer;
     width: 100%;
     height: 100%;
     display: flex;
@@ -415,6 +433,9 @@ export default {
 
   div.modal-container div.modal-inner div.content-box div.review-img ul.image-wrapper {
     padding-top: 10px;
+    width: calc(100% + 10px);
+    margin: 0 auto;
+    transform: translateX(-5px);
   }
 
   div.modal-container div.modal-inner div.content-box div.review-img ul.image-wrapper li {

@@ -6,7 +6,7 @@
       <ul class="info-wrapper clearfix">
         <li class="info-list img">
           <div class="inner-box">
-            <img v-bind:src="item.mainSrcPath" alt="">
+            <img v-bind:src="item.mainImgPath" alt="">
           </div>
 
         </li>
@@ -93,7 +93,7 @@
       </nav>
 
       <div class="detail-info-box" v-if="currentTab === 'detail'">
-        <img v-bind:src="item.detailSrcPath" alt="">
+        <img v-bind:src="item.detailImgPath" alt="">
       </div>
 
       <div class="item-qna-box" v-if="currentTab === 'qna'">

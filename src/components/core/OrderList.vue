@@ -27,7 +27,7 @@
       </div>
       <div class="inner-col img">
         <div class="img-box">
-          <img v-bind:src="order.orderItemResponseDtos[0].mainSrcPath" alt="">
+          <img v-bind:src="order.orderItemResponseDtos[0].mainImgPath" alt="">
         </div>
         <p>{{ order.orderItemResponseDtos[0].itemNameKor }}</p>
       </div>
@@ -77,7 +77,6 @@ export default {
     },
 
     isOrderStatusComp(order) {
-      console.log(order);
       return order.status === 'COMP';
     }
 

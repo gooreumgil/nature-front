@@ -9,7 +9,7 @@
       <div class="can-review-items" v-for="(item, index) in canReviewItems" v-bind:key="index">
         <div class="inner-box">
           <div class="img-box">
-            <img v-bind:src="item.mainSrcPath" alt="">
+            <img v-bind:src="item.mainImgPath" alt="">
           </div>
           <div class="info-box">
             <h4>{{ item.itemNameKor }}</h4>
@@ -23,9 +23,14 @@
     </div>
 
     <div v-if="isReviewNavThis('myReviews')" class="my-review-container">
-      <div v-if="isReviewsEmpty" class="reviewEmpty">
+      <div v-if="myReviews.length === 0" class="reviewEmpty">
         <p>작성한 상품 리뷰가 없습니다.</p>
       </div>
+      <ul v-else class="my-review-wrapper">
+        <li class="my-review-list" v-for="(myReview, index) in myReviews" v-bind:key="index">
+          {{ myReview }}
+        </li>
+      </ul>
     </div>
   </ul>
 </template>
@@ -37,7 +42,7 @@ export default {
     canReviewItems: {
       value: []
     },
-    reviews: {
+    myReviews: {
       value: []
     },
     reviewNav: {
@@ -54,14 +59,18 @@ export default {
     }
   },
 
+  created() {
+    console.log(this.myReviews);
+  },
+
   methods: {
     isReviewNavThis(nav) {
       return this.reviewNav === nav;
     },
 
-    isReviewsEmpty() {
-      return this.reviews.length === 0;
-    }
+    // isReviewsEmpty() {
+    //   return this.myReviews.length === 0;
+    // }
   }
 }
 </script>
