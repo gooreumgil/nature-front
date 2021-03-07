@@ -12,15 +12,55 @@
 
         </div>
       </div>
+
+      <div class="content-box">
+
+        <nav class="review-modal-nav">
+          <button @click="setReviewModalNav('text')" v-bind:class="{active: isReviewModalNavThis('text')}" type="button">
+            <PencilIcon />
+          </button>
+          <button @click="setReviewModalNav('img')" v-bind:class="{active: isReviewModalNavThis('img')}" type="button">
+            <CameraIcon />
+          </button>
+        </nav>
+
+        <div class="review-text" v-if="isReviewModalNavThis('text')">
+          <textarea v-model="reviewContent" cols="30" rows="10" placeholder="내용을 입력해주세요.(최대 300자)"></textarea>
+        </div>
+        <div class="review-img" v-if="isReviewModalNavThis('img')">
+
+          <p>리뷰로 등록할 사진을 추가해주세요(최대 3장)</p>
+
+          <input id="file-selector" ref="file" type="file" multiple="multiple" @change="handleFileUpload" accept="image/*">
+
+          <ul class="image-wrapper">
+            <li class="image-list" v-for="(uploadImage, index) in uploadImageFile" v-bind:key="uploadImage.idx">
+              <div class="imageItem" :style="'backgroundImage: url('+ uploadImage.result + ')'">
+                <button type="button" v-if="uploadImage.result" @click="imageDelete(index)" class="img-delete">
+                </button>
+              </div>
+            </li>
+            <li class="img-add" v-if="uploadImageFile.length < 3">
+              <label for="file-selector" class="addFile">
+                +
+
+              </label>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import StarIcon from "@/components/icon/StarIcon";
+import PencilIcon from "@/components/icon/PencilIcon";
+import CameraIcon from "@/components/icon/CameraIcon";
+import reviewApi from "@/api/ReviewApi";
 export default {
   name: "WriteReviewModal",
-  components: {StarIcon},
+  components: {CameraIcon, PencilIcon, StarIcon},
   props: {
     reviewItem: {
       value: null
@@ -36,6 +76,10 @@ export default {
         {'idx': 3, 'checked': false, rating: 4, stroke: '#202020', fill: 'none'},
         {'idx': 4, 'checked': false, rating: 5, stroke: '#202020', fill: 'none'}
       ],
+      reviewContent: null,
+      files: [],
+      uploadImageFile: [],
+      reviewModalNav: 'img'
     }
   },
 
@@ -44,6 +88,73 @@ export default {
   },
 
   methods: {
+    handleFileUpload(event) {
+      const files = event.target.files;
+      let maxFileSizeCheck = false;
+
+      if ((this.files.length + files.length) > 3) {
+        alert("사진은 3장 까지만 가능합니다.");
+        return;
+      }
+
+      files.forEach(value => {
+        if (value.size > 10485760) {
+          maxFileSizeCheck = true;
+        }
+      });
+
+      if (maxFileSizeCheck === true) {
+        alert("파일 용량은 10MB를 넘을 수 없습니다");
+        return;
+      }
+
+      const length = this.files.length + files.length;
+
+      if (length >= 4) {
+        alert("사진은 3장까지만 가능합니다");
+        return;
+      }
+
+      for (let i = 0; i < files.length; i++) {
+        this.files.push(files[i]);
+      }
+
+      if (window.File && window.FileList && window.FileReader) {
+        // const output = document.getElementById('result');
+        for (var i = 0; i < files.length; i++) {
+          // var file = files[i];
+          var file = files.item(i);
+
+          //Only pics
+          if (!file.type.match('image')) continue;
+
+          var picReader = new FileReader();
+
+          picReader.onload = function (e) {
+            const result = e.target.result;
+
+            const obj = {
+              result: result,
+              idx: this.imgIdx
+            };
+
+            this.uploadImageFile.push(obj);
+            this.imgIdx = this.imgIdx + 1;
+
+          }.bind(this);
+          // this.imgIdx = this.imgIdx + 1;
+          picReader.readAsDataURL(file);
+        }
+      } else {
+        console.log("Your browser does not support File API");
+      }
+    },
+
+    imageDelete(idx) {
+      this.$delete(this.files, idx);
+      this.$delete(this.uploadImageFile, idx);
+    },
+
     hoverEvent(idx, type) {
 
       if (type === 'in') {
@@ -106,6 +217,50 @@ export default {
 
     geCheckedStar() {
       return this.stars.filter(star => star.checked === true);
+    },
+
+    setReviewModalNav(nav) {
+      this.reviewModalNav = nav;
+    },
+
+    isReviewModalNavThis(nav) {
+      return this.reviewModalNav === nav;
+    },
+
+    writeReview() {
+      const checkedStar = this.stars.filter(star => star.checked === true);
+      if (checkedStar.length === 0) {
+        alert('평점을 입력해주세요');
+        return;
+      }
+
+      if (!this.reviewContent) {
+        alert('리뷰 내용을 입력해주세요');
+        return;
+      }
+
+      this.files.forEach(file => {
+        if (file.size > 10485760) {
+          alert('리뷰 이미지는 10MB를 넘길 수 업습니다.');
+          return;
+        }
+      });
+
+      const token = this.$cookies.get('token');
+      const itemId = this.reviewItem.id;
+      const rating = checkedStar[0].rating;
+      const reviewContent = this.reviewContent;
+      const files = this.files;
+
+      try {
+        reviewApi.writeReview(token, itemId, rating, reviewContent, files);
+        alert('완료');
+      } catch (err) {
+        alert('문제가 발생하였습니다.');
+        console.log(err);
+      }
+
+
     }
   }
 }
@@ -162,6 +317,151 @@ export default {
   div.modal-container div.modal-inner div.info-box div.rating-img span {
     display: inline-block;
   }
+
+  div.modal-container div.modal-inner div.content-box {
+    /*height: 395px;*/
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 20px 30px;
+  }
+
+  div.modal-container div.modal-inner div.content-box div.review-text {
+    /*height: 100%;*/
+  }
+
+  div.modal-container div.modal-inner div.content-box div.review-text textarea {
+    width: 100%;
+    border: none;
+    box-sizing: border-box;
+    outline: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    font-size: 14px;
+    padding: 0;
+  }
+
+  div.modal-container div.modal-inner div.content-box div.review-img {
+    /*box-sizing: border-box;*/
+    /*padding: 20px;*/
+  }
+
+  div.modal-container div.modal-inner div.content-box div.review-img p {
+    text-align: left;
+    font-size: 14px;
+    color: #777;
+    margin-top: 3px;
+  }
+
+  div.modal-container div.modal-inner div.content-box nav.review-modal-nav {
+    cursor: pointer;
+    text-align: left;
+    padding-bottom: 15px;
+  }
+
+  div.modal-container div.modal-inner div.content-box nav.review-modal-nav button {
+    width: 32px;
+    height: 32px;
+    background-color: #fff;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    outline: none;
+  }
+
+  div.modal-container div.modal-inner div.content-box nav.review-modal-nav button:first-child {
+    margin-right: 5px;
+  }
+
+  div.modal-container div.modal-inner div.content-box nav.review-modal-nav button.active {
+    background-color: #f1f1f1;
+  }
+
+  div.modal-container div.modal-inner div.content-box nav.review-modal-nav button svg {
+    max-width: 14px;
+    width: 100%;
+  }
+
+  div.modal-container div.modal-inner div.content-box nav.review-modal-nav button:last-child svg {
+    max-width: 16px;
+    width: 100%;
+  }
+
+  div.modal-container div.modal-inner div.content-box div.review-img label {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    /*margin-top: 10px;*/
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid #eaeaea;
+    background-color: #fff;
+  }
+
+  div.modal-container div.modal-inner div.content-box div.review-img label svg {
+    max-width: 20px;
+    width: 100%;
+    margin-left: 5px;
+  }
+
+  div.modal-container div.modal-inner div.content-box div.review-img input[type=file] {
+    display: none;
+  }
+
+  div.modal-container div.modal-inner div.content-box div.review-img ul.image-wrapper {
+    padding-top: 10px;
+  }
+
+  div.modal-container div.modal-inner div.content-box div.review-img ul.image-wrapper li {
+    float: left;
+    width: 33.33%;
+    box-sizing: border-box;
+    height: 115px;
+    padding: 5px;
+    position: relative;
+
+    /*height: 105px;*/
+  }
+
+  div.modal-container div.modal-inner div.content-box div.review-img ul.image-wrapper li div.imageItem {
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 3px;
+    height: 100%;
+  }
+
+  div.modal-container div.modal-inner div.content-box div.review-img ul.image-wrapper li div.imageItem button {
+    outline: none;
+    cursor: pointer;
+  }
+
+  div.modal-container div.modal-inner div.content-box div.review-img ul.image-wrapper li div.imageItem button.img-delete {
+    -webkit-appearance: none;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, .3);
+    line-height: 0;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    text-align: center;
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' aria-labelledby='title' aria-describedby='desc' role='img' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Ctitle%3EClose%3C/title%3E%3Cdesc%3EA line styled icon from Orion Icon Library.%3C/desc%3E%3Cpath data-name='layer1' fill='none' stroke='%23ffffff' stroke-miterlimit='10' stroke-width='3' d='M41.999 20.002l-22 22m22 0L20 20' stroke-linejoin='round' stroke-linecap='round'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    background-position: center center;
+  }
+
+
+
+
 
 
 </style>
