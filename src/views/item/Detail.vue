@@ -33,9 +33,9 @@
             <p class="capacity">
               <span class="label">용량</span> {{ item.capacity }} ml
             </p>
-            <p class="savePoints">
-              <span class="label">적립금</span> {{ item.savePoints | price }} 원
-            </p>
+<!--            <p class="savePoints">-->
+<!--              <span class="label">적립금</span> {{ item.savePoints | price }} 원-->
+<!--            </p>-->
           </div>
 
           <div class="out-box totalPrice">
@@ -483,6 +483,10 @@ export default {
   section.main-container section.info-container ul li.detail div p {
     font-weight: 400;
     color: #555;
+  }
+
+  section.main-container section.info-container ul li.detail div.out-box p.capacity {
+    margin-bottom: 0;
   }
 
   section.main-container section.info-container ul li.detail div p:first-child {

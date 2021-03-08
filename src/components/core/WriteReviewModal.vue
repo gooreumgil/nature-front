@@ -67,6 +67,9 @@ export default {
     reviewItem: {
       value: null
     },
+    writeReviewComplete: {
+      type: Function
+    },
     writeModalViewToggle: {
       type: Function
     }
@@ -117,6 +120,7 @@ export default {
       const form = new FormData();
 
       const token = this.$cookies.get('token');
+      const orderItemId = this.reviewItem.id;
       const itemId = this.reviewItem.itemId;
 
       const rating = checkedStar[0].rating;
@@ -125,14 +129,18 @@ export default {
 
       form.append('rating', rating);
       form.append('content', reviewContent);
-      files.forEach(file => {
-        form.append('files', file)
-      })
+      if (files) {
+        files.forEach(file => {
+          form.append('files', file)
+        });
+      }
+
 
       try {
-        reviewApi.writeReview(token, itemId, form);
+        reviewApi.writeReview(token, itemId, orderItemId, form);
         alert('완료');
         this.writeModalViewToggle(this.reviewItem);
+        this.writeReviewComplete(this.reviewItem);
 
       } catch (err) {
         alert('문제가 발생하였습니다.');

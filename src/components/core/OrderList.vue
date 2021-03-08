@@ -40,6 +40,7 @@
       <div class="inner-col delivery-status">
         <p v-bind:class="{active: isOrderStatusComp(order)}">{{ getDeliveryStatus(order) }}</p>
         <button @click="cancelOrder(order.id)" type="button" v-if="isDeliveryStatusReady(order)">주문취소</button>
+        <button class="confirm-order" @click="confirmOrder(order)" type="button" v-if="canOrderConfirm(order)">구매확정</button>
       </div>
     </li>
   </ul>
@@ -47,6 +48,7 @@
 
 <script>
 import commonUtils from "@/utils/commonUtils";
+import orderApi from "@/api/OrderApi";
 export default {
   name: "OrderList",
   props: {
@@ -66,7 +68,7 @@ export default {
     getDeliveryStatus(order) {
       const deliveryStatus = order.deliveryResponseDto.status;
 
-      if (order.status === 'COMP') return '구매확정';
+      if (order.status === 'COMP') return '구매완료';
       else if (deliveryStatus === 'READY') return '결제완료';
       else if (deliveryStatus === 'ONGOING') return '배송중';
       else return '배송완료';
@@ -74,6 +76,30 @@ export default {
 
     isDeliveryStatusReady(order) {
       return order.deliveryResponseDto.status === 'READY';
+    },
+
+    canOrderConfirm(order) {
+
+      if (order.status === 'COMP') {
+        return false;
+      }
+
+
+      return order.deliveryResponseDto.status === 'ONGOING' || order.deliveryResponseDto.status === 'COMP';
+    },
+
+    confirmOrder(order) {
+
+      const token = this.$cookies.get('token');
+
+      try {
+        orderApi.confirmOrder(token, order.id);
+        alert('구매확정 되었습니다!');
+        order.status = 'COMP';
+      } catch (err) {
+        alert('문제가 발생하였습니다.');
+        console.log(err);
+      }
     },
 
     isOrderStatusComp(order) {
@@ -213,6 +239,10 @@ export default {
     font-size: 12px;
     font-weight: 400;
     color: #ff0974;
+  }
+
+  ul li div.inner-col.delivery-status button.confirm-order {
+    color: #0fafbe;
   }
 
 </style>

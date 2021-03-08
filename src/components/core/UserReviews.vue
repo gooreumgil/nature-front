@@ -5,7 +5,7 @@
       <nav @click="setReviewNav('canReview')" v-bind:class="{active: isReviewNavThis('canReview')}">작성 가능한 리뷰</nav>
     </div>
 
-    <div v-if="isReviewNavThis('canReview')" class="can-review-container">
+    <div v-bind:class="{borderBottom: canReviewItems.length > 0}" v-if="isReviewNavThis('canReview')" class="can-review-container">
       <div class="can-review-items" v-for="(item, index) in canReviewItems" v-bind:key="index">
         <div class="inner-box">
           <div class="img-box">
@@ -57,10 +57,6 @@ export default {
     writeModalViewToggle: {
       type: Function
     }
-  },
-
-  created() {
-    console.log(this.myReviews);
   },
 
   methods: {
@@ -123,7 +119,12 @@ export default {
     box-sizing: border-box;
     padding-top: 20px;
     padding-bottom: 20px;
+    /*border-bottom: 1px solid #eaeaea;*/
+  }
+
+  ul div.can-review-container.borderBottom {
     border-bottom: 1px solid #eaeaea;
+
   }
 
   ul div.can-review-items {

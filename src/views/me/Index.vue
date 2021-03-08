@@ -44,7 +44,10 @@
       </div>
     </div>
 
-    <WriteReviewModal v-if="writeModalView" v-bind:review-item="reviewItem" v-bind:write-modal-view-toggle="writeModalViewToggle"/>
+    <WriteReviewModal v-if="writeModalView"
+                      v-bind:review-item="reviewItem"
+                      v-bind:write-modal-view-toggle="writeModalViewToggle"
+                      v-bind:write-review-complete="writeReviewComplete"/>
 
     <Bottom />
     <Footer />
@@ -230,6 +233,15 @@ export default {
     setReviewNav(nav) {
       if (nav === 'myReviews') this.setMyReviews();
       else this.setCanReviewItems();
+    },
+
+    writeReviewComplete(review) {
+      this.myReviews.forEach(myReview => {
+        if (myReview.id === review.id) {
+          const indexOfReview = this.myReviews.indexOf(myReview);
+          this.myReviews.splice(indexOfReview, 1);
+        }
+      })
     },
 
     getOwnPoints() {

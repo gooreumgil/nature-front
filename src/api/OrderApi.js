@@ -34,6 +34,15 @@ export default {
     })
   },
 
+  confirmOrder(token, id) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/orders/${id}`;
+    return axios.patch(url, {}, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
+  },
+
   cancelOrder(token, id) {
     const url = `${commonUtils.getApiBaseUrl()}/v1/orders/${id}`;
     return axios.delete(url, {
