@@ -34,7 +34,7 @@
                 <img v-bind:src="myReview.itemResponseDto.mainImgPath" alt="">
               </div>
               <div class="info">
-                <h4>상품명: <span>{{ myReview.itemResponseDto.nameKor }}</span></h4>
+                <h4>{{ myReview.itemResponseDto.nameKor }}</h4>
                 <div class="rating">
                   <p>평점:</p>
                   <span v-for="(star, index) in stars" v-bind:key="index">
@@ -312,7 +312,7 @@ export default {
   ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.item-info div.info h4 {
     font-size: 16px;
     font-weight: 400;
-    color: #555;
+    color: #333;
   }
 
   ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.item-info div.info h4 span {
@@ -328,6 +328,8 @@ export default {
 
   ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.item-info div.info div.rating p {
     font-size: 14px;
+    font-weight: 400;
+    color: #888;
     margin-right: 5px;
   }
 

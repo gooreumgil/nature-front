@@ -31,7 +31,10 @@
             </div>
           </div>
 
-          <OrderList v-bind:orders="orders" v-bind:cancel-order="cancelOrder" v-if="isCurrentTabThis('orderAndDelivery')"/>
+          <OrderList v-if="isCurrentTabThis('orderAndDelivery')"
+                     v-bind:orders="orders"
+                     v-bind:cancel-order="cancelOrder" v-bind:go-order-detail="goOrderDetail" />
+          <OrderDetail v-bind:order="orderDetail" v-if="isCurrentTabThis('orderDetail')" />
           <LikeItems v-if="isCurrentTabThis('likes')" v-bind:like-items="likeItems"/>
           <UserQnaList v-if="isCurrentTabThis('qna')" v-bind:qna-list="qnaList"/>
           <UserReviews v-if="isCurrentTabThis('review')"
@@ -70,13 +73,17 @@ import UserQnaList from "@/components/core/UserQnaList";
 import UserReviews from "@/components/core/UserReviews";
 import commonUtils from "@/utils/commonUtils";
 import WriteReviewModal from "@/components/core/WriteReviewModal";
+import OrderDetail from "@/components/core/OrderDetail";
 export default {
   name: "Index",
-  components: {WriteReviewModal, UserReviews, UserQnaList, Footer, Bottom, LikeItems, OrderList, MyPageNav, Header},
+  components: {
+    OrderDetail,
+    WriteReviewModal, UserReviews, UserQnaList, Footer, Bottom, LikeItems, OrderList, MyPageNav, Header},
   data() {
     return {
       init: false,
       orders: [],
+      orderDetail: null,
       user: null,
       currentTab: 'orderAndDelivery',
       deliveryOnGoingTotal: 0,
@@ -230,6 +237,21 @@ export default {
 
     },
 
+    async setOrderDetail(orderId) {
+
+      const token = this.$cookies.get('token');
+      try {
+        const res = await orderApi.getOrder(token, orderId);
+        this.orderDetail = res.data;
+        this.currentTab = 'orderDetail';
+
+      } catch (err) {
+        alert('문제가 발생하였습니다.');
+        console.log(err);
+      }
+
+    },
+
     isReviewsEmpty() {
       return this.myReviews.length === 0;
     },
@@ -283,6 +305,10 @@ export default {
         if (this.reviewNav === 'canReview') this.setCanReviewItems();
         else this.setMyReviews();
       }
+    },
+
+    goOrderDetail(orderId) {
+      this.setOrderDetail(orderId);
     },
 
     convertTimeToStr(time, type) {

@@ -10,7 +10,7 @@
 
     <section class="all-best">
       <div class="title-container">
-        <h3 class="main-font">Category Best</h3>
+        <h3 class="main-font">Best Seller</h3>
         <p class="sub-font">전체 베스트 상품입니다.</p>
         <ItemList v-bind:items="popularItems" />
       </div>

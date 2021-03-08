@@ -29,7 +29,7 @@
         <div class="img-box">
           <img v-bind:src="order.orderItemResponseDtos[0].mainImgPath" alt="">
         </div>
-        <p>{{ order.orderItemResponseDtos[0].itemNameKor }}</p>
+        <p class="item-name" @click="goOrderDetail(order.id)">{{ order.orderItemResponseDtos[0].itemNameKor }}</p>
       </div>
       <div class="inner-col item-price">
         <p>{{ order.finalPrice  | price}}</p>
@@ -56,6 +56,9 @@ export default {
       value: []
     },
     cancelOrder: {
+      type: Function
+    },
+    goOrderDetail: {
       type: Function
     }
   },
@@ -216,6 +219,7 @@ export default {
     width: 100%;
   }
 
+
   ul li div.inner-col.item-price {
     font-size: 14px;
   }
@@ -244,5 +248,10 @@ export default {
   ul li div.inner-col.delivery-status button.confirm-order {
     color: #0fafbe;
   }
+
+  ul li div.inner-col.img p.item-name {
+    cursor: pointer;
+  }
+
 
 </style>
