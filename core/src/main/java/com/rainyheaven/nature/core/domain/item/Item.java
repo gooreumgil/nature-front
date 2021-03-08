@@ -34,7 +34,6 @@ public class Item extends BaseTimeEntity {
     private int likesCount;
     private String description;
     private int capacity;
-    private int savePoints;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemImage> itemImages = new ArrayList<>();

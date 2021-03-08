@@ -37,7 +37,7 @@ public class User extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
-    private Integer points;
+    private int points;
 
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
@@ -113,5 +113,15 @@ public class User extends BaseTimeEntity {
     // 연관관계 편의 메소드
     public void addReview(Review review) {
         this.reviews.add(review);
+    }
+
+    // 구매 확정시 포인트 적립
+    public void savePoints(int points) {
+        this.points += points;
+    }
+
+    // 포인트 사용시 차감
+    public void minusPoints(Integer usedPoints) {
+        this.points -= usedPoints;
     }
 }

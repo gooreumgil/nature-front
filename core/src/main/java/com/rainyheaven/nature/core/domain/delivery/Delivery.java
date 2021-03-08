@@ -49,4 +49,8 @@ public class Delivery extends BaseTimeEntity {
         return delivery;
     }
 
+    // 구매 확정시 배송 완료로 수정
+    public void deliveryComp() {
+        this.deliveryStatus = DeliveryStatus.COMP;
+    }
 }

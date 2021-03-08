@@ -54,6 +54,7 @@ public class Order extends BaseTimeEntity {
         order.finalDiscountPrice = dto.getFinalDiscountPrice();
         order.finalPrice = dto.getFinalPrice();
         order.usedPoints = dto.getUsedPoints();
+        order.orderStatus = OrderStatus.ORDER;
         order.setUser(user);
         order.setDelivery(delivery);
         order.setCreatedDate(LocalDateTime.now());
@@ -76,5 +77,14 @@ public class Order extends BaseTimeEntity {
     // 연관관계 편의 메소드
     public void addOrderItems(OrderItem orderItem) {
         this.orderItems.add(orderItem);
+    }
+
+    // 구매 확정
+    public void confirm() {
+        this.orderStatus = OrderStatus.COMP;
+        this.delivery.deliveryComp();
+        int points = Math.toIntExact(Math.round(this.getFinalPrice() * 0.03));
+        this.user.savePoints(points);
+        this.savedPoints = points;
     }
 }

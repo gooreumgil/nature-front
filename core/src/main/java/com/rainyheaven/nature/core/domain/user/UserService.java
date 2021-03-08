@@ -1,5 +1,6 @@
 package com.rainyheaven.nature.core.domain.user;
 
+import com.rainyheaven.nature.core.domain.order.OrderService;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserSaveRequestDto;
 import com.rainyheaven.nature.core.utils.AES256Util;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.Date;
 public class UserService {
 
     private final UserRepository userRepository;
+
     private final PasswordEncoder passwordEncoder;
     private final AES256Util aes256Util;
 
@@ -67,9 +69,7 @@ public class UserService {
     }
 
 
+    public void confirmOrder(Long id, Long orderId) {
 
-
-
-
-
+    }
 }

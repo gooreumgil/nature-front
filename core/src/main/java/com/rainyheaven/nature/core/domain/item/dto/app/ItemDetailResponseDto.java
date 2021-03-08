@@ -43,7 +43,6 @@ public class ItemDetailResponseDto {
         this.price = item.getPrice();
         this.discountPrice = item.getDiscountPrice();
         this.capacity = item.getCapacity();
-        this.savePoints = item.getSavePoints();
 
         item.getItemImages()
                 .stream().filter(filterImgType(ImgType.MAIN))

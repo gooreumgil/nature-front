@@ -5,6 +5,7 @@ import com.rainyheaven.nature.core.domain.order.OrderService;
 import com.rainyheaven.nature.core.domain.order.dto.app.OrderResponseDto;
 import com.rainyheaven.nature.core.domain.order.dto.app.OrderSaveRequestDto;
 import com.rainyheaven.nature.core.domain.user.TokenUser;
+import com.rainyheaven.nature.core.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.net.URISyntaxException;
 public class OrderController {
 
     private final OrderService orderService;
+    private final UserService userService;
 
     @Value("${src-prefix}")
     private String imgSrcPrefix;
@@ -38,6 +40,12 @@ public class OrderController {
         Order saveOrder = orderService.save(orderSaveRequestDto, tokenUser.getId());
         URI uri = new URI("/orders/" + saveOrder.getId());
         return ResponseEntity.created(uri).build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> confirm(@PathVariable Long id) {
+        orderService.confirm(id);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")

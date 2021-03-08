@@ -23,7 +23,7 @@ public class ReviewController {
                                      @RequestParam Long itemId, @RequestParam Long orderItemId) {
 
         reviewService.save(reviewSaveRequestDto, tokenUser.getId(), itemId);
-        orderItemService.updateLeaveReview(orderItemId);
+        orderItemService.updateLeaveReview(orderItemId, true);
         return ResponseEntity.ok().build();
 
     }

@@ -23,9 +23,9 @@ public class OrderItemService {
     }
 
     @Transactional
-    public void updateLeaveReview(Long id) {
+    public void updateLeaveReview(Long id, Boolean leaveReview) {
         OrderItem orderItem = findById(id);
-        orderItem.setLeaveReview(true);
+        orderItem.setLeaveReview(leaveReview);
     }
 
 }
