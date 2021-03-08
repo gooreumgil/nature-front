@@ -25,7 +25,7 @@ public class UserResponseDto {
     private String phoneNum2;
     private String phoneNum3;
     private String email;
-    private Integer ownPoints;
+    private int ownPoints;
     private List<AddressResponseDto> addressResponseDtos = new ArrayList<>();
 
     public UserResponseDto(User user, String decodedEmail) {
