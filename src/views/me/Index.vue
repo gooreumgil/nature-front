@@ -37,9 +37,12 @@
           <UserReviews v-if="isCurrentTabThis('review')"
                        v-bind:can-review-items="canReviewItems"
                        v-bind:my-reviews="myReviews"
+                       v-bind:s3-url-prefix="s3UrlPrefix"
                        v-bind:is-reviews-empty="isReviewsEmpty"
                        v-bind:set-review-nav="setReviewNav"
-                       v-bind:review-nav="reviewNav" v-bind:convert-time-to-str="convertTimeToStr" v-bind:write-modal-view-toggle="writeModalViewToggle"/>
+                       v-bind:review-nav="reviewNav"
+                       v-bind:convert-time-to-str="convertTimeToStr"
+                       v-bind:write-modal-view-toggle="writeModalViewToggle"/>
         </div>
       </div>
     </div>
@@ -85,7 +88,8 @@ export default {
       reviewNav: 'myReviews',
       writeModalView: false,
       reviewItem: null,
-      myReviews: []
+      myReviews: [],
+      s3UrlPrefix: 'https://nature-portfolio.s3.ap-northeast-2.amazonaws.com/',
     }
   },
 

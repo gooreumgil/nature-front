@@ -28,7 +28,13 @@
       </div>
       <ul v-else class="my-review-wrapper">
         <li class="my-review-list" v-for="(myReview, index) in myReviews" v-bind:key="index">
-          {{ myReview }}
+          <div class="inner-box">
+            <div class="img-box">
+              <div v-for="(image, index) in myReview.reviewImageResponseDtos" v-bind:key="index">
+                <img v-bind:src="s3UrlPrefix + image.s3Key" alt="">
+              </div>
+            </div>
+          </div>
         </li>
       </ul>
     </div>
@@ -56,6 +62,9 @@ export default {
     },
     writeModalViewToggle: {
       type: Function
+    },
+    s3UrlPrefix: {
+      type: String
     }
   },
 
@@ -208,5 +217,35 @@ export default {
     font-weight: 400;
     color: #555;
   }
+
+  ul div.my-review-container ul.my-review-wrapper {
+
+  }
+
+  ul div.my-review-container ul.my-review-wrapper li.my-review-list {
+
+  }
+
+  ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box {
+
+
+  }
+
+  ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.img-box {
+    display: flex;
+    align-items: center;
+
+  }
+
+  ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.img-box div  {
+    max-width: 150px;
+    width: 100%;
+  }
+
+  ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.img-box div img {
+    width: 100%;
+
+  }
+
 
 </style>
