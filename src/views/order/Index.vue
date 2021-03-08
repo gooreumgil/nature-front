@@ -139,10 +139,10 @@
 
               </div>
               <div class="content-box">
-                <input type="text" v-model="usedPoints" v-bind:disabled="isPointUseable">
+                <input type="text" v-model="usedPointsTmp" v-bind:disabled="isPointCannotUse()">
                 <p>P</p>
-                <button type="button" v-bind:disabled="isPointUseable">사용하기</button>
-                <input type="checkbox" v-bind:disabled="isPointUseable">
+                <button @click="usePoints" type="button" v-bind:disabled="isPointCannotUse()">사용하기</button>
+                <input @change="pointAllUseToggle" type="checkbox" v-bind:disabled="isPointCannotUse()" v-bind:checked="isPointAllUse">
                 <p class="all-points-use">모두사용 (보유포인트: <span>{{ getUserOwnPoints() | price }}P</span>)</p>
               </div>
             </div>
@@ -231,6 +231,7 @@ export default {
       user: null,
       itemInit: false,
       userInit: false,
+      usedPointsTmp: 0,
       usedPoints: 0,
       paymentMethod: '신용카드',
       setMainAddress: false,
@@ -241,6 +242,7 @@ export default {
       mainAddress: null,
       detailAddress: null,
       zipCode: null,
+      isPointAllUse: false
     }
   },
 
@@ -301,6 +303,7 @@ export default {
             this.zipCode = defaultAddress[0].zipCode;
           }
         }
+
 
         this.userInit = true;
       } catch (err) {
@@ -396,8 +399,8 @@ export default {
       return this.user.ownPoints === null ? 0 : this.user.ownPoints;
     },
 
-    isPointUseable() {
-      return !this.user.ownPoints === null || this.user.ownPoints === 0;
+    isPointCannotUse() {
+      return this.user.ownPoints === 0;
     },
 
     isPaymentMethodThis(method) {
@@ -410,6 +413,32 @@ export default {
 
     getDeliveryPrice() {
       return this.getItemsTotalPrice() > 50000 ? 0 : 2500;
+    },
+
+    usePoints() {
+      if (this.usedPointsTmp > this.user.ownPoints) {
+        alert('보유하신 포인트 이상으로 사용하실 수 없습니다');
+        return;
+      }
+
+      this.usedPoints = this.usedPointsTmp;
+      if (this.usedPointsTmp !== this.user.ownPoints) {
+        this.isPointAllUse = false;
+      }
+
+    },
+
+    pointAllUseToggle() {
+      if (!this.isPointAllUse) {
+        this.isPointAllUse = true;
+        this.usedPointsTmp = this.user.ownPoints;
+        this.usedPoints = this.user.ownPoints;
+      }  else {
+        this.isPointAllUse = false;
+        this.usedPointsTmp = 0;
+        this.usedPoints = 0;
+      }
+
     }
 
 

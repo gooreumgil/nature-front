@@ -22,7 +22,7 @@
               </div>
               <div>
                 <h4>포인트</h4>
-                <p>{{ getOwnPoints() }}</p>
+                <p>{{ getOwnPoints() | price }}</p>
               </div>
               <div>
                 <h4>구매후기</h4>
@@ -202,7 +202,6 @@ export default {
       try {
         const res = await userApi.getCanReviewItems(token);
         this.canReviewItems = res.data.content;
-
         this.currentTab = 'review';
         this.reviewNav = 'canReview';
         this.basicInfoView = false;
@@ -220,8 +219,9 @@ export default {
         const res = await userApi.getReviews(token);
         this.currentTab = 'review';
         this.reviewNav = 'myReviews';
-        this.myReviews = res.data.content;
-        console.log(this.myReviews);
+        const myReviews = res.data.content;
+        myReviews.forEach(myReview => myReview.showContent = false);
+        this.myReviews = myReviews;
         this.basicInfoView = false;
       } catch (err) {
         alert('문제가 발생하였습니다.');
@@ -285,9 +285,12 @@ export default {
       }
     },
 
-    convertTimeToStr(time) {
-      return commonUtils.localDateTimeToYearMonthDay(time);
+    convertTimeToStr(time, type) {
+      if (type === 'monthAndDay') return commonUtils.localDateTimeToYearMonthDay(time);
+      else return commonUtils.localDateTimeToYearMonthDayHourMinutes(time);
+
     },
+
 
     writeModalViewToggle(item) {
       this.reviewItem = item;

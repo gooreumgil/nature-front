@@ -5,7 +5,11 @@
         <img v-bind:src="reviewItem.mainImgPath" alt="">
         <h3>{{ reviewItem.itemNameKor }}</h3>
         <div class="rating-img">
-          <span v-for="(star, index) in stars" v-bind:key="index">
+          <span @click="checkRating(star.idx)"
+                v-on:mouseover="hoverEvent(star.idx, 'in')"
+                v-on:mouseout="hoverEvent(star.idx, 'out')"
+                v-for="(star, index) in stars" v-bind:key="index">
+
             <StarIcon v-bind:idx="star.idx" v-bind:stroke="star.stroke" v-bind:fill="star.fill" v-bind:hover-event="hoverEvent" v-bind:check-rating="checkRating" />
           </span>
 
@@ -87,7 +91,7 @@ export default {
       reviewContent: null,
       files: [],
       uploadImageFile: [],
-      reviewModalNav: 'img'
+      reviewModalNav: 'text'
     }
   },
 
