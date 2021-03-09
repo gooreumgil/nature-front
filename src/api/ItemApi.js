@@ -61,5 +61,10 @@ export default {
   getQnaList(id) {
     const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/qnas`;
     return axios.get(url);
+  },
+
+  getReviews(id) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/reviews`;
+    return axios.get(url);
   }
 }

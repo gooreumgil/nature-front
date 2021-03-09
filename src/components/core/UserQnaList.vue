@@ -40,7 +40,8 @@ export default {
   props: {
     qnaList: {
       value: []
-    }
+    },
+
   },
 
   methods: {

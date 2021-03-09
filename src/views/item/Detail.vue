@@ -126,7 +126,7 @@
                 <p>{{ qna.writer }}</p>
               </div>
               <div class="wroteAt">
-                <p>{{ convertTime(qna.wroteAt) }}</p>
+                <p>{{ convertTimeToStr(qna.wroteAt, 'monthAndDay') }}</p>
               </div>
             </div>
 
@@ -135,7 +135,12 @@
             </div>
           </li>
         </ul>
+
+
       </div>
+
+      <ItemReviews v-if="isCurrentTab('review')" v-bind:reviews="reviews" v-bind:convert-time-to-str="convertTimeToStr" />
+
 
     </section>
 
@@ -158,9 +163,10 @@ import Bottom from "@/components/core/Bottom";
 import Footer from "@/components/core/Footer";
 import userApi from "@/api/UserApi";
 import commonUtils from "@/utils/commonUtils";
+import ItemReviews from "@/components/core/ItemReviews";
 export default {
   name: "Detail",
-  components: {Footer, Bottom, CartModal, CartIcon, LikeIcon, MinusIcon, PlusIcon, Header},
+  components: {ItemReviews, Footer, Bottom, CartModal, CartIcon, LikeIcon, MinusIcon, PlusIcon, Header},
 
   data() {
     return {
@@ -177,7 +183,8 @@ export default {
       userLike: false,
       qnaContent: null,
       isQnaSecret: true,
-      qnaList: []
+      qnaList: [],
+      reviews: []
     }
   },
 
@@ -211,7 +218,6 @@ export default {
       try {
         const res = await userApi.checkItemLike(token, itemId);
         if (res.data === true) this.userLike = true;
-        console.log(this.userLike);
       } catch (err) {
         alert('문제가 발생하였습니다.');
         console.log(err);
@@ -231,6 +237,21 @@ export default {
         alert('문제가 발생했습니다.');
         console.log(err);
       }
+    },
+
+    async setReviews() {
+      const id = this.item.id;
+
+      try {
+        const res = await itemApi.getReviews(id);
+        const reviews = res.data.content;
+        reviews.forEach(review => review.showContent = false);
+        this.reviews = reviews;
+      } catch (err) {
+        alert('문제가 발생했습니다.');
+        console.log(err);
+      }
+
     },
 
     itemLike() {
@@ -330,6 +351,8 @@ export default {
       this.currentTab = tab;
       if (tab === 'qna') {
         this.setQnaList();
+      } else if (tab === 'review') {
+        this.setReviews();
       }
     },
 
@@ -364,9 +387,11 @@ export default {
       return qnaStatus === 'WAIT' ? '답변대기' : '답변완료'
     },
 
-    convertTime(time) {
-      return commonUtils.localDateTimeToYearMonthDay(time);
-    }
+    convertTimeToStr(time, type) {
+      if (type === 'monthAndDay') return commonUtils.localDateTimeToYearMonthDay(time);
+      else return commonUtils.localDateTimeToYearMonthDayHourMinutes(time);
+
+    },
   }
 }
 </script>
