@@ -115,10 +115,13 @@ public class OrderService {
         }
         
         Delivery delivery = order.getDelivery();
-
+        
+        // 포인트 적립
         int points = Math.toIntExact(Math.round(order.getFinalPrice() * 0.03));
         order.confirm(points);
         user.savePoints(points);
+        
+        // deliveryStatus comp로 업데이트
         delivery.deliveryComp();
 
     }
