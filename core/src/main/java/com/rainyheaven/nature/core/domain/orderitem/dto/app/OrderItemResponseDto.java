@@ -23,6 +23,7 @@ public class OrderItemResponseDto {
     private Integer itemQuantity;
     private String mainImgPath;
     private LocalDateTime orderedAt;
+    private Boolean isLeaveReview;
 
     public OrderItemResponseDto(OrderItem orderItem, String srcPrefix) {
         this.id = orderItem.getId();
@@ -33,5 +34,7 @@ public class OrderItemResponseDto {
         this.itemDiscountPrice = orderItem.getItemDiscountPrice();
         this.itemQuantity = orderItem.getItemQuantity();
         this.mainImgPath = srcPrefix + orderItem.getItem().getMainImgPath();
+        this.isLeaveReview = orderItem.isLeaveReview();
+
     }
 }

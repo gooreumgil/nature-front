@@ -18,6 +18,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("select o from Order o join fetch o.user join fetch o.delivery where o.id = :id")
     Optional<Order> findByIdWithUserAndDelivery(@Param("id") Long id);
 
+    @Query("select o from Order o join fetch o.user join fetch o.delivery join fetch o.orderItems oi join fetch oi.item where o.id = :id")
+    Optional<Order> findByIdWithUserAndDeliveryAndOrderItems(@Param("id") Long id);
+
     @Query(value = "select o from Order o join fetch o.orderItems oi join fetch oi.item join fetch o.delivery where o.user.id = :userId",
             countQuery = "select count (o) from Order o where o.user.id = :userId")
     Page<Order> findByUserIdWithOrderItemsAndDelivery(@Param("userId") Long userId, Pageable pageable);

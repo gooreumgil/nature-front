@@ -32,8 +32,12 @@ public class OrderService {
         return orderRepository.findByIdWithOrderItemsAndDelivery(id).orElseThrow(RuntimeException::new);
     }
 
-    public Order findByIdWithUser(Long id) {
+    public Order findByIdWithUserAndDelivery(Long id) {
         return orderRepository.findByIdWithUserAndDelivery(id).orElseThrow(RuntimeException::new);
+    }
+
+    public Order findByIdWithUserAndDeliveryAndOrderItems(Long id) {
+        return orderRepository.findByIdWithUserAndDeliveryAndOrderItems(id).orElseThrow(RuntimeException::new);
     }
 
     public Page<Order> findByUserId(Long userId, Pageable pageable) {
@@ -53,9 +57,15 @@ public class OrderService {
         orderItemSaveRequestDtos.forEach(dto -> items.stream().filter(item -> item.getId().equals(dto.getId()))
                 .findFirst().ifPresent(item -> OrderItem.create(dto, order, item)));
 
+        // 사용한 적립금이 있다면 그만큼 minus
         if (!ObjectUtils.isEmpty(orderSaveRequestDto.getUsedPoints())) {
             user.minusPoints(orderSaveRequestDto.getUsedPoints());
         }
+
+        // 주문한 상품의 갯수만큼 item에서 minus
+        List<OrderItem> orderItems = order.getOrderItems();
+        orderItems.forEach(orderItem -> items.stream().filter(item -> orderItem.getItem().getId().equals(item.getId()))
+                .findFirst().ifPresent(item -> item.minusStockQuantity(orderItem.getItemQuantity())));
 
         return orderRepository.save(order);
 
@@ -67,12 +77,49 @@ public class OrderService {
 
     @Transactional
     public void delete(Long id, Long userId) {
-        orderRepository.deleteByIdAndUserId(id, userId);
+        Order order = findByIdWithUserAndDeliveryAndOrderItems(id);
+        User user = order.getUser();
+        if (!user.getId().equals(userId)) {
+            throw new RuntimeException();
+        }
+
+
+        if (order.getOrderStatus().equals(OrderStatus.COMP)) {
+            int savedPoints = order.getSavedPoints();
+            user.minusPoints(savedPoints);
+        }
+
+        int usedPoints = order.getUsedPoints();
+        if (usedPoints > 0) {
+            user.plusPoints(usedPoints);
+        }
+
+        List<OrderItem> orderItems = order.getOrderItems();
+        orderItems.forEach(orderItem -> {
+            Item item = orderItem.getItem();
+            item.plusStockQuantity(orderItem.getItemQuantity());
+        });
+
+        order.setOrderStatus(OrderStatus.CANCEL);
+
     }
 
     @Transactional
-    public void confirm(Long id) {
-        Order order = findByIdWithUser(id);
-        order.confirm();
+    public void confirm(Long id, Long userId) {
+        Order order = findByIdWithUserAndDelivery(id);
+        User user = order.getUser();
+        
+        // order confirm을 하는 유저가 실제 주문을 한 유저와 같은지 체크
+        if (!user.getId().equals(userId)) {
+            throw new RuntimeException();
+        }
+        
+        Delivery delivery = order.getDelivery();
+
+        int points = Math.toIntExact(Math.round(order.getFinalPrice() * 0.03));
+        order.confirm(points);
+        user.savePoints(points);
+        delivery.deliveryComp();
+
     }
 }

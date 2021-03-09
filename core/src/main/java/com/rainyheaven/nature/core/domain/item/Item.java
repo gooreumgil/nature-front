@@ -82,4 +82,14 @@ public class Item extends BaseTimeEntity {
     public void addReview(Review review) {
         this.reviews.add(review);
     }
+
+    // 주문취소시 재고 다시 추가
+    public void plusStockQuantity(int itemQuantity) {
+        this.stockQuantity += itemQuantity;
+    }
+
+    // 주문시 재고에서 빼기
+    public void minusStockQuantity(int itemQuantity) {
+        this.stockQuantity -= itemQuantity;
+    }
 }

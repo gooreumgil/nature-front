@@ -43,8 +43,8 @@ public class OrderController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> confirm(@PathVariable Long id) {
-        orderService.confirm(id);
+    public ResponseEntity<Void> confirm(@PathVariable Long id, @AuthenticationPrincipal TokenUser tokenUser) {
+        orderService.confirm(id, tokenUser.getId());
         return ResponseEntity.ok().build();
     }
 

@@ -124,4 +124,9 @@ public class User extends BaseTimeEntity {
     public void minusPoints(Integer usedPoints) {
         this.points -= usedPoints;
     }
+
+    // 주문취소 & 환불시 사용한 포인트 돌려받음
+    public void plusPoints(int usedPoints) {
+        this.points += usedPoints;
+    }
 }

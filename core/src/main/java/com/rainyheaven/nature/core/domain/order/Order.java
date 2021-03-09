@@ -80,11 +80,12 @@ public class Order extends BaseTimeEntity {
     }
 
     // 구매 확정
-    public void confirm() {
+    public void confirm(int savedPoints) {
         this.orderStatus = OrderStatus.COMP;
-        this.delivery.deliveryComp();
-        int points = Math.toIntExact(Math.round(this.getFinalPrice() * 0.03));
-        this.user.savePoints(points);
-        this.savedPoints = points;
+        this.savedPoints = savedPoints;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }
