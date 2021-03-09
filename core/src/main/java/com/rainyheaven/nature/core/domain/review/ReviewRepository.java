@@ -12,5 +12,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             countQuery = "select count (r) from Review r where r.user.id = :userId")
     Page<Review> findAllByUserIdWithItem(@Param("userId") Long userId, Pageable pageable);
 
+    @Query(value = "select r from Review r join fetch r.item join fetch r.user join fetch r.reviewImages where r.item.id = :itemId",
+            countQuery = "select count (r) from Review r where r.item.id = :itemId")
+    Page<Review> findAllByItemIdWithUser(@Param("itemId") Long itemId, Pageable pageable);
+
     int countAllByUserId(Long userId);
 }

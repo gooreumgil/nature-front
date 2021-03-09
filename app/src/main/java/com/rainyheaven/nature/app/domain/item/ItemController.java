@@ -10,6 +10,9 @@ import com.rainyheaven.nature.core.domain.qna.Qna;
 import com.rainyheaven.nature.core.domain.qna.QnaService;
 import com.rainyheaven.nature.core.domain.qna.dto.app.QnaResponseDto;
 import com.rainyheaven.nature.core.domain.qna.dto.app.QnaSaveRequestDto;
+import com.rainyheaven.nature.core.domain.review.Review;
+import com.rainyheaven.nature.core.domain.review.ReviewService;
+import com.rainyheaven.nature.core.domain.review.dto.app.ReviewResponseDto;
 import com.rainyheaven.nature.core.domain.user.TokenUser;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +36,7 @@ public class ItemController {
     private final ItemService itemService;
     private final ItemLikeService itemLikeService;
     private final QnaService qnaService;
+    private final ReviewService reviewService;
 
     private static final String ALL = "ALL";
 
@@ -105,6 +109,22 @@ public class ItemController {
 
         itemService.addQna(qnaSaveRequestDto, id, tokenUser.getId());
         return ResponseEntity.ok().build();
+
+    }
+
+    @GetMapping("/{id}/reviews")
+    public ResponseEntity<Page<ReviewResponseDto>> getReviews(
+            @PathVariable Long id,
+            @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Page<Review> reviewPage = reviewService.getPageByItem(id, pageable);
+        Page<ReviewResponseDto> reviewPageMap = reviewPage.map(review -> {
+            ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review, imgSrcPrefix);
+            reviewResponseDto.setWriter(review.getUser().getName());
+            return reviewResponseDto;
+        });
+
+        return ResponseEntity.ok(reviewPageMap);
 
     }
 

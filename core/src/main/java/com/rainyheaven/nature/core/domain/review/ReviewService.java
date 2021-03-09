@@ -56,6 +56,10 @@ public class ReviewService {
 
     }
 
+    public Page<Review> getPageByItem(Long itemId, Pageable pageable) {
+        return reviewRepository.findAllByItemIdWithUser(itemId, pageable);
+    }
+
     public int getTotalByUser(Long userId) {
 
         return reviewRepository.countAllByUserId(userId);

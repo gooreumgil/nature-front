@@ -4,6 +4,7 @@ import com.rainyheaven.nature.core.domain.item.dto.app.ItemSimpleResponseDto;
 import com.rainyheaven.nature.core.domain.review.Review;
 import com.rainyheaven.nature.core.domain.reviewimage.ReviewImage;
 import com.rainyheaven.nature.core.domain.reviewimage.dto.app.ReviewImageResponseDto;
+import com.rainyheaven.nature.core.domain.user.dto.app.UserResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class ReviewResponseDto {
     private LocalDateTime wroteAt;
     private ItemSimpleResponseDto itemResponseDto;
     private List<ReviewImageResponseDto> reviewImageResponseDtos = new ArrayList<>();
+    private String writer;
 
     public ReviewResponseDto(Review review, String srcPrefix) {
         this.id = review.getId();
