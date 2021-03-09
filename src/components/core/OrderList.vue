@@ -69,6 +69,7 @@ export default {
     },
 
     getDeliveryStatus(order) {
+      if (order.status === 'CANCEL') return '결제취소';
       const deliveryStatus = order.deliveryResponseDto.status;
 
       if (order.status === 'COMP') return '구매완료';
@@ -78,7 +79,7 @@ export default {
     },
 
     isDeliveryStatusReady(order) {
-      return order.deliveryResponseDto.status === 'READY';
+      return order.deliveryResponseDto.status === 'READY' && order.status !== 'CANCEL';
     },
 
     canOrderConfirm(order) {
@@ -184,7 +185,7 @@ export default {
     width: 15%;
   }
 
-  ul li div.inner-col.delivery-price {
+  ul li div.inner-col.item-price {
     width: 15%;
   }
 
@@ -226,6 +227,7 @@ export default {
 
   ul li div.inner-col.delivery-price {
     font-size: 14px;
+    width: 15%;
   }
 
   ul li div.inner-col.delivery-status p {
@@ -248,6 +250,8 @@ export default {
   ul li div.inner-col.delivery-status button.confirm-order {
     color: #0fafbe;
   }
+
+
 
   ul li div.inner-col.img p.item-name {
     cursor: pointer;

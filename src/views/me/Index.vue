@@ -73,11 +73,9 @@ import UserQnaList from "@/components/core/UserQnaList";
 import UserReviews from "@/components/core/UserReviews";
 import commonUtils from "@/utils/commonUtils";
 import WriteReviewModal from "@/components/core/WriteReviewModal";
-import OrderDetail from "@/components/core/OrderDetail";
 export default {
   name: "Index",
   components: {
-    OrderDetail,
     WriteReviewModal, UserReviews, UserQnaList, Footer, Bottom, LikeItems, OrderList, MyPageNav, Header},
   data() {
     return {
@@ -108,11 +106,14 @@ export default {
 
   async created() {
 
+
     const currentMyPageStoreTab = this.currentMyPageStoreTab;
     if (!currentMyPageStoreTab || currentMyPageStoreTab === 'orderAndDelivery') {
       await this.setOrders();
     } else if (currentMyPageStoreTab === 'likes') {
       await this.setLikeItems();
+    } else if (currentMyPageStoreTab === 'review') {
+      await this.setMyReviews();
     }
 
     await this.setUser();
@@ -237,21 +238,6 @@ export default {
 
     },
 
-    async setOrderDetail(orderId) {
-
-      const token = this.$cookies.get('token');
-      try {
-        const res = await orderApi.getOrder(token, orderId);
-        this.orderDetail = res.data;
-        this.currentTab = 'orderDetail';
-
-      } catch (err) {
-        alert('문제가 발생하였습니다.');
-        console.log(err);
-      }
-
-    },
-
     isReviewsEmpty() {
       return this.myReviews.length === 0;
     },
@@ -308,7 +294,7 @@ export default {
     },
 
     goOrderDetail(orderId) {
-      this.setOrderDetail(orderId);
+      this.$router.push('/my-page/orders/' + orderId);
     },
 
     convertTimeToStr(time, type) {
@@ -415,7 +401,6 @@ export default {
     color: #7ebb34;
     font-weight: 700;
   }
-
 
 
 </style>

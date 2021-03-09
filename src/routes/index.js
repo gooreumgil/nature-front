@@ -10,6 +10,7 @@ import MeIndex from "@/views/me/Index"
 import Detail from "@/views/item/Detail";
 import OrderIndex from "@/views/order/Index"
 import OrderComplete from "@/views/order/Complete";
+import OrderDetail from "@/views/me/OrderDetail";
 
 
 Vue.use(VueRouter);
@@ -48,6 +49,10 @@ export const router = new VueRouter({
     {
       path: '/my-page',
       component: MeIndex
+    },
+    {
+      path: '/my-page/orders/:id',
+      component: OrderDetail
     },
     {
       path: '/orders',

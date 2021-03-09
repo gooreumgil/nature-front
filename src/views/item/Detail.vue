@@ -796,7 +796,7 @@ export default {
 
   }
 
-  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.status {
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.item-discount-price {
     width: 10%;
   }
 
