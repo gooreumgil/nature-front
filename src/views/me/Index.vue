@@ -112,6 +112,8 @@ export default {
       await this.setOrders();
     } else if (currentMyPageStoreTab === 'likes') {
       await this.setLikeItems();
+    } else if (currentMyPageStoreTab === 'qna') {
+      await this.setQnaList();
     } else if (currentMyPageStoreTab === 'review') {
       await this.setMyReviews();
     }

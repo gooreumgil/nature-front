@@ -37,10 +37,14 @@
               <p>해당 주문의 상세 내역입니다.</p>
             </div>
 
+            <div class="delivery-status">
+              <p>· {{ getDeliveryStatus() }}</p>
+            </div>
+
             <div class="item-container">
               <ul class="item-wrapper clearfix">
                 <div class="order-status">
-                  <button @click="cancelOrder()" v-if="isOrderStatus('ORDER') && isDeliveryStatus('READY')" type="button">결제취소</button>
+                  <button class="cancel" @click="cancelOrder()" v-if="isOrderStatus('ORDER') && isDeliveryStatus('READY')" type="button">주문취소</button>
                   <button v-if="isOrderStatus('ORDER') && isNotDeliveryStatus('READY')" type="button">구매확정</button>
                   <button v-if="isOrderStatus('COMP') && hasItemCanReview()" type="button">리뷰쓰기</button>
                 </div>
@@ -77,6 +81,8 @@
             </div>
           </div>
 
+          <DeliveryInfo v-bind:delivery="order.deliveryResponseDto" />
+
         </div>
       </div>
     </div>
@@ -100,9 +106,11 @@ import Bottom from "@/components/core/Bottom";
 import Footer from "@/components/core/Footer";
 import commonUtils from "@/utils/commonUtils";
 import WriteReviewModal from "@/components/core/WriteReviewModal";
+import DeliveryInfo from "@/components/core/DeliveryInfo";
 export default {
   name: "OrderDetail",
   components: {
+    DeliveryInfo,
     WriteReviewModal, Footer, Bottom, MyPageNav, Header},
   data() {
     return {
@@ -194,6 +202,13 @@ export default {
         alert('문제가 발생하였습니다.');
         console.log(err);
       }
+    },
+
+    getDeliveryStatus() {
+      const deliveryStatus = this.order.deliveryResponseDto.status;
+      if (deliveryStatus === 'READY') return '배송준비중';
+      else if (deliveryStatus === 'ONGOING') return '배송중'
+      else if (deliveryStatus === 'COMP') return '배송완료';
     },
 
     isDeliveryStatus(status) {
@@ -373,12 +388,46 @@ export default {
     margin-top: 10px;
   }
 
+  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.delivery-status {
+
+  }
+
+  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.delivery-status p {
+    font-size: 14px;
+    font-weight: 700;
+    color: #7ebb34;
+    margin-top: 10px;
+  }
+
+
   section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.item-container {
 
   }
 
   section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.item-container ul.item-wrapper {
+    position: relative;
+  }
 
+  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.item-container ul.item-wrapper div.order-status {
+    position: absolute;
+    right: 0;
+    top: -50px;
+
+  }
+
+  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.item-container ul.item-wrapper div.order-status button {
+    background-color: #fff;
+    border-radius: 3px;
+    padding: 5px 10px;
+    border: 1px solid #eaeaea;
+    font-size: 12px;
+    color: #0fafbe;
+    outline-color: #eaeaea;
+    cursor: pointer;
+  }
+
+  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.item-container ul.item-wrapper div.order-status button.cancel {
+    color: #ff0974;
   }
 
   section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.item-container ul.item-wrapper li {
