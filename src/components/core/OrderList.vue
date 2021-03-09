@@ -24,12 +24,13 @@
     <li class="order-list clearfix" v-for="(order, index) in orders" v-bind:key="index">
       <div class="inner-col no">
         <p>{{ getOrderAt(order.orderAt) }}</p>
+        <button v-if="isNotOrderCancel(order)" class="goOrderDetail" @click="goOrderDetail(order.id)" type="button">주문상세</button>
       </div>
       <div class="inner-col img">
         <div class="img-box">
           <img v-bind:src="order.orderItemResponseDtos[0].mainImgPath" alt="">
         </div>
-        <p class="item-name" @click="goOrderDetail(order.id)">{{ order.orderItemResponseDtos[0].itemNameKor }}</p>
+        <p class="item-name">{{ order.orderItemResponseDtos[0].itemNameKor }}</p>
       </div>
       <div class="inner-col item-price">
         <p>{{ order.finalPrice  | price}}</p>
@@ -108,7 +109,11 @@ export default {
 
     isOrderStatusComp(order) {
       return order.status === 'COMP';
-    }
+    },
+
+    isNotOrderCancel(order) {
+      return order.status !== 'CANCEL';
+    },
 
   },
 
@@ -174,6 +179,19 @@ export default {
 
   ul li div.inner-col.no {
     width: 15%;
+    flex-direction: column;
+  }
+
+  ul li div.inner-col.no button.goOrderDetail {
+    cursor: pointer;
+    outline: none;
+    background-color: transparent;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    color: #555;
+    padding: 3px 8px;
+    margin-top: 5px;
+    font-size: 12px;
   }
 
   ul li div.inner-col.img {

@@ -37,17 +37,19 @@
               <p>해당 주문의 상세 내역입니다.</p>
             </div>
 
-            <div class="delivery-status">
-              <p>· {{ getDeliveryStatus() }}</p>
+            <div class="status">
+              <p class="order-date">주문날짜: {{ convertTimeToStr(order.orderAt, 'monthAndDay') }}</p>
+              <p class="delivery-status">· {{ getDeliveryStatus() }}</p>
+              <div class="order-status">
+                <button class="cancel" @click="cancelOrder()" v-if="isOrderStatus('ORDER') && isDeliveryStatus('READY')" type="button">주문취소</button>
+                <button v-if="isOrderStatus('ORDER') && isNotDeliveryStatus('READY')" type="button">구매확정</button>
+                <button v-if="isOrderStatus('COMP') && hasItemCanReview()" type="button">리뷰쓰기</button>
+              </div>
             </div>
 
             <div class="item-container">
               <ul class="item-wrapper clearfix">
-                <div class="order-status">
-                  <button class="cancel" @click="cancelOrder()" v-if="isOrderStatus('ORDER') && isDeliveryStatus('READY')" type="button">주문취소</button>
-                  <button v-if="isOrderStatus('ORDER') && isNotDeliveryStatus('READY')" type="button">구매확정</button>
-                  <button v-if="isOrderStatus('COMP') && hasItemCanReview()" type="button">리뷰쓰기</button>
-                </div>
+
                 <li class="item-list head">
                   <div class="list-inner item-info">
                     <p>상품정보</p>
@@ -82,7 +84,7 @@
           </div>
 
           <DeliveryInfo v-bind:delivery="order.deliveryResponseDto" />
-
+          <PayInfo v-bind:order="order" />
         </div>
       </div>
     </div>
@@ -107,9 +109,11 @@ import Footer from "@/components/core/Footer";
 import commonUtils from "@/utils/commonUtils";
 import WriteReviewModal from "@/components/core/WriteReviewModal";
 import DeliveryInfo from "@/components/core/DeliveryInfo";
+import PayInfo from "@/components/core/PayInfo";
 export default {
   name: "OrderDetail",
   components: {
+    PayInfo,
     DeliveryInfo,
     WriteReviewModal, Footer, Bottom, MyPageNav, Header},
   data() {
@@ -388,34 +392,41 @@ export default {
     margin-top: 10px;
   }
 
-  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.delivery-status {
-
-  }
-
-  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.delivery-status p {
-    font-size: 14px;
-    font-weight: 700;
-    color: #7ebb34;
+  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.status {
+    position: relative;
+    box-sizing: border-box;
+    padding: 15px;
+    border: 1px solid #eaeaea;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
     margin-top: 10px;
   }
 
-
-  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.item-container {
-
+  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.status p {
+    font-size: 14px;
   }
 
-  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.item-container ul.item-wrapper {
-    position: relative;
+  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.status p.order-date {
+    color: #555;
+    font-weight: 400;
+    margin-right: 20px;
   }
 
-  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.item-container ul.item-wrapper div.order-status {
+  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.status p.delivery-status {
+    font-weight: 700;
+    color: #7ebb34;
+  }
+
+  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.status div.order-status {
     position: absolute;
-    right: 0;
-    top: -50px;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
 
   }
 
-  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.item-container ul.item-wrapper div.order-status button {
+  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.status div.order-status button {
     background-color: #fff;
     border-radius: 3px;
     padding: 5px 10px;
@@ -426,8 +437,18 @@ export default {
     cursor: pointer;
   }
 
-  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.item-container ul.item-wrapper div.order-status button.cancel {
+  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.status div.order-status button.cancel {
     color: #ff0974;
+
+  }
+
+
+  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.item-container {
+
+  }
+
+  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.item-container ul.item-wrapper {
+    position: relative;
   }
 
   section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.order-detail div.item-container ul.item-wrapper li {

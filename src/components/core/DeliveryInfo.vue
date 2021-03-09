@@ -6,7 +6,7 @@
 
     <div class="delivery-wrapper">
       <div class="delivery-inner">
-        <div class="label-box">
+        <div class="inner-list label-box">
           <div class="receiver">
             <p>받는사람</p>
           </div>
@@ -20,7 +20,7 @@
             <p>메모</p>
           </div>
         </div>
-        <div class="content-box">
+        <div class="inner-list content-box">
           <div class="receiver">
             <p>{{ delivery.receiver }}</p>
           </div>
@@ -31,7 +31,7 @@
             <p>{{ getAddress() }}</p>
           </div>
           <div class="memo">
-            <p>{{ delivery.memo }}</p>
+            <p>{{ getDeliveryMemo() }}</p>
           </div>
         </div>
       </div>
@@ -55,6 +55,10 @@ export default {
 
     getAddress() {
       return '[' + this.delivery.zipCode + '] ' + this.delivery.mainAddress + ' ' + this.delivery.detailAddress;
+    },
+
+    getDeliveryMemo() {
+      return this.delivery.memo === null ? '없음' : this.delivery.memo;
     }
   }
 }
@@ -62,7 +66,7 @@ export default {
 
 <style scoped>
   div.delivery-container {
-    margin-top: 30px;
+    margin-top: 40px;
     box-sizing: border-box;
     padding: 0 10px;
   }
@@ -72,9 +76,78 @@ export default {
   }
 
   div.delivery-container div.title-box h3 {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 700;
     color: #333;
   }
+
+  div.delivery-container div.delivery-wrapper {
+    margin-top: 20px;
+  }
+
+  div.delivery-container div.delivery-wrapper div.delivery-inner {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #eaeaea;
+  }
+
+  div.delivery-container div.delivery-wrapper div.delivery-inner div.inner-list {
+
+  }
+
+  div.delivery-container div.delivery-wrapper div.delivery-inner div.inner-list div {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    height: 60px;
+    border-bottom: 1px solid #eaeaea;
+  }
+
+  div.delivery-container div.delivery-wrapper div.delivery-inner div.inner-list div.receiver {
+  }
+
+  div.delivery-container div.delivery-wrapper div.delivery-inner div.inner-list div.phone-num {
+
+  }
+
+  div.delivery-container div.delivery-wrapper div.delivery-inner div.inner-list div.address {
+
+  }
+
+  div.delivery-container div.delivery-wrapper div.delivery-inner div.inner-list div.memo {
+
+  }
+
+
+  div.delivery-container div.delivery-wrapper div.delivery-inner div.inner-list.label-box {
+    width: 10%;
+    background-color: #f9f9f9;
+  }
+
+  div.delivery-container div.delivery-wrapper div.delivery-inner div.inner-list.label-box div {
+    box-sizing: border-box;
+    padding: 20px;
+  }
+
+  div.delivery-container div.delivery-wrapper div.delivery-inner div.inner-list.label-box p {
+    font-size: 14px;
+    color: #333;
+  }
+
+  div.delivery-container div.delivery-wrapper div.delivery-inner div.inner-list.content-box {
+    width: 90%;
+  }
+
+  div.delivery-container div.delivery-wrapper div.delivery-inner div.inner-list.content-box p {
+    font-size: 14px;
+    color: #555;
+  }
+
+  div.delivery-container div.delivery-wrapper div.delivery-inner div.inner-list.content-box div {
+    justify-content: left;
+    box-sizing: border-box;
+    padding: 20px;
+  }
+
 
 </style>
