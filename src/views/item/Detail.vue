@@ -880,7 +880,7 @@ export default {
 
   }
 
-  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.item-discount-price {
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.status {
     width: 10%;
   }
 

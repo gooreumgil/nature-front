@@ -15,11 +15,22 @@
         <div class="inner-box">
 
           <div @click="showContentToggle(review)" class="item-info">
-            <div class="img-box">
-              <img v-bind:src="review.itemResponseDto.mainImgPath" alt="">
+            <div class="like-box">
+              <span @click="reviewLike(review)" class="like-helper">
+                <LikeIcon v-bind:fill="getLikeIconFill(review)" v-bind:stroke="'#7ebb34'" />
+              </span>
+            </div>
+
+            <div class="user-icon">
+              <UserIcon v-bind:fill="'#eaeaea'" />
+            </div>
+            <div class="writer">
+              <p>{{ review.writer }}</p>
+            </div>
+            <div class="review-title-box">
+              <h4>{{ getReviewTitle(review) }}</h4>
             </div>
             <div class="info">
-              <h4>{{ review.itemResponseDto.nameKor }}</h4>
               <div class="rating">
                 <p>평점:</p>
                 <span v-for="(star, index) in stars" v-bind:key="index">
@@ -50,9 +61,11 @@
 <script>
 import StarIcon from "@/components/icon/StarIcon";
 import CommentIcon from "@/components/icon/CommentIcon";
+import UserIcon from "@/components/icon/UserIcon";
+import LikeIcon from "@/components/icon/LikeIcon";
 export default {
   name: "ItemReviews",
-  components: {CommentIcon, StarIcon},
+  components: {LikeIcon, UserIcon, CommentIcon, StarIcon},
   props: {
     reviews: {
       value: []
@@ -78,6 +91,15 @@ export default {
   },
 
   methods: {
+    reviewLike(review) {
+      const token = this.$cookies.get('token');
+      if (!token) {
+        alert('로그인을 해주세요!');
+        return;
+      }
+
+    },
+
     getStroke(review, star) {
       return review.rating >= star.rating ? '#7ebb34' : '#202020';
 
@@ -97,8 +119,16 @@ export default {
 
     reviewsIsEmpty() {
       return this.reviews.content.length === 0;
-    }
+    },
 
+    getReviewTitle(review) {
+      const substring = review.content.substring(0, 80);
+      return review.content.length > 80 ? substring + '...' : substring;
+    },
+
+    getLikeIconFill(review) {
+      return review.userLike === true ? '#7ebb34' : 'none';
+    },
 
   }
 }
@@ -175,12 +205,69 @@ export default {
   }
 
   div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info {
+    position: relative;
     cursor: pointer;
+    text-align: left;
     display: flex;
-    align-items: center;
-    padding: 20px 0;
+    padding: 25px 10px;
+    padding-left: 80px;
     border-bottom: 1px solid #eaeaea;
+    flex-direction: column;
+    justify-content: left;
   }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.like-box {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.like-box span {
+
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.like-box span svg {
+    max-width: 25px;
+    width: 100%;
+  }
+
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.user-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.user-icon svg {
+    max-width: 50px;
+    width: 100%;
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.writer {
+
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.writer p {
+    font-size: 15px;
+    font-weight: 700;
+    color: #333;
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.review-title-box {
+    margin-top: 10px;
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.review-title-box h4 {
+    width: 75%;
+    font-size: 14px;
+    font-weight: 400;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
 
   div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.img-box {
     width: 100px;
@@ -208,7 +295,7 @@ export default {
   div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.info div.rating {
     display: flex;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 5px;
   }
 
   div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.info div.rating p {
