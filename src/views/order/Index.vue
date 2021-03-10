@@ -128,7 +128,7 @@
                 </div>
 
                 <div class="set-main-address">
-                  <input type="checkbox" v-model="setMainAddress"> <p>기본 주소로 등록</p>
+                  <input type="checkbox" v-model="registerDefaultAddress"> <p>기본 주소로 등록</p>
                 </div>
               </div>
             </div>
@@ -234,7 +234,7 @@ export default {
       usedPointsTmp: 0,
       usedPoints: 0,
       paymentMethod: '신용카드',
-      setMainAddress: false,
+      registerDefaultAddress: false,
       receiver: null,
       phoneNum1: null,
       phoneNum2: null,
@@ -285,7 +285,7 @@ export default {
         const res = await userApi.getUser(token);
         this.user = res.data;
         if (this.user.addressResponseDtos.length === 0) {
-          this.setMainAddress = true;
+          this.registerDefaultAddress = true;
         }
         this.receiver = this.user.name;
         this.phoneNum1 = this.user.phoneNum1;
@@ -347,7 +347,9 @@ export default {
         orderItemSaveRequestDtos.push(orderItem);
       })
 
-      orderApi.productOrder(token, receiver, phoneNum1, phoneNum2, phoneNum3, zipCode, mainAddress, detailAddress, usedPoints, finalDiscountPrice, finalPrice, deliveryPrice, paymentMethod, orderItemSaveRequestDtos)
+      const registerDefaultAddress = this.registerDefaultAddress;
+
+      orderApi.productOrder(token, receiver, phoneNum1, phoneNum2, phoneNum3, zipCode, mainAddress, detailAddress, usedPoints, finalDiscountPrice, finalPrice, deliveryPrice, paymentMethod, orderItemSaveRequestDtos, registerDefaultAddress)
       .then((res) => {
         this.$router.replace(res.data + '/complete');
       }).catch((err) => {
