@@ -6,6 +6,7 @@ import com.rainyheaven.nature.core.domain.embedded.BirthDay;
 import com.rainyheaven.nature.core.domain.embedded.PhoneNumber;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLike;
 import com.rainyheaven.nature.core.domain.order.Order;
+import com.rainyheaven.nature.core.domain.order.dto.app.OrderSaveRequestDto;
 import com.rainyheaven.nature.core.domain.qna.Qna;
 import com.rainyheaven.nature.core.domain.review.Review;
 import com.rainyheaven.nature.core.domain.reviewimage.ReviewImage;
@@ -133,5 +134,11 @@ public class User extends BaseTimeEntity {
 
     public void plusPoints(int usedPoints) {
         this.points += usedPoints;
+    }
+
+    // 주문시 주소 추가
+    public void addAddress(Address address) {
+        this.addresses.add(address);
+        address.setUser(this);
     }
 }

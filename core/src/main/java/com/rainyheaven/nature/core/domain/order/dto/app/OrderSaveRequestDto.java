@@ -28,6 +28,8 @@ public class OrderSaveRequestDto {
     private Integer deliveryPrice;
     private String paymentMethod;
     private List<OrderItemSaveRequestDto> orderItemSaveRequestDtos = new ArrayList<>();
+    private boolean registerDefaultAddress;
+    private boolean registerNewAddress;
 
 
 }

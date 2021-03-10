@@ -113,6 +113,8 @@ public class ReviewService {
         Review review = findById(id);
         User user = userService.findById(userId);
         boolean exist = reviewLikeService.existByReviewAndUser(review.getId(), user.getId());
+
+        // 해당 글에 해당 유저가 좋아요를 했다면 에러
         if (exist) {
             throw new RuntimeException("이미 좋아요한 글입니다.");
         }

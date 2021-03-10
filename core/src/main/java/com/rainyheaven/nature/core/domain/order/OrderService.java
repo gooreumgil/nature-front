@@ -1,5 +1,6 @@
 package com.rainyheaven.nature.core.domain.order;
 
+import com.rainyheaven.nature.core.domain.address.Address;
 import com.rainyheaven.nature.core.domain.delivery.Delivery;
 import com.rainyheaven.nature.core.domain.delivery.DeliveryStatus;
 import com.rainyheaven.nature.core.domain.item.Item;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,6 +68,16 @@ public class OrderService {
         List<OrderItem> orderItems = order.getOrderItems();
         orderItems.forEach(orderItem -> items.stream().filter(item -> orderItem.getItem().getId().equals(item.getId()))
                 .findFirst().ifPresent(item -> item.minusStockQuantity(orderItem.getItemQuantity())));
+        
+        // 기본 주소로 등록하기를 체크 했을 시
+        if (orderSaveRequestDto.isRegisterDefaultAddress()) {
+            registerDefaultAddress(orderSaveRequestDto, user);
+        }
+        
+        // 신규 배송지를 선택했을 시
+        if (orderSaveRequestDto.isRegisterNewAddress()) {
+            registerNewAddress(orderSaveRequestDto, user);
+        }
 
         return orderRepository.save(order);
 
@@ -108,21 +120,48 @@ public class OrderService {
     public void confirm(Long id, Long userId) {
         Order order = findByIdWithUserAndDelivery(id);
         User user = order.getUser();
-        
+
         // order confirm을 하는 유저가 실제 주문을 한 유저와 같은지 체크
         if (!user.getId().equals(userId)) {
             throw new RuntimeException();
         }
-        
+
         Delivery delivery = order.getDelivery();
-        
+
         // 포인트 적립
         int points = Math.toIntExact(Math.round(order.getFinalPrice() * 0.03));
         order.confirm(points);
         user.savePoints(points);
-        
+
         // deliveryStatus comp로 업데이트
         delivery.deliveryComp();
+
+    }
+
+    private void registerDefaultAddress(OrderSaveRequestDto orderSaveRequestDto, User user) {
+        String mainAddress = orderSaveRequestDto.getMainAddress();
+        String detailAddress = orderSaveRequestDto.getDetailAddress();
+        Integer zipCode = Integer.valueOf(orderSaveRequestDto.getZipCode());
+
+        List<Address> addresses = user.getAddresses();
+
+        // 유저의 주소들 중에서 기본 주소로 등록되어 있는 주소가 있는지 필터링
+        Optional<Address> userDefaultAddress = addresses.stream().filter(Address::isDefault).findFirst();
+
+        // 기본 주소가 이미 있는 경우 -> 업데이트 else 메인 주소를 생성한후 user에 add
+        userDefaultAddress.ifPresentOrElse(address -> address.update(mainAddress, detailAddress, zipCode), () -> {
+            Address defaultAddress = Address.create(mainAddress, detailAddress, zipCode, true);
+            user.addAddress(defaultAddress);
+        });
+    }
+
+    private void registerNewAddress(OrderSaveRequestDto orderSaveRequestDto, User user) {
+        String mainAddress = orderSaveRequestDto.getMainAddress();
+        String detailAddress = orderSaveRequestDto.getDetailAddress();
+        Integer zipCode = Integer.valueOf(orderSaveRequestDto.getZipCode());
+
+        Address newAddress = Address.create(mainAddress, detailAddress, zipCode, false);
+        user.addAddress(newAddress);
 
     }
 }
