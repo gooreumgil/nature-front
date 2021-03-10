@@ -29,6 +29,7 @@ public class ReviewResponseDto {
     private ItemSimpleResponseDto itemResponseDto;
     private List<ReviewImageResponseDto> reviewImageResponseDtos = new ArrayList<>();
     private String writer;
+    private Boolean userLike;
 
     public ReviewResponseDto(Review review, String srcPrefix) {
         this.id = review.getId();

@@ -13,8 +13,10 @@ import com.rainyheaven.nature.core.domain.qna.dto.app.QnaSaveRequestDto;
 import com.rainyheaven.nature.core.domain.review.Review;
 import com.rainyheaven.nature.core.domain.review.ReviewService;
 import com.rainyheaven.nature.core.domain.review.dto.app.ReviewResponseDto;
+import com.rainyheaven.nature.core.domain.reviewlike.ReviewLikeService;
 import com.rainyheaven.nature.core.domain.user.TokenUser;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -37,6 +39,7 @@ public class ItemController {
     private final ItemLikeService itemLikeService;
     private final QnaService qnaService;
     private final ReviewService reviewService;
+    private final ReviewLikeService reviewLikeService;
 
     private static final String ALL = "ALL";
 
@@ -115,12 +118,20 @@ public class ItemController {
     @GetMapping("/{id}/reviews")
     public ResponseEntity<Page<ReviewResponseDto>> getReviews(
             @PathVariable Long id,
-            @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable,
+            @AuthenticationPrincipal TokenUser tokenUser) {
 
         Page<Review> reviewPage = reviewService.getPageByItem(id, pageable);
         Page<ReviewResponseDto> reviewPageMap = reviewPage.map(review -> {
             ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review, imgSrcPrefix);
             reviewResponseDto.setWriter(review.getUser().getName());
+
+            // 토큰을 가진 유저일때 해당 리뷰를 좋아요 했는지 체크
+            if (ObjectUtils.isNotEmpty(tokenUser)) {
+                boolean exist = reviewLikeService.existByReviewAndUser(review.getId(), tokenUser.getId());
+                if (exist) reviewResponseDto.setUserLike(true);
+            }
+
             return reviewResponseDto;
         });
 
