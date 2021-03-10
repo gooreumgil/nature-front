@@ -14,11 +14,12 @@
       <li class="review-list" v-for="(review, index) in reviews.content" v-bind:key="index">
         <div class="inner-box">
 
-          <div @click="showContentToggle(review)" class="item-info">
+          <div class="item-info">
             <div class="like-box">
               <span @click="reviewLike(review)" class="like-helper">
                 <LikeIcon v-bind:fill="getLikeIconFill(review)" v-bind:stroke="'#7ebb34'" />
               </span>
+              <p>{{ review.likesCount }}</p>
             </div>
 
             <div class="user-icon">
@@ -40,7 +41,7 @@
             </div>
           </div>
 
-          <div class="review-info" v-if="review.showContent">
+          <div class="review-info">
             <div class="img-box">
               <div v-bind:style="{backgroundImage: getReviewImageUrl(image)}" v-for="(image, index) in review.reviewImageResponseDtos" v-bind:key="index"></div>
             </div>
@@ -63,6 +64,7 @@ import StarIcon from "@/components/icon/StarIcon";
 import CommentIcon from "@/components/icon/CommentIcon";
 import UserIcon from "@/components/icon/UserIcon";
 import LikeIcon from "@/components/icon/LikeIcon";
+import reviewApi from "@/api/ReviewApi";
 export default {
   name: "ItemReviews",
   components: {LikeIcon, UserIcon, CommentIcon, StarIcon},
@@ -91,12 +93,31 @@ export default {
   },
 
   methods: {
-    reviewLike(review) {
+    async reviewLike(review) {
       const token = this.$cookies.get('token');
       if (!token) {
         alert('로그인을 해주세요!');
         return;
       }
+
+      const id = review.id;
+      const userLike = review.userLike;
+
+      if (userLike === true) {
+        await reviewApi.cancelLike(token, id);
+        review.likesCount--;
+        review.userLike = false;
+      } else {
+        try {
+          await reviewApi.saveLike(token, id);
+          review.likesCount++;
+          review.userLike = true;
+        } catch (err) {
+          alert('문제가 발생하였습니다.');
+          console.log(err);
+        }
+      }
+
 
     },
 
@@ -206,7 +227,6 @@ export default {
 
   div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info {
     position: relative;
-    cursor: pointer;
     text-align: left;
     display: flex;
     padding: 25px 10px;
@@ -217,10 +237,15 @@ export default {
   }
 
   div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.like-box {
+    cursor: pointer;
     position: absolute;
-    right: 20px;
+    z-index: 9;
+    right: 25px;
     top: 50%;
     transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
   }
 
   div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.like-box span {
@@ -228,8 +253,15 @@ export default {
   }
 
   div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.like-box span svg {
-    max-width: 25px;
+    max-width: 22px;
     width: 100%;
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.like-box p {
+    margin-top: 3px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #777;
   }
 
 

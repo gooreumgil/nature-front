@@ -14,5 +14,23 @@ export default {
         'Authorization': 'Bearer ' + token
       }
     })
+  },
+
+  saveLike(token, id) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/reviews/${id}/review-likes`;
+    return axios.post(url, {}, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
+  },
+
+  cancelLike(token, id) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/reviews/${id}/review-likes`;
+    return axios.delete(url, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
   }
 }

@@ -63,8 +63,12 @@ export default {
     return axios.get(url);
   },
 
-  getReviews(id) {
+  getReviews(token, id) {
     const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/reviews`;
-    return axios.get(url);
+    return axios.get(url, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    });
   }
 }

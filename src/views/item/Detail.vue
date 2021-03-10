@@ -254,9 +254,9 @@ export default {
 
     async setReviews() {
       const id = this.item.id;
-
+      const token = this.$cookies.get('token');
       try {
-        const res = await itemApi.getReviews(id);
+        const res = await itemApi.getReviews(token, id);
         const reviews = res.data;
         reviews.content.forEach(review => review.showContent = false);
         this.reviews = reviews;
