@@ -340,7 +340,9 @@ export default {
   }
 
   ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.review-info {
-    padding: 30px 0;
+    box-sizing: border-box;
+    padding: 30px 20px;
+    background-color: #fafafa;
   }
 
   ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.review-info div.img-box {
@@ -371,7 +373,7 @@ export default {
 
   ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.review-info div.text-box span {
     display: inline-block;
-    font-size: 14px;
+    font-size: 13px;
     color: #888;
     margin-top: 20px;
   }

@@ -272,7 +272,6 @@ export default {
 
 
   ul li div.inner-col.img p.item-name {
-    cursor: pointer;
   }
 
 

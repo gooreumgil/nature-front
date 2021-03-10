@@ -1,11 +1,20 @@
 <template>
   <div class="review-container">
-
-    <ul class="review-wrapper">
-      <li class="review-list" v-for="(review, index) in reviews" v-bind:key="index">
+    <div class="title-box">
+      <p>총 <span>{{ reviews.totalElements }}</span>건의 후기가 있습니다.</p>
+    </div>
+    <div class="review-empty" v-if="reviewsIsEmpty()">
+      <div class="review-empty-inner">
+        <CommentIcon v-bind:stroke="'#a0a0a0'" />
+        <h4>작성된 구매후기가 없습니다.</h4>
+        <p>상품을 구매하셨다면, 구매후기를 남겨주세요.</p>
+      </div>
+    </div>
+    <ul class="review-wrapper" v-if="!reviewsIsEmpty()">
+      <li class="review-list" v-for="(review, index) in reviews.content" v-bind:key="index">
         <div class="inner-box">
 
-          <div class="item-info">
+          <div @click="showContentToggle(review)" class="item-info">
             <div class="img-box">
               <img v-bind:src="review.itemResponseDto.mainImgPath" alt="">
             </div>
@@ -40,15 +49,19 @@
 
 <script>
 import StarIcon from "@/components/icon/StarIcon";
+import CommentIcon from "@/components/icon/CommentIcon";
 export default {
   name: "ItemReviews",
-  components: {StarIcon},
+  components: {CommentIcon, StarIcon},
   props: {
     reviews: {
       value: []
     },
     convertTimeToStr: {
       type: Function
+    },
+    s3UrlPrefix: {
+      type: String
     },
   },
 
@@ -76,11 +89,185 @@ export default {
 
     getReviewImageUrl(image) {
       return 'url(' + this.s3UrlPrefix + image.s3Key + ')'
+    },
+
+    showContentToggle(review) {
+      review.showContent = !review.showContent;
+    },
+
+    reviewsIsEmpty() {
+      return this.reviews.content.length === 0;
     }
+
+
   }
 }
 </script>
 
 <style scoped>
+  div.review-container {
+    max-width: 1110px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 15px;
+    min-height: 450px;
+  }
+
+  div.review-container div.title-box {
+    text-align: left;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #eaeaea;
+  }
+
+  div.review-container div.title-box p {
+    font-size: 18px;
+    color: #555;
+    font-weight: 400;
+  }
+
+  div.review-container div.title-box p span {
+    font-weight: 700;
+    color: #333;
+  }
+
+  div.review-container div.review-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 350px;
+    border-bottom: 1px solid #eaeaea;
+  }
+
+  div.review-container div.review-empty div.review-empty-inner {
+
+  }
+
+  div.review-container div.review-empty div.review-empty-inner svg {
+    max-width: 55px;
+    width: 100%;
+  }
+
+  div.review-container div.review-empty div.review-empty-inner h4 {
+    margin-top: 10px;
+    font-size: 16px;
+  }
+
+  div.review-container div.review-empty div.review-empty-inner p {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #888;
+  }
+
+  div.review-container ul.review-wrapper {
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  div.review-container ul.review-wrapper li.review-list {
+
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box {
+
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #eaeaea;
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.img-box {
+    width: 100px;
+    height: 118px;
+    background-color: #f6f6f6;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.img-box img {
+    width: 100%;
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.info {
+
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.info h4 {
+    font-size: 16px;
+    font-weight: 400;
+    color: #333;
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.info div.rating {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.info div.rating p {
+    font-size: 14px;
+    font-weight: 400;
+    color: #888;
+    margin-right: 5px;
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.info div.rating span {
+
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.info div.rating span svg {
+    max-width: 15px;
+    width: 100%;
+    padding: 0 1px;
+  }
+
+
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.review-info {
+    padding: 30px 20px;
+    box-sizing: border-box;
+    text-align: left;
+    background-color: #fafafa;
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.review-info div.img-box {
+    display: flex;
+    align-items: center;
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.review-info div.img-box div {
+    width: 80px;
+    height: 80px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.review-info div.text-box {
+    margin-top: 30px;
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.review-info div.text-box p {
+    font-size: 15px;
+    font-weight: 400;
+    color: #333;
+    line-height: 1.4;
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.review-info div.text-box span {
+    display: inline-block;
+    font-size: 13px;
+    color: #888;
+    margin-top: 20px;
+  }
 
 </style>

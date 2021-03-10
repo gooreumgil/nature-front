@@ -96,7 +96,7 @@
         <img v-bind:src="item.detailImgPath" alt="">
       </div>
 
-      <div class="item-qna-box" v-if="currentTab === 'qna'">
+      <div class="item-qna-box" v-if="qnaInit && currentTab === 'qna'">
         <div class="item-qna-inner">
           <div class="title-box">
             <h3>상품문의</h3>
@@ -113,8 +113,16 @@
           </form>
         </div>
 
-        <ul class="qna-wrapper">
-          <li class="qna-list clearfix" v-bind:class="{contentShow: qna.showContent}" v-for="(qna, index) in qnaList" v-bind:key="index">
+        <div class="qna-empty" v-if="qnaListIsEmpty()">
+          <div class="qna-empty-inner">
+            <CommentIcon v-bind:stroke="'#a0a0a0'" />
+            <h4>작성된 문의가 없습니다.</h4>
+            <p>궁금하신점이 있다면, 문의를 남겨주세요.</p>
+          </div>
+        </div>
+
+        <ul class="qna-wrapper" v-if="!qnaListIsEmpty()">
+          <li class="qna-list clearfix" v-bind:class="{contentShow: qna.showContent}" v-for="(qna, index) in qnaList.content" v-bind:key="index">
             <div class="list-inner" @click="qnaShowContentToggle(qna)">
               <div class="status">
                 <p>{{ getQnaStatus(qna.status) }}</p>
@@ -139,7 +147,7 @@
 
       </div>
 
-      <ItemReviews v-if="isCurrentTab('review')" v-bind:reviews="reviews" v-bind:convert-time-to-str="convertTimeToStr" />
+      <ItemReviews v-if="reviewInit && isCurrentTab('review')" v-bind:reviews="reviews" v-bind:convert-time-to-str="convertTimeToStr" v-bind:s3-url-prefix="s3UrlPrefix" />
 
 
     </section>
@@ -164,13 +172,16 @@ import Footer from "@/components/core/Footer";
 import userApi from "@/api/UserApi";
 import commonUtils from "@/utils/commonUtils";
 import ItemReviews from "@/components/core/ItemReviews";
+import CommentIcon from "@/components/icon/CommentIcon";
 export default {
   name: "Detail",
-  components: {ItemReviews, Footer, Bottom, CartModal, CartIcon, LikeIcon, MinusIcon, PlusIcon, Header},
+  components: {CommentIcon, ItemReviews, Footer, Bottom, CartModal, CartIcon, LikeIcon, MinusIcon, PlusIcon, Header},
 
   data() {
     return {
       init: false,
+      qnaInit: false,
+      reviewInit: false,
       item: null,
       user: null,
       cartAddView: false,
@@ -184,7 +195,8 @@ export default {
       qnaContent: null,
       isQnaSecret: true,
       qnaList: [],
-      reviews: []
+      reviews: [],
+      s3UrlPrefix: 'https://nature-portfolio.s3.ap-northeast-2.amazonaws.com/',
     }
   },
 
@@ -229,10 +241,11 @@ export default {
       const id = this.item.id;
       try {
         const res = await itemApi.getQnaList(id);
-        const qnaList = res.data.content;
-        qnaList.forEach(qna => qna.showContent = false);
+        const qnaList = res.data;
+        qnaList.content.forEach(qna => qna.showContent = false);
 
         this.qnaList = qnaList;
+        this.qnaInit = true;
       } catch (err) {
         alert('문제가 발생했습니다.');
         console.log(err);
@@ -244,9 +257,10 @@ export default {
 
       try {
         const res = await itemApi.getReviews(id);
-        const reviews = res.data.content;
-        reviews.forEach(review => review.showContent = false);
+        const reviews = res.data;
+        reviews.content.forEach(review => review.showContent = false);
         this.reviews = reviews;
+        this.reviewInit = true;
       } catch (err) {
         alert('문제가 발생했습니다.');
         console.log(err);
@@ -303,6 +317,10 @@ export default {
         console.log(err);
       }
 
+    },
+
+    qnaListIsEmpty() {
+      return this.qnaList.content.length === 0;
     },
 
     getStroke() {
@@ -788,6 +806,47 @@ export default {
     color: #333;
     font-weight: 400;
     font-size: 14px;
+  }
+
+  section.main-container section.detail-container div.item-qna-box div.qna-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 450px;
+    max-width: 1110px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 15px;
+  }
+
+  section.main-container section.detail-container div.item-qna-box div.qna-empty div.qna-empty-inner {
+    width: 100%;
+    height: 100%;
+    border-top: 1px solid #eaeaea;
+    border-bottom: 1px solid #eaeaea;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  section.main-container section.detail-container div.item-qna-box div.qna-empty div.qna-empty-inner svg {
+    max-width: 55px;
+    width: 100%;
+  }
+
+  section.main-container section.detail-container div.item-qna-box div.qna-empty div.qna-empty-inner h4 {
+    margin-top: 10px;
+    font-size: 16px;
+  }
+
+  section.main-container section.detail-container div.item-qna-box div.qna-empty div.qna-empty-inner p {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #888;
   }
 
   section.main-container section.detail-container div.item-qna-box ul.qna-wrapper {

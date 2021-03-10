@@ -12,6 +12,12 @@
             <span>{{ getOrderPrice() | price}} 원</span>
           </div>
         </div>
+        <div class="inner-list delivery-price">
+          <div class="top">
+            <p>배송비</p>
+            <span>{{ getOrderDeliveryPrice() | price}} 원</span>
+          </div>
+        </div>
         <div class="inner-list discount-price">
           <div class="top">
             <p>할인 금액</p>
@@ -49,8 +55,7 @@ export default {
       let sum = 0;
       const orderitems = this.order.orderItemResponseDtos;
 
-      orderitems.forEach(orderItem => sum += orderItem.itemPrice);
-      sum += this.order.deliveryResponseDto.deliveryPrice;
+      orderitems.forEach(orderItem => sum += (orderItem.itemPrice * orderItem.itemQuantity));
       return sum;
     },
 
@@ -60,6 +65,10 @@ export default {
 
       orderitems.forEach(orderItem => sum += orderItem.itemDiscountPrice);
       return sum;
+    },
+
+    getOrderDeliveryPrice() {
+      return this.order.deliveryResponseDto.deliveryPrice;
     }
   }
 }
@@ -98,7 +107,7 @@ export default {
   div.pay-container div.pay-wrapper div.pay-inner div.inner-list {
     box-sizing: border-box;
     padding: 20px;
-    width: 25%;
+    width: 20%;
     border-right: 1px solid #eaeaea;
   }
 
@@ -107,7 +116,7 @@ export default {
   }
 
   div.pay-container div.pay-wrapper div.pay-inner div.inner-list .top p {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 400;
     color: #888;
     margin-bottom: 10px;
@@ -115,19 +124,21 @@ export default {
 
   div.pay-container div.pay-wrapper div.pay-inner div.inner-list .top span {
     font-size: 18px;
-    font-weight: 700;
-    color: #555;
+    font-weight: 400;
+    color: #333;
   }
 
   div.pay-container div.pay-wrapper div.pay-inner div.inner-list.final-price {
-    background-color: #f9f9f9;
+    background-color: #7ebb34;
   }
 
   div.pay-container div.pay-wrapper div.pay-inner div.inner-list.final-price p {
+    color: #fff;
   }
 
   div.pay-container div.pay-wrapper div.pay-inner div.inner-list.final-price span {
-    color: #7ebb34;
+    color: #fff;
+    font-weight: 700;
   }
 
 </style>
