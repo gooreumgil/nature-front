@@ -5,6 +5,8 @@ import com.rainyheaven.nature.core.domain.item.ItemService;
 import com.rainyheaven.nature.core.domain.review.dto.app.ReviewSaveRequestDto;
 import com.rainyheaven.nature.core.domain.reviewimage.ReviewImage;
 import com.rainyheaven.nature.core.domain.reviewimage.ReviewImageService;
+import com.rainyheaven.nature.core.domain.reviewlike.ReviewLike;
+import com.rainyheaven.nature.core.domain.reviewlike.ReviewLikeService;
 import com.rainyheaven.nature.core.domain.user.User;
 import com.rainyheaven.nature.core.domain.user.UserService;
 import com.rainyheaven.nature.core.valuebinder.CustomValueBinder;
@@ -30,11 +32,15 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final ReviewImageService reviewImageService;
+    private final ReviewLikeService reviewLikeService;
     private final UserService userService;
     private final ItemService itemService;
 
     private final CustomValueBinder valueBinder;
 
+    public Review findById(Long id) {
+        return reviewRepository.findById(id).orElseThrow(RuntimeException::new);
+    }
 
     @Transactional
     public void save(ReviewSaveRequestDto reviewSaveRequestDto, Long userId, Long itemId) {
@@ -102,4 +108,22 @@ public class ReviewService {
         return reviewImages;
     }
 
+    @Transactional
+    public void addLike(Long id, Long userId) {
+        Review review = findById(id);
+        User user = userService.findById(userId);
+        boolean exist = reviewLikeService.existByReviewAndUser(review.getId(), user.getId());
+        if (exist) {
+            throw new RuntimeException("이미 좋아요한 글입니다.");
+        }
+        ReviewLike.create(review, user);
+
+    }
+
+    @Transactional
+    public void deleteLike(Long id, Long userId) {
+        Review review = findById(id);
+        reviewLikeService.deleteByReviewAndUser(id, userId);
+        review.minusLikesCount();
+    }
 }

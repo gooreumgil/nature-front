@@ -27,4 +27,21 @@ public class ReviewLike {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public static ReviewLike create(Review review, User user) {
+        ReviewLike reviewLike = new ReviewLike();
+        reviewLike.setReview(review);
+        reviewLike.setUser(user);
+        return reviewLike;
+    }
+
+    // 연관관계 편의 메소드
+    private void setReview(Review review) {
+        this.review = review;
+        review.addReviewLike(this);
+    }
+
+    // 연관관계 편의 메소드
+    private void setUser(User user) {
+        this.user = user;
+    }
 }

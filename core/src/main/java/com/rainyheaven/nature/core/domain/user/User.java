@@ -115,17 +115,22 @@ public class User extends BaseTimeEntity {
         this.reviews.add(review);
     }
 
+    // 연관관계 편의 메소드
+    public void addReviewLike(ReviewLike reviewLike) {
+        this.reviewLikes.add(reviewLike);
+    }
     // 구매 확정시 포인트 적립
+
     public void savePoints(int points) {
         this.points += points;
     }
-
     // 포인트 사용시 차감
+
     public void minusPoints(Integer usedPoints) {
         this.points -= usedPoints;
     }
-
     // 주문취소 & 환불시 사용한 포인트 돌려받음
+
     public void plusPoints(int usedPoints) {
         this.points += usedPoints;
     }

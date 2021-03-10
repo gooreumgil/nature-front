@@ -73,4 +73,15 @@ public class Review extends BaseTimeEntity {
         reviewImages.forEach(reviewImage -> reviewImage.setReview(this));
 
     }
+
+    // 연관관계 편의 메소드
+    public void addReviewLike(ReviewLike reviewLike) {
+        this.reviewLikes.add(reviewLike);
+        this.likesCount++;
+    }
+
+    // 좋아요 취소시 likesCount 빼기
+    public void minusLikesCount() {
+        this.likesCount--;
+    }
 }

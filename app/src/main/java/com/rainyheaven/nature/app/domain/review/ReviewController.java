@@ -28,4 +28,20 @@ public class ReviewController {
 
     }
 
+    @PostMapping("/{id}/review-likes")
+    public ResponseEntity<Void> saveLike(@PathVariable Long id, @AuthenticationPrincipal TokenUser tokenUser) {
+
+        reviewService.addLike(id, tokenUser.getId());
+        return ResponseEntity.ok().build();
+
+    }
+
+    @DeleteMapping("/{id}/review-likes")
+    public ResponseEntity cancelLike(@PathVariable Long id, @AuthenticationPrincipal TokenUser tokenUser) {
+        reviewService.deleteLike(id, tokenUser.getId());
+        return null;
+
+    }
+
+
 }

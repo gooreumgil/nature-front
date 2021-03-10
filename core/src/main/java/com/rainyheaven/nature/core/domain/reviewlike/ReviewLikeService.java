@@ -15,4 +15,8 @@ public class ReviewLikeService {
         return reviewLikeRepository.existsByReviewIdAndUserId(reviewId, userId);
     }
 
+    @Transactional
+    public void deleteByReviewAndUser(Long reviewId, Long userId) {
+        reviewLikeRepository.deleteByReviewIdAndUserId(reviewId, userId);
+    }
 }
