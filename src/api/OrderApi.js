@@ -2,7 +2,7 @@ import commonUtils from "@/utils/commonUtils";
 import axios from 'axios';
 
 export default {
-  productOrder(token, receiver, phoneNum1, phoneNum2, phoneNum3, zipCode, mainAddress, detailAddress, usedPoints, finalDiscountPrice, finalPrice, deliveryPrice, paymentMethod, orderItemSaveRequestDtos, registerDefaultAddress) {
+  productOrder(token, receiver, phoneNum1, phoneNum2, phoneNum3, zipCode, mainAddress, detailAddress, usedPoints, finalDiscountPrice, finalPrice, deliveryPrice, paymentMethod, orderItemSaveRequestDtos, registerDefaultAddress, registerNewAddress) {
     const url = `${commonUtils.getApiBaseUrl()}/v1/orders`;
     return axios.post(url, {
       receiver,
@@ -18,7 +18,8 @@ export default {
       deliveryPrice,
       paymentMethod,
       orderItemSaveRequestDtos,
-      registerDefaultAddress
+      registerDefaultAddress,
+      registerNewAddress
     },{
       headers: {
         'Authorization': 'Bearer ' + token

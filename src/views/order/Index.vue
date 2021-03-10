@@ -235,6 +235,7 @@ export default {
       usedPoints: 0,
       paymentMethod: '신용카드',
       registerDefaultAddress: false,
+      registerNewAddress: false,
       receiver: null,
       phoneNum1: null,
       phoneNum2: null,
@@ -348,8 +349,9 @@ export default {
       })
 
       const registerDefaultAddress = this.registerDefaultAddress;
+      const registerNewAddress = this.registerNewAddress;
 
-      orderApi.productOrder(token, receiver, phoneNum1, phoneNum2, phoneNum3, zipCode, mainAddress, detailAddress, usedPoints, finalDiscountPrice, finalPrice, deliveryPrice, paymentMethod, orderItemSaveRequestDtos, registerDefaultAddress)
+      orderApi.productOrder(token, receiver, phoneNum1, phoneNum2, phoneNum3, zipCode, mainAddress, detailAddress, usedPoints, finalDiscountPrice, finalPrice, deliveryPrice, paymentMethod, orderItemSaveRequestDtos, registerDefaultAddress, registerNewAddress)
       .then((res) => {
         this.$router.replace(res.data + '/complete');
       }).catch((err) => {
