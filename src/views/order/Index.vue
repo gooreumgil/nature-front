@@ -79,9 +79,9 @@
 
               </div>
               <div class="content-box">
-                <button type="button">기본배송지</button>
-                <button type="button">신규배송지</button>
-                <button type="button">배송지목록</button>
+                <button v-bind:class="{active: isAddressTab('default')}" class="select-address" @click="selectDefaultAddress()" type="button">기본배송지</button>
+                <button v-bind:class="{active: isAddressTab('new')}" class="select-address" @click="selectNewAddress()" type="button">신규배송지</button>
+                <button v-bind:class="{active: isAddressTab('list')}" class="select-address" @click="showAddressListModalToggle()" type="button">배송지목록</button>
               </div>
             </div>
 
@@ -127,7 +127,7 @@
 
                 </div>
 
-                <div class="set-main-address">
+                <div class="set-main-address" v-if="!isDefaultAddress">
                   <input type="checkbox" v-model="registerDefaultAddress"> <p>기본 주소로 등록</p>
                 </div>
               </div>
@@ -209,6 +209,8 @@
       </div>
     </section>
 
+    <AddressListModal v-if="userInit && showAddressListModal" v-bind:address-list="user.addressResponseDtos" v-bind:select-existing-address="selectExistingAddress" />
+
     <Bottom />
     <Footer />
   </section>
@@ -221,10 +223,11 @@ import userApi from "@/api/UserApi";
 import Bottom from "@/components/core/Bottom";
 import Footer from "@/components/core/Footer";
 import orderApi from "@/api/OrderApi";
+import AddressListModal from "@/components/core/AddressListModal";
 
 export default {
   name: "Index",
-  components: {Footer, Bottom, Header},
+  components: {AddressListModal, Footer, Bottom, Header},
   data() {
     return {
       items: [],
@@ -234,8 +237,13 @@ export default {
       usedPointsTmp: 0,
       usedPoints: 0,
       paymentMethod: '신용카드',
+      addressTab: null,
+      defaultAddress: null,
+      isDefaultAddress: false,
       registerDefaultAddress: false,
       registerNewAddress: false,
+      selectedAddress: null,
+      showAddressListModal: false,
       receiver: null,
       phoneNum1: null,
       phoneNum2: null,
@@ -299,9 +307,12 @@ export default {
           });
 
           if (defaultAddress.length > 0) {
+            this.defaultAddress = defaultAddress[0];
             this.mainAddress = defaultAddress[0].main;
             this.detailAddress = defaultAddress[0].detail;
             this.zipCode = defaultAddress[0].zipCode;
+            this.isDefaultAddress = true;
+            this.addressTab = 'default';
           }
         }
 
@@ -350,6 +361,12 @@ export default {
 
       const registerDefaultAddress = this.registerDefaultAddress;
       const registerNewAddress = this.registerNewAddress;
+
+      const AddressSaveRequestDto = {
+        mainAddress,
+        detailAddress,
+
+      }
 
       orderApi.productOrder(token, receiver, phoneNum1, phoneNum2, phoneNum3, zipCode, mainAddress, detailAddress, usedPoints, finalDiscountPrice, finalPrice, deliveryPrice, paymentMethod, orderItemSaveRequestDtos, registerDefaultAddress, registerNewAddress)
       .then((res) => {
@@ -443,6 +460,49 @@ export default {
         this.usedPoints = 0;
       }
 
+    },
+
+    selectDefaultAddress() {
+      this.mainAddress = this.defaultAddress.main;
+      this.detailAddress = this.defaultAddress.detail;
+      this.zipCode = this.defaultAddress.zipCode;
+      this.isDefaultAddress = true;
+      this.registerNewAddress = false;
+      this.addressTab = 'default';
+    },
+
+    selectNewAddress() {
+      this.mainAddress = null;
+      this.detailAddress = null;
+      this.zipCode = null;
+      this.isDefaultAddress = false;
+      this.registerNewAddress = true;
+      this.addressTab = 'new';
+    },
+
+    selectExistingAddress(address) {
+      if (address.isDefault) {
+        this.selectDefaultAddress();
+        this.showAddressListModal = false;
+        return;
+      }
+      this.selectedAddress = address;
+      this.mainAddress = address.main;
+      this.detailAddress = address.detailAddress;
+      this.zipCode = address.zipCode;
+
+      this.isDefaultAddress = false;
+      this.registerNewAddress = false;
+      this.addressTab = 'list';
+    },
+
+    showAddressListModalToggle() {
+      this.showAddressListModal = !this.showAddressListModal;
+      if (this.showAddressListModal) this.addressTab = 'list';
+    },
+
+    isAddressTab(tab) {
+      return this.addressTab === tab;
     }
 
 
@@ -656,6 +716,26 @@ export default {
     box-sizing: border-box;
     padding-left: 165px;
     display: flex;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list.pay-info div.inner div.inner-row div.content-box button.select-address {
+    outline: none;
+    cursor: pointer;
+    background-color: #fff;
+    box-sizing: border-box;
+    padding: 3px 8px;
+    border: 1px solid #eaeaea;
+    color: #333;
+    border-radius: 3px;
+    font-size: 12px;
+    margin-right: 5px;
+  }
+
+  section.main-container section.inner-container div.purchase-info div.purchase-list.pay-info div.inner div.inner-row div.content-box button.select-address.active {
+    /*background-color: #555;*/
+    color: #0fafbe;
+    border: 1px solid #0fafbe;
+    font-weight: 700;
   }
 
   section.main-container section.inner-container div.purchase-info div.purchase-list.pay-info div.inner div.inner-row div.content-box input {
