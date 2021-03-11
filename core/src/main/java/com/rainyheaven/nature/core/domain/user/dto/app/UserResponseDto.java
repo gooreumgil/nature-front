@@ -40,7 +40,7 @@ public class UserResponseDto {
         this.email = decodedEmail;
         this.ownPoints = user.getPoints();
 
-        List<Address> addresses = user.getAddresses();
+        List<Address> addresses = user.getAddressList();
         if (!addresses.isEmpty()) {
             addressResponseDtos.addAll(
                     addresses.stream()

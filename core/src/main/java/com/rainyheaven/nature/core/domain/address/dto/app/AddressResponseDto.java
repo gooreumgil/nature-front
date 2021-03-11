@@ -15,7 +15,7 @@ public class AddressResponseDto {
     private Long id;
     private String main;
     private String detail;
-    private Integer zipCode;
+    private String zipCode;
     private Boolean isDefault;
 
     public AddressResponseDto(Address address) {

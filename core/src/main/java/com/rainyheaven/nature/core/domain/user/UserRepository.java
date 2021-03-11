@@ -10,6 +10,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmailAndUserStatus(String email, UserStatus userStatus);
     Optional<User> findByIdAndUserStatus(Long id, UserStatus userStatus);
 
-    @Query("select u from User u left join fetch u.addresses where u.id = :id")
+    @Query("select u from User u left join fetch u.addressList where u.id = :id")
     Optional<User> findByIdWithAddress(@Param("id") Long id);
 }

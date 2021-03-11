@@ -6,10 +6,8 @@ import com.rainyheaven.nature.core.domain.embedded.BirthDay;
 import com.rainyheaven.nature.core.domain.embedded.PhoneNumber;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLike;
 import com.rainyheaven.nature.core.domain.order.Order;
-import com.rainyheaven.nature.core.domain.order.dto.app.OrderSaveRequestDto;
 import com.rainyheaven.nature.core.domain.qna.Qna;
 import com.rainyheaven.nature.core.domain.review.Review;
-import com.rainyheaven.nature.core.domain.reviewimage.ReviewImage;
 import com.rainyheaven.nature.core.domain.reviewlike.ReviewLike;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserSaveRequestDto;
 import lombok.AllArgsConstructor;
@@ -50,7 +48,7 @@ public class User extends BaseTimeEntity {
     private BirthDay birthDay;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Address> addresses = new ArrayList<>();
+    private List<Address> addressList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
@@ -138,7 +136,7 @@ public class User extends BaseTimeEntity {
 
     // 주문시 주소 추가
     public void addAddress(Address address) {
-        this.addresses.add(address);
+        this.addressList.add(address);
         address.setUser(this);
     }
 }

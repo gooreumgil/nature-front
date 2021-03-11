@@ -1,5 +1,6 @@
 package com.rainyheaven.nature.core.domain.address;
 
+import com.rainyheaven.nature.core.domain.address.dto.app.AddressRequestDto;
 import com.rainyheaven.nature.core.domain.base.BaseTimeEntity;
 import com.rainyheaven.nature.core.domain.order.dto.app.OrderSaveRequestDto;
 import com.rainyheaven.nature.core.domain.user.User;
@@ -24,7 +25,7 @@ public class Address extends BaseTimeEntity {
 
     private String main;
     private String detail;
-    private Integer zipCode;
+    private String zipCode;
     private boolean isDefault;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,11 +33,11 @@ public class Address extends BaseTimeEntity {
     private User user;
 
 
-    public static Address create(String main, String detail, Integer zipCode, boolean isDefault) {
+    public static Address create(AddressRequestDto dto, boolean isDefault) {
         Address address = new Address();
-        address.main = main;
-        address.detail = detail;
-        address.zipCode = zipCode;
+        address.main = dto.getMainAddress();
+        address.detail = dto.getDetailAddress();
+        address.zipCode = dto.getZipCode();
         address.isDefault = isDefault;
         address.setCreatedDate(LocalDateTime.now());
         address.setLastModifiedDate(LocalDateTime.now());
@@ -44,7 +45,7 @@ public class Address extends BaseTimeEntity {
     }
 
     // 업데이트
-    public void update(String mainAddress, String detailAddress, Integer zipCode) {
+    public void update(String mainAddress, String detailAddress, String zipCode) {
        this.main = mainAddress;
        this.detail = detailAddress;
        this.zipCode = zipCode;
@@ -52,5 +53,9 @@ public class Address extends BaseTimeEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setIsDefault(boolean isDefault) {
+        this.isDefault = isDefault;
     }
 }

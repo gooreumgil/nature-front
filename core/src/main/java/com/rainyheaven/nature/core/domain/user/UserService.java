@@ -1,6 +1,9 @@
 package com.rainyheaven.nature.core.domain.user;
 
+import com.rainyheaven.nature.core.domain.address.Address;
+import com.rainyheaven.nature.core.domain.address.dto.app.AddressRequestDto;
 import com.rainyheaven.nature.core.domain.order.OrderService;
+import com.rainyheaven.nature.core.domain.order.dto.app.OrderSaveRequestDto;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserSaveRequestDto;
 import com.rainyheaven.nature.core.utils.AES256Util;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -68,8 +72,39 @@ public class UserService {
         return user;
     }
 
+    public void saveAddress(AddressRequestDto addressRequestDto, User user) {
+        boolean registerDefaultAddress = addressRequestDto.isRegisterDefaultAddress();
+        boolean registerNewAddress = addressRequestDto.isRegisterNewAddress();
+        boolean useExistingAddress = addressRequestDto.isUseExistingAddress();
 
-    public void confirmOrder(Long id, Long orderId) {
+        // 기본 주소로 등록하기 O
+        if (registerDefaultAddress) {
 
+            // 기존의 address 중 default인 것을 false로 바꿈
+            List<Address> addressList = user.getAddressList();
+            addressList.stream().filter(Address::isDefault)
+                    .findFirst().ifPresent(address -> address.setIsDefault(false));
+
+            // 신규 배송지로 입력
+            if (registerNewAddress) {
+                user.addAddress(Address.create(addressRequestDto, true));
+            }
+
+            // 기존의 address 사용
+            else if (useExistingAddress){
+                addressList.stream().filter(address -> address.getId().equals(addressRequestDto.getExistingAddressId()))
+                        .findFirst().ifPresent(address -> address.setIsDefault(true));
+            }
+        }
+
+        // 기본 주소로 등록 X
+        else {
+
+            // 신규 배송지 입력
+            if (registerNewAddress) {
+                user.addAddress(Address.create(addressRequestDto, false));
+            }
+
+        }
     }
 }
