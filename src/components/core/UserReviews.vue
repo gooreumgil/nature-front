@@ -6,6 +6,13 @@
     </div>
 
     <div v-bind:class="{borderBottom: canReviewItems.length > 0}" v-if="isReviewNavThis('canReview')" class="can-review-container">
+      <div v-if="isCanReviewsEmpty()" class="reviewEmpty">
+        <span class="img-helper">
+          <ExclamationIcon v-bind:stroke="'#a0a0a0'" />
+        </span>
+        <p>작성한 상품 리뷰가 없습니다.</p>
+      </div>
+
       <div class="can-review-items" v-for="(item, index) in canReviewItems" v-bind:key="index">
         <div class="inner-box">
           <div class="img-box">
@@ -20,10 +27,15 @@
           </div>
         </div>
       </div>
+
+
     </div>
 
     <div v-if="isReviewNavThis('myReviews')" class="my-review-container">
       <div v-if="isReviewsEmpty()" class="reviewEmpty">
+        <span class="img-helper">
+          <ExclamationIcon v-bind:stroke="'#a0a0a0'" />
+        </span>
         <p>작성한 상품 리뷰가 없습니다.</p>
       </div>
       <ul v-else class="my-review-wrapper">
@@ -63,9 +75,10 @@
 
 <script>
 import StarIcon from "@/components/icon/StarIcon";
+import ExclamationIcon from "@/components/core/ExclamationIcon";
 export default {
   name: "UserReviews",
-  components: {StarIcon},
+  components: {ExclamationIcon, StarIcon},
   props: {
     canReviewItems: {
       value: []
@@ -118,6 +131,10 @@ export default {
 
     isReviewsEmpty() {
       return this.myReviews.length === 0;
+    },
+
+    isCanReviewsEmpty() {
+      return this.canReviewItems.length === 0;
     },
 
     myReviewShowContentToggle(myReview) {
@@ -262,13 +279,24 @@ export default {
     box-sizing: border-box;
   }
 
-  ul div.my-review-container div.reviewEmpty {
-
+  ul div.reviewEmpty {
+    text-align: center;
+    box-sizing: border-box;
+    padding: 150px 0;
+    border-bottom: 1px solid #eaeaea;
   }
 
-  ul div.my-review-container div.reviewEmpty p {
-    font-size: 15px;
-    font-weight: 400;
+  ul div.reviewEmpty span {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    display: inline-block;
+  }
+
+  ul div.reviewEmpty p {
+    margin-top: 30px;
+    font-size: 14px;
     color: #555;
   }
 

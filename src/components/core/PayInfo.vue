@@ -63,7 +63,7 @@ export default {
       let sum = 0;
       const orderitems = this.order.orderItemResponseDtos;
 
-      orderitems.forEach(orderItem => sum += orderItem.itemDiscountPrice);
+      orderitems.forEach(orderItem => sum += (orderItem.itemDiscountPrice * orderItem.itemQuantity));
       return sum;
     },
 

@@ -44,14 +44,25 @@
         <button class="confirm-order" @click="confirmOrder(order)" type="button" v-if="canOrderConfirm(order)">구매확정</button>
       </div>
     </li>
+    <div class="order-list-empty" v-if="isOrdersEmpty()">
+      <div class="empty-inner">
+        <span class="img-helper">
+            <ExclamationIcon v-bind:stroke="'#a0a0a0'" />
+
+        </span>
+        <p>주문 내역이 존재하지 않습니다.</p>
+      </div>
+    </div>
   </ul>
 </template>
 
 <script>
 import commonUtils from "@/utils/commonUtils";
 import orderApi from "@/api/OrderApi";
+import ExclamationIcon from "@/components/core/ExclamationIcon";
 export default {
   name: "OrderList",
+  components: {ExclamationIcon},
   props: {
     orders: {
       value: []
@@ -114,6 +125,10 @@ export default {
     isNotOrderCancel(order) {
       return order.status !== 'CANCEL';
     },
+
+    isOrdersEmpty() {
+      return this.orders.length === 0;
+    }
 
   },
 
@@ -272,6 +287,42 @@ export default {
 
 
   ul li div.inner-col.img p.item-name {
+  }
+
+  ul div.order-list-empty {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 150px 0;
+    border-bottom: 1px solid #eaeaea;
+  }
+
+  ul div.order-list-empty div.empty-inner {
+  }
+
+  ul div.order-list-empty div.empty-inner span.img-helper {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+
+  }
+
+  ul div.order-list-empty div.empty-inner span.img-helper svg {
+    max-width: 50px;
+    width: 100%;
+  }
+
+  ul div.order-list-empty div.empty-inner p {
+    margin-top: 30px;
+    font-size: 14px;
   }
 
 

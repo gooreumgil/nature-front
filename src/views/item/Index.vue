@@ -83,9 +83,10 @@ export default {
       popularItems: [],
       categories: [],
       currentCategory: 'ALL',
-      currentSort: 'likesCount,desc&sort=createdDate,desc',
+      currentSort: 'sellTotal,desc&sort=createdDate,desc',
       sorts: [
-          {'name': '인기상품순', 'val': 'likesCount,desc&sort=createdDate,desc'},
+          {'name': '주문많은순', 'val': 'sellTotal,desc&sort=createdDate,desc'},
+          {'name': '찜많은순', 'val': 'likesCount,desc&sort=createdDate,desc'},
           {'name': '등록일순', 'val': 'createdDate,desc'},
           {'name': '높은가격순', 'val': 'price,desc'},
           {'name': '낮은가격순', 'val': 'price,asc'},
@@ -108,7 +109,7 @@ export default {
     // 전체 카테고리 인기상품 가져오기
     async setPopularItems(page, size) {
       try {
-        const res = await itemApi.getItems(page, size, 'likesCount,desc&sort=createdDate,desc');
+        const res = await itemApi.getItems(page, size, 'sellTotal,desc&sort=createdDate,desc');
         this.popularItems = res.data.content;
       } catch (err) {
         alert("문제가 발생하였습니다.");

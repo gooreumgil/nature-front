@@ -34,7 +34,6 @@
           <OrderList v-if="isCurrentTabThis('orderAndDelivery')"
                      v-bind:orders="orders"
                      v-bind:cancel-order="cancelOrder" v-bind:go-order-detail="goOrderDetail" />
-          <OrderDetail v-bind:order="orderDetail" v-if="isCurrentTabThis('orderDetail')" />
           <LikeItems v-if="isCurrentTabThis('likes')" v-bind:like-items="likeItems"/>
           <UserQnaList v-if="isCurrentTabThis('qna')" v-bind:qna-list="qnaList"/>
           <UserReviews v-if="isCurrentTabThis('review')"

@@ -242,7 +242,8 @@ export default {
       isDefaultAddress: false,
       registerDefaultAddress: false,
       registerNewAddress: false,
-      selectedAddress: null,
+      useExistingAddress: false,
+      existingAddressId: null,
       showAddressListModal: false,
       receiver: null,
       phoneNum1: null,
@@ -328,17 +329,21 @@ export default {
       const token = this.$cookies.get('token');
 
 
+
       const receiver = this.receiver;
       const phoneNum1 = this.phoneNum1
       const phoneNum2 = this.phoneNum2
       const phoneNum3 = this.phoneNum3;
+
       const zipCode = this.zipCode;
       const mainAddress = this.mainAddress;
       const detailAddress = this.detailAddress;
+
       const usedPoints = this.usedPoints;
       const finalDiscountPrice = this.getFinalDiscountPrice();
       const finalPrice = this.getFinalPrice();
       const deliveryPrice = this.getDeliveryPrice();
+
       let paymentMethod = this.paymentMethod;
       if (this.paymentMethod === '신용카드') {
         paymentMethod = 'CREDIT_CARD';
@@ -359,18 +364,40 @@ export default {
         orderItemSaveRequestDtos.push(orderItem);
       })
 
+      const useExistingAddress = this.useExistingAddress;
+      const existingAddressId = this.existingAddressId;
       const registerDefaultAddress = this.registerDefaultAddress;
       const registerNewAddress = this.registerNewAddress;
 
-      const AddressSaveRequestDto = {
+      const addressRequestDto = {
         mainAddress,
         detailAddress,
-
+        zipCode,
+        registerDefaultAddress,
+        registerNewAddress,
+        useExistingAddress,
+        existingAddressId
       }
 
-      orderApi.productOrder(token, receiver, phoneNum1, phoneNum2, phoneNum3, zipCode, mainAddress, detailAddress, usedPoints, finalDiscountPrice, finalPrice, deliveryPrice, paymentMethod, orderItemSaveRequestDtos, registerDefaultAddress, registerNewAddress)
+      const orderSaveRequestDto = {
+        receiver,
+        phoneNum1,
+        phoneNum2,
+        phoneNum3,
+        usedPoints,
+        finalDiscountPrice,
+        finalPrice,
+        deliveryPrice,
+        paymentMethod,
+        addressRequestDto,
+        orderItemSaveRequestDtos
+      }
+
+
+      orderApi.productOrder(token, orderSaveRequestDto)
       .then((res) => {
-        this.$router.replace(res.data + '/complete');
+        console.log(res.data);
+        this.$router.replace('/orders/' + res.data +  '/complete');
       }).catch((err) => {
         console.log(err);
       })
@@ -413,7 +440,7 @@ export default {
     },
 
     getFinalPrice() {
-      return this.getItemsTotalPrice() - this.getFinalDiscountPrice() - this.usedPoints;
+      return this.getItemsTotalPrice() - this.getFinalDiscountPrice() - this.usedPoints + this.getDeliveryPrice();
     },
 
     getUserOwnPoints() {
@@ -486,14 +513,17 @@ export default {
         this.showAddressListModal = false;
         return;
       }
-      this.selectedAddress = address;
+
       this.mainAddress = address.main;
-      this.detailAddress = address.detailAddress;
+      this.detailAddress = address.detail;
       this.zipCode = address.zipCode;
 
       this.isDefaultAddress = false;
       this.registerNewAddress = false;
+      this.useExistingAddress = true;
+      this.existingAddressId = address.id;
       this.addressTab = 'list';
+      this.showAddressListModal = false;
     },
 
     showAddressListModalToggle() {
