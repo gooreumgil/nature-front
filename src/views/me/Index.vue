@@ -1,6 +1,6 @@
 <template>
   <section class="main-container">
-    <Header v-bind:transparent="false" />
+    <Header v-bind:transparent="false" v-bind:header-tab="'my-page'" />
     <div class="inner-container" v-if="init">
       <div class="my-page-wrapper clearfix">
         <div class="my-page-list nav">
@@ -52,6 +52,7 @@
     <WriteReviewModal v-if="writeModalView"
                       v-bind:review-item="reviewItem"
                       v-bind:write-modal-view-toggle="writeModalViewToggle"
+                      v-bind:write-modal-close="writeModalClose"
                       v-bind:write-review-complete="writeReviewComplete"/>
 
     <Bottom />
@@ -228,6 +229,7 @@ export default {
         const res = await userApi.getReviews(token);
         this.currentTab = 'review';
         this.reviewNav = 'myReviews';
+
         const myReviews = res.data.content;
         myReviews.forEach(myReview => myReview.showContent = false);
         this.myReviews = myReviews;
@@ -308,6 +310,10 @@ export default {
     writeModalViewToggle(item) {
       this.reviewItem = item;
       this.writeModalView = !this.writeModalView;
+    },
+
+    writeModalClose() {
+      this.writeModalView = false;
     }
 
   }

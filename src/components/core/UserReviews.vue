@@ -10,7 +10,7 @@
         <span class="img-helper">
           <ExclamationIcon v-bind:stroke="'#a0a0a0'" />
         </span>
-        <p>작성한 상품 리뷰가 없습니다.</p>
+        <p>작성가능한 상품 리뷰가 없습니다.</p>
       </div>
 
       <div class="can-review-items" v-for="(item, index) in canReviewItems" v-bind:key="index">
@@ -101,6 +101,19 @@ export default {
     s3UrlPrefix: {
       type: String
     },
+  },
+
+  computed: {
+    getCurrentReviewNav() {
+      return this.$store.state.currentReviewNav;
+    }
+  },
+
+  created() {
+    const currentReviewNav = this.getCurrentReviewNav;
+    if (currentReviewNav) {
+      this.setReviewNav(currentReviewNav);
+    }
   },
 
   data() {
@@ -287,11 +300,19 @@ export default {
   }
 
   ul div.reviewEmpty span {
+    margin: 0 auto;
     width: 60px;
     height: 60px;
     border-radius: 50%;
     border: 1px solid #ddd;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  ul div.reviewEmpty span svg {
+    max-width: 40px;
+    width: 100%;
   }
 
   ul div.reviewEmpty p {

@@ -1,6 +1,11 @@
 <template>
   <div class="modal-container">
     <div class="modal-inner">
+
+      <span @click="writeModalClose" class="close-ic-helper">
+        <CloseIcon v-bind:stroke="'#fff'" />
+      </span>
+
       <div class="info-box">
         <img v-bind:src="reviewItem.mainImgPath" alt="">
         <h3>{{ reviewItem.itemNameKor }}</h3>
@@ -46,15 +51,18 @@
             </li>
             <li class="img-add" v-if="uploadImageFile.length < 3">
               <label for="file-selector" class="addFile">
-                +
-
+                <PlusIcon v-bind:fill="'#555'" />
               </label>
             </li>
           </ul>
         </div>
 
-        <button @click="writeReview" type="button">등록</button>
       </div>
+
+      <div class="register-btn-box">
+        <button @click="writeReview" class="register-review" type="button">등록</button>
+      </div>
+
     </div>
   </div>
 </template>
@@ -64,9 +72,11 @@ import StarIcon from "@/components/icon/StarIcon";
 import PencilIcon from "@/components/icon/PencilIcon";
 import CameraIcon from "@/components/icon/CameraIcon";
 import reviewApi from "@/api/ReviewApi";
+import CloseIcon from "@/components/icon/CloseIcon";
+import PlusIcon from "@/components/icon/PlusIcon";
 export default {
   name: "WriteReviewModal",
-  components: {CameraIcon, PencilIcon, StarIcon},
+  components: {PlusIcon, CloseIcon, CameraIcon, PencilIcon, StarIcon},
   props: {
     reviewItem: {
       value: null
@@ -75,6 +85,9 @@ export default {
       type: Function
     },
     writeModalViewToggle: {
+      type: Function
+    },
+    writeModalClose: {
       type: Function
     }
   },
@@ -316,6 +329,46 @@ export default {
     transform: translate(-50%, -50%);
   }
 
+  div.modal-container div.modal-inner span.close-ic-helper {
+    cursor: pointer;
+    position: absolute;
+    right: -17px;
+    top: -17px;
+    background-color: rgba(0, 0, 0, .2);
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  div.modal-container div.modal-inner span.close-ic-helper svg {
+    max-width: 35px;
+    width: 100%;
+  }
+
+  div.modal-container div.modal-inner div.register-btn-box {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 0 30px;
+  }
+
+  div.modal-container div.modal-inner div.register-btn-box button.register-review {
+    width: 100%;
+    background-color: #7ebb34;
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    height: 45px;
+    border-radius: 3px;
+  }
+
   div.modal-container div.modal-inner div.info-box {
     text-align: center;
     background-color: #f6f6f6;
@@ -435,7 +488,7 @@ export default {
   div.modal-container div.modal-inner div.content-box div.review-img label svg {
     max-width: 20px;
     width: 100%;
-    margin-left: 5px;
+    /*margin-left: 5px;*/
   }
 
   div.modal-container div.modal-inner div.content-box div.review-img input[type=file] {
@@ -489,6 +542,11 @@ export default {
     background-repeat: no-repeat;
     background-size: 18px;
     background-position: center center;
+  }
+
+  div.modal-container div.modal-inner div.content-box div.review-img ul.image-wrapper label svg {
+    max-width: 20px;
+    width: 100%;
   }
 
 

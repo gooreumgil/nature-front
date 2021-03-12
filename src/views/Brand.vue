@@ -1,6 +1,6 @@
 <template>
   <section class="main-container">
-    <Header v-bind:transparent="true" />
+    <Header v-bind:transparent="true" v-bind:header-tab="'brand'" />
 
     <aside class="banner">
       <div class="banner__inner">

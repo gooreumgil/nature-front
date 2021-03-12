@@ -5,13 +5,18 @@
     <desc>A solid styled icon from Orion Icon Library.</desc>
     <path data-name="layer1"
           d="M53 29H35V11a3 3 0 0 0-6 0v18H11a3 3 0 0 0 0 6h18v18a3 3 0 0 0 6 0V35h18a3 3 0 0 0 0-6z"
-          fill="#202020"></path>
+          v-bind:fill="fill"></path>
   </svg>
 </template>
 
 <script>
 export default {
-name: "PlusIcon"
+  name: "PlusIcon",
+  props: {
+    fill: {
+      default: '#202020'
+    }
+}
 }
 </script>
 

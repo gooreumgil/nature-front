@@ -31,6 +31,13 @@
         </div>
       </li>
 
+      <div class="cart-empty" v-if="isCartEmpty()">
+        <div class="cart-empty-inner">
+          <EmptyCartIcon v-bind:stroke="'#a0a0a0'" />
+          <p>장바구니가 비어있습니다.</p>
+        </div>
+      </div>
+
       <li class="cart-list clearfix" v-for="(item, index) in items" v-bind:key="index">
         <div class="cart-col select">
           <input type="checkbox" v-model="item.selected">
@@ -57,10 +64,10 @@
           <p>{{ priceSum(item) | price }}</p>
         </div>
         <div class="cart-col discount">
-          <p>{{ discountPriceSum(item) | price }}</p>
+          <p><span class="minus">(-)</span> {{ discountPriceSum(item) | price }} <span class="won">원</span></p>
         </div>
         <div class="cart-col totalPrice">
-          <p> {{ totalPriceSum(item) | price }}</p>
+          <p> {{ totalPriceSum(item) | price }} <span class="won">원</span></p>
         </div>
         <div class="cart-col remove">
           <span @click="removeInCart(item.id)">
@@ -84,10 +91,11 @@ import Footer from "@/components/core/Footer";
 import PlusIcon from "@/components/icon/PlusIcon";
 import MinusIcon from "@/components/icon/MinusIcon";
 import RemoveIcon from "@/components/icon/RemoveIcon";
+import EmptyCartIcon from "@/components/icon/EmptyCartIcon";
 
 export default {
 name: "Cart",
-  components: {RemoveIcon, MinusIcon, PlusIcon, Footer, Bottom, Header},
+  components: {EmptyCartIcon, RemoveIcon, MinusIcon, PlusIcon, Footer, Bottom, Header},
   data() {
     return {
       items: [],
@@ -96,7 +104,7 @@ name: "Cart",
   },
   created() {
     const cartItemIds = JSON.parse(this.$cookies.get('cart-items'));
-    if (cartItemIds.length === 0 || !cartItemIds) {
+    if (!cartItemIds) {
       return;
     }
     this.setItems(cartItemIds);
@@ -185,6 +193,13 @@ name: "Cart",
       })
 
       this.$store.commit('SET_CART_TOTAL', cartItems.length)
+    },
+
+    isCartEmpty() {
+      const cartItems = JSON.parse(this.$cookies.get('cart-items'));
+      return !cartItems;
+
+
     }
   }
 }
@@ -239,6 +254,30 @@ name: "Cart",
     border-bottom: 1px solid #eee;
     font-weight: 400;
     color: #555;
+  }
+
+  section.main-container ul.cart-wrapper div.cart-empty {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 120px 0;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 160px;
+  }
+
+  section.main-container ul.cart-wrapper div.cart-empty div.cart-empty-inner {
+
+  }
+
+  section.main-container ul.cart-wrapper div.cart-empty div.cart-empty-inner svg {
+    max-width: 80px;
+    width: 100%;
+  }
+
+  section.main-container ul.cart-wrapper div.cart-empty div.cart-empty-inner p {
+    font-size: 16px;
+    font-weight: 700;
+    color: #555;
+    margin-top: 20px;
   }
 
   section.main-container ul.cart-wrapper li.cart-list.head {

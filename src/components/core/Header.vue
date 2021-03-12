@@ -6,9 +6,9 @@
           <img v-if="transparent" src="@/assets/image/NATURE REPUBLIC_fullback.png" alt="">
           <img v-else src="@/assets/image/NATURE REPUBLIC_white_back.png" alt="">
         </router-link>
-        <router-link to="/brand">브랜드</router-link>
-        <router-link to="/items">상품</router-link>
-        <router-link to="/my-page" v-if="authenticated">마이페이지</router-link>
+        <router-link v-bind:class="{textBoldWhite: isHeaderTab('brand')}" to="/brand">브랜드</router-link>
+        <router-link v-bind:class="{textBold: isHeaderTab('item')}" to="/items">상품</router-link>
+        <router-link v-bind:class="{textBold: isHeaderTab('my-page')}" to="/my-page" v-if="authenticated">마이페이지</router-link>
       </nav>
 
       <ul>
@@ -60,6 +60,9 @@ export default {
   props: {
     transparent: {
       value: true
+    },
+    headerTab: {
+      default: 'home'
     }
   },
 
@@ -100,6 +103,10 @@ export default {
 
     goCart() {
       this.$router.push('/cart');
+    },
+
+    isHeaderTab(tab) {
+      return this.headerTab === tab;
     }
   }
 }
@@ -139,15 +146,24 @@ export default {
   }
 
   header.fontBlack nav a:hover {
-    color: #555;
+    color: #333;
   }
 
   header nav a {
     cursor: pointer;
     margin-right: 50px;
-    color: #e0e0e0;
+    color: #d0d0d0;
     font-weight: 400;
     transition: all .2s ease-in-out;
+  }
+
+  header nav a.textBold {
+    font-weight: 400;
+    color: #333;
+  }
+
+  header nav a.textBoldWhite {
+    color: #fff;
   }
 
   header nav a:hover {

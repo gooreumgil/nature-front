@@ -1,6 +1,6 @@
 <template>
   <section class="main-container">
-    <Header v-bind:transparent="false"/>
+    <Header v-bind:transparent="false" v-bind:header-tab="'item'"/>
     <aside class="top">
       <div class="top_name">
         <h1>Products</h1>

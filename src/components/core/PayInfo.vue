@@ -21,7 +21,9 @@
         <div class="inner-list discount-price">
           <div class="top">
             <p>할인 금액</p>
-            <span>{{ getOrderDiscountPrice() | price }} 원</span>
+            <span>
+              <span class="minus">(-)</span> {{ getOrderDiscountPrice() | price }} 원
+            </span>
           </div>
         </div>
         <div class="inner-list use-points">
@@ -123,9 +125,16 @@ export default {
   }
 
   div.pay-container div.pay-wrapper div.pay-inner div.inner-list .top span {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 400;
     color: #333;
+  }
+
+  div.pay-container div.pay-wrapper div.pay-inner div.inner-list .top span span.minus {
+    font-size: 14px;
+    display: inline-block;
+    transform: translateY(-1px);
+    color: #888;
   }
 
   div.pay-container div.pay-wrapper div.pay-inner div.inner-list.final-price {

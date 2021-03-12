@@ -1,6 +1,6 @@
 <template>
   <section class="main-container">
-    <Header v-bind:transparent="false" />
+    <Header v-bind:transparent="false" v-bind:header-tab="'my-page'" />
     <div class="inner-container" v-if="init">
       <div class="my-page-wrapper clearfix">
         <div class="my-page-list nav">
@@ -42,8 +42,8 @@
               <p class="delivery-status">· {{ getDeliveryStatus() }}</p>
               <div class="order-status">
                 <button class="cancel" @click="cancelOrder()" v-if="isOrderStatus('ORDER') && isDeliveryStatus('READY')" type="button">주문취소</button>
-                <button v-if="isOrderStatus('ORDER') && isNotDeliveryStatus('READY')" type="button">구매확정</button>
-                <button v-if="isOrderStatus('COMP') && hasItemCanReview()" type="button">리뷰쓰기</button>
+                <button @click="confirmOrder()" v-if="isOrderStatus('ORDER') && isNotDeliveryStatus('READY')" type="button">구매확정</button>
+                <button @click="goReviewTab('review')" v-if="isOrderStatus('COMP') && hasItemCanReview()" type="button">리뷰쓰기</button>
               </div>
             </div>
 
@@ -73,10 +73,13 @@
                     </div>
                   </div>
                   <div class="list-inner item-price">
-                    <p>{{ getItemPrice(item) | price }}</p>
+                    <p>{{ getItemPrice(item) | price }} <span class="won">원</span></p>
                   </div>
                   <div class="list-inner item-discount-price">
-                    {{ getItemDiscountPrice(item) | price }}
+                    <p>
+                      <span class="minus">(-)</span> {{ getItemDiscountPrice(item) | price }} <span class="won">원</span>
+                    </p>
+
                   </div>
                 </li>
               </ul>
@@ -208,6 +211,31 @@ export default {
       }
     },
 
+    async confirmOrder() {
+      const check = confirm('구매를 확정하시겠습니까?');
+      if (!check) {
+        return;
+      }
+
+      const token = this.$cookies.get('token');
+      const id = this.order.id;
+
+      try {
+        await orderApi.confirmOrder(token, id);
+        const check = confirm('구매가 확정되었습니다. 리뷰를 작성하시겠습니까?');
+        if (check) {
+          this.$store.commit('SET_CURRENT_MY_PAGE_TAB', 'review');
+          this.$store.commit('SET_CURRENT_REVIEW_NAV', 'canReview');
+          await this.$router.push('/my-page');
+        }
+      } catch (err) {
+        alert('문제가 발생하였습니다.');
+        console.log(err);
+      }
+
+
+    },
+
     getDeliveryStatus() {
       const deliveryStatus = this.order.deliveryResponseDto.status;
       if (deliveryStatus === 'READY') return '배송준비중';
@@ -238,6 +266,12 @@ export default {
       this.$store.commit('SET_CURRENT_MY_PAGE_TAB', tab);
       this.$router.push('/my-page')
 
+    },
+
+    goReviewTab() {
+      this.$store.commit('SET_CURRENT_MY_PAGE_TAB', 'review');
+      this.$store.commit('SET_CURRENT_REVIEW_NAV', 'canReview');
+      this.$router.push('/my-page');
     },
 
     writeReviewComplete(review) {
@@ -566,7 +600,22 @@ export default {
 
   }
 
+  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content
+  div.order-detail div.item-container ul.item-wrapper li.content div.list-inner.item-discount-price p {
 
+  }
+
+  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content
+  div.order-detail div.item-container ul.item-wrapper li.content div.list-inner.item-discount-price p span.minus {
+    font-size: 14px;
+    display: inline-block;
+    color: #888;
+  }
+
+  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content
+  div.order-detail div.item-container ul.item-wrapper li.content div.list-inner.item-discount-price p span.won {
+
+  }
 
 
 </style>

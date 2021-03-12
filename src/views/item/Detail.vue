@@ -1,6 +1,6 @@
 <template>
   <section class="main-container">
-    <Header v-bind:transparent="false" />
+    <Header v-bind:transparent="false" v-bind:header-tab="'item'" />
 
     <section class="info-container" v-if="init">
       <ul class="info-wrapper clearfix">

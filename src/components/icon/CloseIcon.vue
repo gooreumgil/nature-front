@@ -4,14 +4,19 @@
     <title>Close</title>
     <desc>A line styled icon from Orion Icon Library.</desc>
     <path data-name="layer1"
-          fill="none" stroke="#202020" stroke-miterlimit="10" stroke-width="2" d="M41.999 20.002l-22 22m22 0L20 20"
+          fill="none" v-bind:stroke="stroke" stroke-miterlimit="10" stroke-width="2" d="M41.999 20.002l-22 22m22 0L20 20"
           stroke-linejoin="round" stroke-linecap="round"></path>
   </svg>
 </template>
 
 <script>
 export default {
-name: "CloseIcon"
+  name: "CloseIcon",
+  props: {
+    stroke: {
+      default: '#202020'
+    }
+  }
 }
 </script>
 

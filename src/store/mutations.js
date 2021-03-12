@@ -4,5 +4,8 @@ export default {
   },
   SET_CURRENT_MY_PAGE_TAB(state, tab) {
     state.currentMyPageTab = tab;
+  },
+  SET_CURRENT_REVIEW_NAV(state, nav) {
+    state.currentReviewNav = nav;
   }
 }
