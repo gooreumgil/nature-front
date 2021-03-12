@@ -44,7 +44,8 @@
                        v-bind:set-review-nav="setReviewNav"
                        v-bind:review-nav="reviewNav"
                        v-bind:convert-time-to-str="convertTimeToStr"
-                       v-bind:write-modal-view-toggle="writeModalViewToggle"/>
+                       v-bind:write-modal-view-toggle="writeModalViewToggle"
+                       v-bind:review-img-modal-show="reviewImgModalShow"/>
         </div>
       </div>
     </div>
@@ -54,6 +55,8 @@
                       v-bind:write-modal-view-toggle="writeModalViewToggle"
                       v-bind:write-modal-close="writeModalClose"
                       v-bind:write-review-complete="writeReviewComplete"/>
+
+    <ImageModal v-if="reviewImgModalView" v-bind:img-src="reviewImgSrc" v-bind:review-img-modal-close="reviewImgModalClose" />
 
     <Bottom />
     <Footer />
@@ -73,9 +76,11 @@ import UserQnaList from "@/components/core/UserQnaList";
 import UserReviews from "@/components/core/UserReviews";
 import commonUtils from "@/utils/commonUtils";
 import WriteReviewModal from "@/components/core/WriteReviewModal";
+import ImageModal from "@/components/core/ImageModal";
 export default {
   name: "Index",
   components: {
+    ImageModal,
     WriteReviewModal, UserReviews, UserQnaList, Footer, Bottom, LikeItems, OrderList, MyPageNav, Header},
   data() {
     return {
@@ -95,6 +100,8 @@ export default {
       reviewItem: null,
       myReviews: [],
       s3UrlPrefix: 'https://nature-portfolio.s3.ap-northeast-2.amazonaws.com/',
+      reviewImgModalView: false,
+      reviewImgSrc: null
     }
   },
 
@@ -314,6 +321,16 @@ export default {
 
     writeModalClose() {
       this.writeModalView = false;
+    },
+
+    reviewImgModalShow(s3Key) {
+      this.reviewImgModalView = true;
+      this.reviewImgSrc = this.s3UrlPrefix + s3Key;
+    },
+
+    reviewImgModalClose() {
+      this.reviewImgModalView = false;
+      this.reviewImgSrc = null;
     }
 
   }

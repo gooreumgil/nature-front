@@ -54,11 +54,18 @@
                   </span>
                 </div>
               </div>
+
+              <div class="likes-box">
+                <div class="likes-inner">
+                  <LikeIcon v-bind:stroke="'#7ebb34'" />
+                  <p>{{ myReview.likesCount }}</p>
+                </div>
+              </div>
             </div>
 
             <div class="review-info" v-if="myReview.showContent">
               <div class="img-box">
-                <div v-bind:style="{backgroundImage: getReviewImageUrl(image)}" v-for="(image, index) in myReview.reviewImageResponseDtos" v-bind:key="index"></div>
+                <div @click="reviewImgModalShow(image.s3Key)" v-bind:style="{backgroundImage: getReviewImageUrl(image)}" v-for="(image, index) in myReview.reviewImageResponseDtos" v-bind:key="index"></div>
               </div>
               <div class="text-box">
                 <p>{{ myReview.content }}</p>
@@ -76,9 +83,10 @@
 <script>
 import StarIcon from "@/components/icon/StarIcon";
 import ExclamationIcon from "@/components/core/ExclamationIcon";
+import LikeIcon from "@/components/icon/LikeIcon";
 export default {
   name: "UserReviews",
-  components: {ExclamationIcon, StarIcon},
+  components: {LikeIcon, ExclamationIcon, StarIcon},
   props: {
     canReviewItems: {
       value: []
@@ -101,6 +109,9 @@ export default {
     s3UrlPrefix: {
       type: String
     },
+    reviewImgModalShow: {
+      type: Function
+    }
   },
 
   computed: {
@@ -335,6 +346,7 @@ export default {
   }
 
   ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.item-info {
+    position: relative;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -388,6 +400,30 @@ export default {
     padding: 0 1px;
   }
 
+  ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.item-info div.likes-box {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 25px;
+  }
+
+  ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.item-info div.likes-box div.likes-inner {
+    text-align: center;
+  }
+
+  ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.item-info div.likes-box div.likes-inner svg {
+    max-width: 22px;
+    width: 100%;
+  }
+
+  ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.item-info div.likes-box div.likes-inner p {
+    margin-top: 3px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #777;
+  }
+
+
   ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.review-info {
     box-sizing: border-box;
     padding: 30px 20px;
@@ -400,6 +436,7 @@ export default {
   }
 
   ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.review-info div.img-box div {
+    cursor: pointer;
     width: 80px;
     height: 80px;
     background-repeat: no-repeat;
