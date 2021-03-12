@@ -56,16 +56,16 @@ public class OrderService {
                 .stream().map(OrderItemSaveRequestDto::getId).collect(Collectors.toList());
         List<Item> items = itemService.findByIds(itemIds);
 
-        // items를 루프 돌면서 itemId와 같은 id값을 가진 dto를 필터링 해서 orderItem 생성
+        // items를 루프 돌면서 itemId와 같은 id값을 가진 orderItemSaveRequestDto를 필터링으로 찾아낸 후, orderItem 생성
         items.forEach(item -> orderItemSaveRequestDtos.stream().filter(dto -> dto.getId().equals(item.getId()))
                 .findFirst().ifPresent(dto -> OrderItem.create(dto, order, item)));
 
         // 사용한 적립금이 있다면 그만큼 minus
-        if (!ObjectUtils.isEmpty(orderSaveRequestDto.getUsedPoints())) {
+        if (!ObjectUtils.isEmpty(orderSaveRequestDto.getUsedPoㄲints())) {
             user.minusPoints(orderSaveRequestDto.getUsedPoints());
         }
 
-        // 주문한 상품의 갯수만큼 item에서 minus
+        // 주문한 상품의 갯수만큼 item의 재고수에서 minus
         List<OrderItem> orderItems = order.getOrderItems();
         orderItems.forEach(orderItem -> items.stream().filter(item -> orderItem.getItem().getId().equals(item.getId()))
                 .findFirst().ifPresent(item -> item.minusStockQuantity(orderItem.getItemQuantity())));
