@@ -104,6 +104,7 @@ public class OrderService {
         orderItems.forEach(orderItem -> {
             Item item = orderItem.getItem();
             item.plusStockQuantity(orderItem.getItemQuantity());
+            item.minusSellTotal(orderItem.getItemQuantity());
         });
 
         order.setOrderStatus(OrderStatus.CANCEL);

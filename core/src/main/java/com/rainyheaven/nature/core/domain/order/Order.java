@@ -83,6 +83,7 @@ public class Order extends BaseTimeEntity {
     public void confirm(int savedPoints) {
         this.orderStatus = OrderStatus.COMP;
         this.savedPoints = savedPoints;
+        setLastModifiedDate(LocalDateTime.now());
     }
 
     public void setOrderStatus(OrderStatus orderStatus) {

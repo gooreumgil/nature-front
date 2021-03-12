@@ -57,7 +57,7 @@ public class Item extends BaseTimeEntity {
     // 연관관계 편의 메소드
     public void addOrderItems(OrderItem orderItem) {
         this.orderItems.add(orderItem);
-        this.sellTotal += orderItem.getItemQuantity();
+        plusSellTotal(orderItem.getItemQuantity());
     }
 
     // 연관관계 편의 메소드
@@ -93,5 +93,15 @@ public class Item extends BaseTimeEntity {
     // 주문시 재고에서 빼기
     public void minusStockQuantity(int itemQuantity) {
         this.stockQuantity -= itemQuantity;
+    }
+
+    // 주문시 판매수량 추가
+    public void plusSellTotal(int itemQuantity) {
+        this.sellTotal += itemQuantity;
+    }
+
+    // 환불 & 주문취소시 판매수량 다시 원상복귀
+    public void minusSellTotal(int itemQuantity) {
+        this.sellTotal -= itemQuantity;
     }
 }
