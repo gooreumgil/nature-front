@@ -31,6 +31,7 @@ public class Item extends BaseTimeEntity {
     private int price;
     private int discountPrice;
     private int stockQuantity;
+    private int sellTotal;
     private int likesCount;
     private String description;
     private int capacity;
@@ -56,6 +57,7 @@ public class Item extends BaseTimeEntity {
     // 연관관계 편의 메소드
     public void addOrderItems(OrderItem orderItem) {
         this.orderItems.add(orderItem);
+        this.sellTotal += orderItem.getItemQuantity();
     }
 
     // 연관관계 편의 메소드
