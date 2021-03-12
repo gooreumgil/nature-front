@@ -61,7 +61,7 @@ public class OrderService {
                 .findFirst().ifPresent(dto -> OrderItem.create(dto, order, item)));
 
         // 사용한 적립금이 있다면 그만큼 minus
-        if (!ObjectUtils.isEmpty(orderSaveRequestDto.getUsedPoㄲints())) {
+        if (!ObjectUtils.isEmpty(orderSaveRequestDto.getUsedPoints())) {
             user.minusPoints(orderSaveRequestDto.getUsedPoints());
         }
 
