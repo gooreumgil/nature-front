@@ -57,7 +57,7 @@ export default {
 
     goOrderInfo() {
       const id = this.$route.params.id;
-      this.$router.push('/orders/' + id);
+      this.$router.replace('/my-page/orders/' + id);
     },
 
     shoppingKeepGoing() {

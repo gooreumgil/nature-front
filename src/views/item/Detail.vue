@@ -147,7 +147,10 @@
 
       </div>
 
-      <ItemReviews v-if="reviewInit && isCurrentTab('review')" v-bind:reviews="reviews" v-bind:convert-time-to-str="convertTimeToStr" v-bind:s3-url-prefix="s3UrlPrefix" />
+      <ItemReviews v-if="reviewInit && isCurrentTab('review')"
+                   v-bind:reviews="reviews"
+                   v-bind:convert-time-to-str="convertTimeToStr"
+                   v-bind:s3-url-prefix="s3UrlPrefix" v-bind:review-img-modal-show="reviewImgModalShow"/>
 
 
     </section>
@@ -155,6 +158,8 @@
     <Bottom />
     <Footer />
     <CartModal v-bind:cart-add-view="cartAddView" :shopping-keep-going="shoppingKeepGoing"/>
+    <ReviewImageModal v-if="reviewImgModalView" v-bind:img-src="reviewImgSrc" v-bind:review-img-modal-close="reviewImgModalClose" />
+
   </section>
 </template>
 
@@ -173,9 +178,12 @@ import userApi from "@/api/UserApi";
 import commonUtils from "@/utils/commonUtils";
 import ItemReviews from "@/components/core/ItemReviews";
 import CommentIcon from "@/components/icon/CommentIcon";
+import ReviewImageModal from "@/components/core/ReviewImageModal";
 export default {
   name: "Detail",
-  components: {CommentIcon, ItemReviews, Footer, Bottom, CartModal, CartIcon, LikeIcon, MinusIcon, PlusIcon, Header},
+  components: {
+    ReviewImageModal,
+    CommentIcon, ItemReviews, Footer, Bottom, CartModal, CartIcon, LikeIcon, MinusIcon, PlusIcon, Header},
 
   data() {
     return {
@@ -197,6 +205,8 @@ export default {
       qnaList: [],
       reviews: [],
       s3UrlPrefix: 'https://nature-portfolio.s3.ap-northeast-2.amazonaws.com/',
+      reviewImgModalView: false,
+      reviewImgSrc: null
     }
   },
 
@@ -410,6 +420,16 @@ export default {
       else return commonUtils.localDateTimeToYearMonthDayHourMinutes(time);
 
     },
+
+    reviewImgModalShow(s3Key) {
+      this.reviewImgModalView = true;
+      this.reviewImgSrc = this.s3UrlPrefix + s3Key;
+    },
+
+    reviewImgModalClose() {
+      this.reviewImgModalView = false;
+      this.reviewImgSrc = null;
+    }
   }
 }
 </script>

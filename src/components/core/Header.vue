@@ -80,6 +80,8 @@ export default {
   methods: {
     logout() {
       this.$cookies.remove('token');
+      this.$cookies.remove('cart-items');
+      this.$router.push('/');
       window.location.reload();
     },
 

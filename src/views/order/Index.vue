@@ -185,7 +185,7 @@
             </div>
             <div class="inner-row delivery-price">
               <span class="label">배송비</span>
-              <p>{{ getDeliveryPrice() | price }} <span class="won">원</span></p>
+              <p><span class="minus">(+)</span> {{ getDeliveryPrice() | price }} <span class="won">원</span></p>
             </div>
             <div class="inner-row discount-price">
               <span class="label">할인금액</span>
@@ -396,7 +396,6 @@ export default {
 
       orderApi.productOrder(token, orderSaveRequestDto)
       .then((res) => {
-        console.log(res.data);
         this.$router.replace('/orders/' + res.data +  '/complete');
       }).catch((err) => {
         console.log(err);

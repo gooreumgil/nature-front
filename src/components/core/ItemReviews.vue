@@ -17,7 +17,7 @@
           <div class="item-info">
             <div class="like-box">
               <span @click="reviewLike(review)" class="like-helper">
-                <LikeIcon v-bind:fill="getLikeIconFill(review)" v-bind:stroke="'#7ebb34'" />
+                <LikeIcon v-bind:fill="getLikeIconFill(review)" v-bind:stroke="'#ff1a5a'" />
               </span>
               <p>{{ review.likesCount }}</p>
             </div>
@@ -42,8 +42,8 @@
           </div>
 
           <div class="review-info">
-            <div class="img-box">
-              <div v-bind:style="{backgroundImage: getReviewImageUrl(image)}" v-for="(image, index) in review.reviewImageResponseDtos" v-bind:key="index"></div>
+            <div v-if="isReviewImagesNotEmpty(review)" class="img-box">
+              <div @click="reviewImgModalShow(image.s3Key)" v-bind:style="{backgroundImage: getReviewImageUrl(image)}" v-for="(image, index) in review.reviewImageResponseDtos" v-bind:key="index"></div>
             </div>
             <div class="text-box">
               <p>{{ review.content }}</p>
@@ -78,6 +78,9 @@ export default {
     s3UrlPrefix: {
       type: String
     },
+    reviewImgModalShow: {
+      type: Function
+    }
   },
 
   data() {
@@ -148,8 +151,12 @@ export default {
     },
 
     getLikeIconFill(review) {
-      return review.userLike === true ? '#7ebb34' : 'none';
+      return review.userLike === true ? '#ff1a5a' : 'none';
     },
+
+    isReviewImagesNotEmpty(review) {
+      return review.reviewImageResponseDtos.length > 0;
+    }
 
   }
 }
@@ -253,7 +260,7 @@ export default {
   }
 
   div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.like-box span svg {
-    max-width: 22px;
+    max-width: 20px;
     width: 100%;
   }
 
@@ -359,9 +366,11 @@ export default {
   div.review-container ul.review-wrapper li.review-list div.inner-box div.review-info div.img-box {
     display: flex;
     align-items: center;
+    margin-bottom: 30px;
   }
 
   div.review-container ul.review-wrapper li.review-list div.inner-box div.review-info div.img-box div {
+    cursor: pointer;
     width: 80px;
     height: 80px;
     background-repeat: no-repeat;
@@ -372,7 +381,6 @@ export default {
   }
 
   div.review-container ul.review-wrapper li.review-list div.inner-box div.review-info div.text-box {
-    margin-top: 30px;
   }
 
   div.review-container ul.review-wrapper li.review-list div.inner-box div.review-info div.text-box p {

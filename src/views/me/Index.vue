@@ -56,7 +56,7 @@
                       v-bind:write-modal-close="writeModalClose"
                       v-bind:write-review-complete="writeReviewComplete"/>
 
-    <ImageModal v-if="reviewImgModalView" v-bind:img-src="reviewImgSrc" v-bind:review-img-modal-close="reviewImgModalClose" />
+    <ReviewImageModal v-if="reviewImgModalView" v-bind:img-src="reviewImgSrc" v-bind:review-img-modal-close="reviewImgModalClose" />
 
     <Bottom />
     <Footer />
@@ -76,11 +76,11 @@ import UserQnaList from "@/components/core/UserQnaList";
 import UserReviews from "@/components/core/UserReviews";
 import commonUtils from "@/utils/commonUtils";
 import WriteReviewModal from "@/components/core/WriteReviewModal";
-import ImageModal from "@/components/core/ImageModal";
+import ReviewImageModal from "@/components/core/ReviewImageModal";
 export default {
   name: "Index",
   components: {
-    ImageModal,
+    ReviewImageModal,
     WriteReviewModal, UserReviews, UserQnaList, Footer, Bottom, LikeItems, OrderList, MyPageNav, Header},
   data() {
     return {
@@ -258,10 +258,10 @@ export default {
     },
 
     writeReviewComplete(review) {
-      this.myReviews.forEach(myReview => {
-        if (myReview.id === review.id) {
-          const indexOfReview = this.myReviews.indexOf(myReview);
-          this.myReviews.splice(indexOfReview, 1);
+      this.canReviewItems.forEach(canReviewItem => {
+        if (canReviewItem.id === review.id) {
+          const indexOfReview = this.canReviewItems.indexOf(canReviewItem);
+          this.canReviewItems.splice(indexOfReview, 1);
         }
       })
     },

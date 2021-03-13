@@ -15,7 +15,7 @@
         <div class="inner-list delivery-price">
           <div class="top">
             <p>배송비</p>
-            <span>{{ getOrderDeliveryPrice() | price}} 원</span>
+            <span><span class="minus">(+)</span> {{ getOrderDeliveryPrice() | price}} 원</span>
           </div>
         </div>
         <div class="inner-list discount-price">
@@ -29,7 +29,7 @@
         <div class="inner-list use-points">
           <div class="top">
             <p>포인트 사용</p>
-            <span>{{ order.usedPoints | price }} P</span>
+            <span><span class="minus">(-)</span> {{ order.usedPoints | price }} P</span>
           </div>
         </div>
         <div class="inner-list final-price">

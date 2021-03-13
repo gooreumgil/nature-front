@@ -60,6 +60,7 @@
       </div>
 
       <div class="register-btn-box">
+        <p class="bonus-point">보너스 포인트: {{ calcBonusPoint(false) | price }}P (사진 첨부시 {{ calcBonusPoint(true) }}P)</p>
         <button @click="writeReview" class="register-review" type="button">등록</button>
       </div>
 
@@ -150,7 +151,6 @@ export default {
           form.append('files', file)
         });
       }
-
 
       try {
         reviewApi.writeReview(token, itemId, orderItemId, form);
@@ -303,6 +303,23 @@ export default {
 
     isReviewModalNavThis(nav) {
       return this.reviewModalNav === nav;
+    },
+
+    sumItemTotalPrice(reviewItem) {
+      return reviewItem.itemPrice * reviewItem.itemQuantity;
+    },
+
+    sumItemTotalDiscountPrice(reviewItem) {
+      return reviewItem.itemDiscountPrice * reviewItem.itemQuantity;
+    },
+
+    calcBonusPoint(containImages) {
+      const reviewItem = this.reviewItem;
+      if (containImages) {
+        return Math.round((this.sumItemTotalPrice(reviewItem) - this.sumItemTotalDiscountPrice(reviewItem)) * 0.012);
+      } else {
+        return Math.round((this.sumItemTotalPrice(reviewItem) - this.sumItemTotalDiscountPrice(reviewItem)) * 0.01);
+      }
     }
   }
 }
@@ -358,7 +375,15 @@ export default {
     padding: 0 30px;
   }
 
+  div.modal-container div.modal-inner div.register-btn-box p {
+    text-align: left;
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+
   div.modal-container div.modal-inner div.register-btn-box button.register-review {
+    cursor: pointer;
+    outline: none;
     width: 100%;
     background-color: #7ebb34;
     border: none;

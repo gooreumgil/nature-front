@@ -35,6 +35,7 @@
         <div class="cart-empty-inner">
           <EmptyCartIcon v-bind:stroke="'#a0a0a0'" />
           <p>장바구니가 비어있습니다.</p>
+          <button @click="goItems()" type="button">쇼핑하러 가기</button>
         </div>
       </div>
 
@@ -104,10 +105,12 @@ name: "Cart",
   },
   created() {
     const cartItemIds = JSON.parse(this.$cookies.get('cart-items'));
-    if (!cartItemIds) {
-      return;
+
+    if (cartItemIds && cartItemIds.length > 0) {
+      this.setItems(cartItemIds);
+
     }
-    this.setItems(cartItemIds);
+
   },
 
   methods: {
@@ -197,9 +200,12 @@ name: "Cart",
 
     isCartEmpty() {
       const cartItems = JSON.parse(this.$cookies.get('cart-items'));
-      return !cartItems;
+      return !(cartItems && cartItems.length > 0);
 
+    },
 
+    async goItems() {
+      await this.$router.push('/items');
     }
   }
 }
@@ -269,8 +275,9 @@ name: "Cart",
   }
 
   section.main-container ul.cart-wrapper div.cart-empty div.cart-empty-inner svg {
-    max-width: 80px;
+    max-width: 70px;
     width: 100%;
+    transform: translateX(-3px);
   }
 
   section.main-container ul.cart-wrapper div.cart-empty div.cart-empty-inner p {
@@ -279,6 +286,19 @@ name: "Cart",
     color: #555;
     margin-top: 20px;
   }
+
+  section.main-container ul.cart-wrapper div.cart-empty div.cart-empty-inner button {
+    outline: none;
+    cursor: pointer;
+    background-color: #7ebb34;
+    border: none;
+    border-radius: 3px;
+    padding: 8px 15px;
+    color: #fff;
+    font-weight: 700;
+    margin-top: 15px;
+  }
+
 
   section.main-container ul.cart-wrapper li.cart-list.head {
     padding: 20px 0;

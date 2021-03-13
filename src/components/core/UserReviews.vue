@@ -10,7 +10,7 @@
         <span class="img-helper">
           <ExclamationIcon v-bind:stroke="'#a0a0a0'" />
         </span>
-        <p>작성가능한 상품 리뷰가 없습니다.</p>
+        <p>리뷰 작성 가능한 상품이 없습니다.</p>
       </div>
 
       <div class="can-review-items" v-for="(item, index) in canReviewItems" v-bind:key="index">
@@ -57,14 +57,14 @@
 
               <div class="likes-box">
                 <div class="likes-inner">
-                  <LikeIcon v-bind:stroke="'#7ebb34'" />
+                  <LikeIcon v-bind:stroke="'#ff1a5a'" />
                   <p>{{ myReview.likesCount }}</p>
                 </div>
               </div>
             </div>
 
             <div class="review-info" v-if="myReview.showContent">
-              <div class="img-box">
+              <div v-if="myReview.reviewImageResponseDtos.length > 0" class="img-box">
                 <div @click="reviewImgModalShow(image.s3Key)" v-bind:style="{backgroundImage: getReviewImageUrl(image)}" v-for="(image, index) in myReview.reviewImageResponseDtos" v-bind:key="index"></div>
               </div>
               <div class="text-box">
@@ -218,18 +218,18 @@ export default {
   ul div.can-review-container {
     border-top: 1px solid #eaeaea;
     box-sizing: border-box;
-    padding-top: 20px;
-    padding-bottom: 20px;
     /*border-bottom: 1px solid #eaeaea;*/
   }
 
   ul div.can-review-container.borderBottom {
-    border-bottom: 1px solid #eaeaea;
+    /*border-bottom: 1px solid #eaeaea;*/
 
   }
 
   ul div.can-review-items {
-
+    box-sizing: border-box;
+    padding: 20px 0;
+    border-bottom: 1px solid #eaeaea;
   }
 
   ul div.can-review-items div.sub-title {
@@ -246,6 +246,7 @@ export default {
     display: flex;
     align-items: center;
     position: relative;
+
   }
 
   ul div.can-review-items div.inner-box div.img-box {
@@ -412,7 +413,7 @@ export default {
   }
 
   ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.item-info div.likes-box div.likes-inner svg {
-    max-width: 22px;
+    max-width: 20px;
     width: 100%;
   }
 
@@ -428,11 +429,13 @@ export default {
     box-sizing: border-box;
     padding: 30px 20px;
     background-color: #fafafa;
+    border-bottom: 1px solid #eaeaea;
   }
 
   ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.review-info div.img-box {
     display: flex;
     align-items: center;
+    margin-bottom: 30px;
   }
 
   ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.review-info div.img-box div {
@@ -447,7 +450,6 @@ export default {
   }
 
   ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.review-info div.text-box {
-    margin-top: 30px;
   }
 
   ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.review-info div.text-box p {

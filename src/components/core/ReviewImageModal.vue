@@ -12,7 +12,7 @@
 <script>
 import CloseIcon from "@/components/icon/CloseIcon";
 export default {
-  name: "ImageModal",
+  name: "ReviewImageModal",
   components: {CloseIcon},
   props: {
     imgSrc: {
@@ -32,7 +32,7 @@ export default {
     position: fixed;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, .15);
+    background-color: rgba(0, 0, 0, .35);
     top: 0;
     left: 0;
   }
@@ -43,7 +43,6 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 500px;
-    height: 350px;
   }
 
   div.modal-container div.modal-inner img {
@@ -58,7 +57,7 @@ export default {
     right: -17px;
     width: 34px;
     height: 34px;
-    background-color: rgba(0, 0, 0, .2);
+    background-color: rgba(0, 0, 0, .3);
     border-radius: 50%;
   }
 
