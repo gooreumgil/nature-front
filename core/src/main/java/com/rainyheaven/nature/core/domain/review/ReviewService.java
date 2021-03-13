@@ -2,6 +2,8 @@ package com.rainyheaven.nature.core.domain.review;
 
 import com.rainyheaven.nature.core.domain.item.Item;
 import com.rainyheaven.nature.core.domain.item.ItemService;
+import com.rainyheaven.nature.core.domain.orderitem.OrderItem;
+import com.rainyheaven.nature.core.domain.orderitem.OrderItemService;
 import com.rainyheaven.nature.core.domain.review.dto.app.ReviewSaveRequestDto;
 import com.rainyheaven.nature.core.domain.reviewimage.ReviewImage;
 import com.rainyheaven.nature.core.domain.reviewimage.ReviewImageService;
@@ -35,6 +37,7 @@ public class ReviewService {
     private final ReviewLikeService reviewLikeService;
     private final UserService userService;
     private final ItemService itemService;
+    private final OrderItemService orderItemService;
 
     private final CustomValueBinder valueBinder;
 
@@ -43,7 +46,7 @@ public class ReviewService {
     }
 
     @Transactional
-    public void save(ReviewSaveRequestDto reviewSaveRequestDto, Long userId, Long itemId) {
+    public void save(ReviewSaveRequestDto reviewSaveRequestDto, Long userId, Long itemId, Long orderItemId) {
         User user = userService.findById(userId);
         Item item = itemService.findById(itemId);
         Review review = Review.create(reviewSaveRequestDto, item, user);
@@ -53,8 +56,26 @@ public class ReviewService {
             review.addAllReviewImages(reviewImages);
         }
 
+        OrderItem orderItem = orderItemService.findById(orderItemId);
+        boolean containsFile = false;
+        if (!reviewSaveRequestDto.getFiles().isEmpty()) {
+            containsFile = true;
+        }
+
+        int bonusPoint = getBonusPoint(orderItem, containsFile);
+        user.plusPoints(bonusPoint);
+
+        orderItem.setLeaveReview(true);
         reviewRepository.save(review);
 
+    }
+
+    private int getBonusPoint(OrderItem orderItem, boolean containsFile) {
+        int resultPrice = orderItem.getResultPrice();
+        double rate = 0.01;
+        if (containsFile) rate = 0.012;
+
+        return Math.toIntExact(Math.round(resultPrice * rate));
     }
 
     public Page<Review> getPageByUser(Long userId, Pageable pageable) {
@@ -128,4 +149,5 @@ public class ReviewService {
         reviewLikeService.deleteByReviewAndUser(id, userId);
         review.minusLikesCount();
     }
+
 }

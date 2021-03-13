@@ -67,4 +67,10 @@ public class OrderItem extends BaseTimeEntity {
     public void setLeaveReview(boolean leaveReview) {
         this.leaveReview = leaveReview;
     }
+
+    public int getResultPrice() {
+        int itemPrice = this.itemPrice * this.itemQuantity;
+        int itemDiscountPrice = this.itemDiscountPrice * this.itemQuantity;
+        return itemPrice - itemDiscountPrice;
+    }
 }

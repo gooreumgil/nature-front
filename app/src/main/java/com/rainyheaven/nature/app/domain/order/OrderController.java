@@ -21,7 +21,6 @@ import java.net.URISyntaxException;
 public class OrderController {
 
     private final OrderService orderService;
-    private final UserService userService;
 
     @Value("${src-prefix}")
     private String imgSrcPrefix;
@@ -36,10 +35,9 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody OrderSaveRequestDto orderSaveRequestDto, @AuthenticationPrincipal TokenUser tokenUser) throws URISyntaxException {
+    public ResponseEntity<Long> save(@RequestBody OrderSaveRequestDto orderSaveRequestDto, @AuthenticationPrincipal TokenUser tokenUser) throws URISyntaxException {
         Order saveOrder = orderService.save(orderSaveRequestDto, tokenUser.getId());
-        URI uri = new URI("/orders/" + saveOrder.getId());
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.ok(saveOrder.getId());
     }
 
     @PatchMapping("/{id}")

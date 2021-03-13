@@ -15,15 +15,13 @@ import org.springframework.web.bind.annotation.*;
 public class ReviewController {
 
     private final ReviewService reviewService;
-    private final OrderItemService orderItemService;
 
     @PostMapping
     public ResponseEntity<Void> save(@ModelAttribute ReviewSaveRequestDto reviewSaveRequestDto,
                                      @AuthenticationPrincipal TokenUser tokenUser,
                                      @RequestParam Long itemId, @RequestParam Long orderItemId) {
 
-        reviewService.save(reviewSaveRequestDto, tokenUser.getId(), itemId);
-        orderItemService.updateLeaveReview(orderItemId, true);
+        reviewService.save(reviewSaveRequestDto, tokenUser.getId(), itemId, orderItemId);
         return ResponseEntity.ok().build();
 
     }
