@@ -9,6 +9,6 @@ spring:
       ddl-auto: validate
 
 src-prefix:
-  http://localhost:8060/upload/
+  http://nature-portfolio-api.rainy-heaven.com/upload/
 
 
