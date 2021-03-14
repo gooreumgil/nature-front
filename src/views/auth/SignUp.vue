@@ -36,12 +36,12 @@ export default {
   name: "SignUp",
   data() {
     return {
-      nickname: '덕배',
-      email: 'test@email.com',
-      password: 'aormfl123',
-      passwordConfirm: 'aormfl123',
-      phoneNumber: '0101231234',
-      birthDay: '19890407',
+      nickname: null,
+      email: null,
+      password: null,
+      passwordConfirm: null,
+      phoneNumber: null,
+      birthDay: null,
       verifyNumView: false,
       verifyNum: null,
       emailVerify: false
@@ -55,6 +55,13 @@ export default {
       const passwordConfirm = this.passwordConfirm;
       const phoneNumber = this.phoneNumber;
       const birthDay = this.birthDay;
+      const emailVerify = this.emailVerify;
+
+      if (!emailVerify) {
+        alert('이메일 인증이 완료되지 않았습니다.');
+        return;
+      }
+
       authApi.signUp(nickname, email, password, passwordConfirm, phoneNumber, birthDay)
           .then((response) => {
             alert('회원가입이 완료되었습니다. 로그인 화면으로 이동합니다.');

@@ -13,12 +13,14 @@
 
       <ul>
         <li class="search-item">
-          <input type="text" v-model="searchKeyword">
-          <span @click="itemSearch" class="search-img-helper" >
-            <img v-if="transparent" src="@/assets/image/search_fullback.png" alt="">
-            <img v-else src="@/assets/image/top_icon3.png" alt="">
+          <form @submit.prevent="itemSearch">
+            <input type="text" v-model="searchKeyword">
+            <span @click="itemSearch" class="search-img-helper" >
+              <img v-if="transparent" src="@/assets/image/search_fullback.png" alt="">
+              <img v-else src="@/assets/image/top_icon3.png" alt="">
+            </span>
+          </form>
 
-          </span>
         </li>
         <li class="cart">
           <div @click="goCart" class="img-box">
@@ -125,13 +127,7 @@ export default {
         return;
       }
 
-      const includesSearch = this.$router.history.current.path.includes('/search');
-
-      if (includesSearch) {
-        this.setItems(0, 12, null, searchKeyword);
-      } else {
-        this.$router.push({path: '/items/search', query: {searchKeyword}});
-      }
+      this.$router.push({path: '/items/search', query: {searchKeyword}});
 
 
     }
@@ -223,6 +219,11 @@ export default {
 
   header ul li.search-item {
 
+  }
+
+  header ul li.search-item form {
+    display: flex;
+    align-items: center;
   }
 
   header ul li.search-item span.search-img-helper {

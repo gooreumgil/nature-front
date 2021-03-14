@@ -4,7 +4,7 @@
     <aside class="top">
       <div class="top_name">
         <h1>Search</h1>
-        <p>검색어: <span>{{ searchKeyword }}</span></p>
+        <p>[ 검색어: <span>{{ searchKeyword }}</span> ]</p>
       </div>
     </aside>
 
@@ -90,6 +90,7 @@ export default {
       }
 
       const searchKeyword = this.searchKeyword;
+
 
       try {
         const res = await itemApi.searchItems(page, size, sort, searchKeyword);
