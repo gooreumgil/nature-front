@@ -2,8 +2,6 @@ package com.rainyheaven.nature.core.domain.user;
 
 import com.rainyheaven.nature.core.domain.address.Address;
 import com.rainyheaven.nature.core.domain.address.dto.app.AddressRequestDto;
-import com.rainyheaven.nature.core.domain.order.OrderService;
-import com.rainyheaven.nature.core.domain.order.dto.app.OrderSaveRequestDto;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserSaveRequestDto;
 import com.rainyheaven.nature.core.utils.AES256Util;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +36,7 @@ public class UserService {
 
     @Transactional
     public void save(UserSaveRequestDto userSaveRequestDto) {
+
         userSaveRequestDto.setEmail(aes256Util.encode(userSaveRequestDto.getEmail()));
         userSaveRequestDto.setPassword(passwordEncoder.encode(userSaveRequestDto.getPassword()));
         userRepository.save(User.create(userSaveRequestDto));
@@ -46,6 +45,10 @@ public class UserService {
     public void existCheck(Long id) {
         boolean exists = userRepository.existsById(id);
         if (!exists) throw new RuntimeException("존재하지 않는 유저입니다.");
+    }
+
+    public boolean existByEmail(String email) {
+        return userRepository.existsByEmail(aes256Util.encode(email));
     }
 
     public boolean checkTokenExpiredTime(Date expiration) {

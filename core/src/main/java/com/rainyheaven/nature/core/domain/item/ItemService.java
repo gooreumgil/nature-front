@@ -41,6 +41,11 @@ public class ItemService {
         return itemRepository.findAllByCategory(pageable, category);
     }
 
+    public Page<Item> search(String keyword, Pageable pageable) {
+        return itemRepository.search(keyword, pageable);
+
+    }
+
     @Transactional
     public void addItemLike(Long id, Long userId) {
         Item item = findById(id);

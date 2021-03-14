@@ -74,6 +74,19 @@ public class ItemController {
         return ResponseEntity.ok(items.map(item -> new ItemSimpleResponseDto(item, imgSrcPrefix)));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<Page<ItemSimpleResponseDto>> search(
+            @RequestParam String keyword,
+            @PageableDefault(sort = "sellTotal", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Page<Item> searchPage = itemService.search(keyword, pageable);
+        Page<ItemSimpleResponseDto> searchMap = searchPage.map(item -> new ItemSimpleResponseDto(item, imgSrcPrefix));
+
+        return ResponseEntity.ok(searchMap);
+
+
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ItemDetailResponseDto> get(@PathVariable Long id) {
         Item item = itemService.findByIdWithImages(id);

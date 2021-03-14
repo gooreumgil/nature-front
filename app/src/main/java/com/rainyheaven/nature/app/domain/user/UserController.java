@@ -1,5 +1,6 @@
 package com.rainyheaven.nature.app.domain.user;
 
+import com.rainyheaven.nature.core.domain.emailverify.EmailVerifyService;
 import com.rainyheaven.nature.core.domain.item.dto.app.ItemSimpleResponseDto;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLike;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLikeService;
@@ -19,6 +20,7 @@ import com.rainyheaven.nature.core.domain.review.dto.app.ReviewResponseDto;
 import com.rainyheaven.nature.core.domain.user.TokenUser;
 import com.rainyheaven.nature.core.domain.user.User;
 import com.rainyheaven.nature.core.domain.user.UserService;
+import com.rainyheaven.nature.core.domain.user.UserValidator;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserResponseDto;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserSaveRequestDto;
 import com.rainyheaven.nature.core.utils.AES256Util;
@@ -44,6 +46,8 @@ public class UserController {
     private final ItemLikeService itemLikeService;
     private final QnaService qnaService;
     private final OrderItemService orderItemService;
+    private final EmailVerifyService emailVerifyService;
+    private final UserValidator userValidator;
 
     @Value("${src-prefix}")
     private String imgSrcPrefix;
@@ -56,6 +60,12 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<Void> register(@RequestBody UserSaveRequestDto userSaveRequestDto) {
+
+        boolean check = emailVerifyService.checkAccepted(userSaveRequestDto.getEmail());
+        if (!check) {
+            throw new RuntimeException("이메일 인증이 완료되지 않았습니다.");
+        }
+
         userService.save(userSaveRequestDto);
         return ResponseEntity.ok().build();
     }
