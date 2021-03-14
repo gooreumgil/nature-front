@@ -25,6 +25,8 @@ public class Review extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_id")
     private Long id;
+
+    @Column(columnDefinition = "TEXT")
     private String content;
     private int likesCount;
     private int rating;
