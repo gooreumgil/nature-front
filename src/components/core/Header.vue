@@ -13,9 +13,12 @@
 
       <ul>
         <li class="search-item">
-          <input type="text">
-          <img v-if="transparent" src="@/assets/image/search_fullback.png" alt="">
-          <img v-else src="@/assets/image/top_icon3.png" alt="">
+          <input type="text" v-model="searchKeyword">
+          <span @click="itemSearch" class="search-img-helper" >
+            <img v-if="transparent" src="@/assets/image/search_fullback.png" alt="">
+            <img v-else src="@/assets/image/top_icon3.png" alt="">
+
+          </span>
         </li>
         <li class="cart">
           <div @click="goCart" class="img-box">
@@ -53,7 +56,8 @@ export default {
   data() {
     return {
       init: false,
-      authenticated: false
+      authenticated: false,
+      searchKeyword: null
     }
   },
   name: "Header",
@@ -63,6 +67,9 @@ export default {
     },
     headerTab: {
       default: 'home'
+    },
+    setItems: {
+      type: Function
     }
   },
 
@@ -109,7 +116,26 @@ export default {
 
     isHeaderTab(tab) {
       return this.headerTab === tab;
+    },
+
+    itemSearch() {
+      const searchKeyword = this.searchKeyword;
+      if (!searchKeyword) {
+        alert('검색어를 입력해주세요.');
+        return;
+      }
+
+      const includesSearch = this.$router.history.current.path.includes('/search');
+
+      if (includesSearch) {
+        this.setItems(0, 12, null, searchKeyword);
+      } else {
+        this.$router.push({path: '/items/search', query: {searchKeyword}});
+      }
+
+
     }
+
   }
 }
 </script>
@@ -199,8 +225,11 @@ export default {
 
   }
 
-  header ul li.search-item img {
+  header ul li.search-item span.search-img-helper {
     cursor: pointer;
+  }
+
+  header ul li.search-item img {
   }
 
   header ul li.search-item input {

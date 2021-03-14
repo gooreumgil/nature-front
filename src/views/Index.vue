@@ -77,7 +77,7 @@ export default {
     // 인기상품 가져오기
     async setPopularItems(page, size) {
       try {
-        const res = await itemApi.getItems(page, size, 'likesCount,desc&sort=createdDate,desc');
+        const res = await itemApi.getItems(page, size, 'sellTotal,desc&sort=createdDate,desc');
         this.popularItems = res.data.content;
       } catch (err) {
         alert("문제가 발생하였습니다.");

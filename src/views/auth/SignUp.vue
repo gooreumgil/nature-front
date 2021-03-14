@@ -8,12 +8,19 @@
       <div class="form-container">
         <form @submit.prevent="signUp">
           <input type="text" v-model="nickname" placeholder="닉네임">
-          <input type="email" v-model="email" placeholder="이메일">
+          <div class="email-box">
+            <input type="email" v-model="email" placeholder="이메일">
+            <button @click="verifyNumSend()" type="button">인증번호받기</button>
+          </div>
+          <div class="email-verify" v-if="verifyNumView">
+            <input type="text" v-model="verifyNum" placeholder="인증번호를 입력하세요.">
+            <button @click="verifyNumConfirm" type="button">확인</button>
+          </div>
           <input type="password" v-model="password" placeholder="패스워드">
           <input type="password" v-model="passwordConfirm" placeholder="패스워드 재입력">
           <input type="text" v-model="phoneNumber" placeholder="휴대폰번호 - 없이 입력">
           <input type="text" v-model="birthDay" placeholder="생년월일입력 - 8자리 숫자로 입력 (ex.19920101)">
-          <button type="submit">회원가입</button>
+          <button class="signUp" type="submit">회원가입</button>
         </form>
       </div>
     </div>
@@ -23,6 +30,7 @@
 
 <script>
 import authApi from "@/api/AuthApi";
+import emailVerifyApi from "@/api/EmailVerifyApi";
 
 export default {
   name: "SignUp",
@@ -33,7 +41,10 @@ export default {
       password: 'aormfl123',
       passwordConfirm: 'aormfl123',
       phoneNumber: '0101231234',
-      birthDay: '19890407'
+      birthDay: '19890407',
+      verifyNumView: false,
+      verifyNum: null,
+      emailVerify: false
     }
   },
   methods: {
@@ -46,13 +57,43 @@ export default {
       const birthDay = this.birthDay;
       authApi.signUp(nickname, email, password, passwordConfirm, phoneNumber, birthDay)
           .then((response) => {
-            console.log(response);
+            alert('회원가입이 완료되었습니다. 로그인 화면으로 이동합니다.');
             this.$router.replace('/login');
           })
           .catch((err) => {
             alert('문제가 발생하였습니다.');
             console.log(err);
           })
+    },
+
+    async verifyNumSend() {
+      const email = this.email;
+
+      try {
+        await emailVerifyApi.verifyNumSend(email)
+        alert('인증번호가 이메일로 발송되었습니다. 인증번호는 10분 동안만 유효합니다');
+        this.verifyNumView = true;
+      } catch (err) {
+        alert('문제가 발생하였습니다.');
+        console.log(err);
+      }
+    },
+
+    async verifyNumConfirm() {
+      const email = this.email;
+      const verifyNum = this.verifyNum;
+
+      try {
+        await emailVerifyApi.verifyNumConfirm(email, verifyNum);
+        this.verifyNumView = false;
+        this.emailVerify = true;
+        this.verifyNum = null;
+        alert('이메일 인증이 완료 되었습니다.');
+      } catch (err) {
+        alert('문제가 발생하였습니다.');
+        console.log(err);
+      }
+
     }
   }
 }
@@ -87,6 +128,43 @@ export default {
     margin-top: 30px;
   }
 
+  section.main-container div.inner-container div.form-container form div.email-box {
+    position: relative;
+  }
+
+  section.main-container div.inner-container div.form-container form div.email-box button {
+    position: absolute;
+    cursor: pointer;
+    background-color: #555;
+    color: #fff;
+    font-weight: 700;
+    top: 0;
+    right: 0;
+    height: 51px;
+    font-size: 13px;
+    width: 90px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+
+  section.main-container div.inner-container div.form-container form div.email-verify {
+    position: relative;
+  }
+
+  section.main-container div.inner-container div.form-container form div.email-verify button {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 51px;
+    width: 60px;
+    color: #fff;
+    font-weight: 700;
+    background-color: #0fafbe;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+
   section.main-container div.inner-container div.form-container form input {
     width: 100%;
     box-sizing: border-box;
@@ -99,7 +177,7 @@ export default {
     outline-width: thin;
   }
 
-  section.main-container div.inner-container div.form-container form button {
+  section.main-container div.inner-container div.form-container form button.signUp {
     width: 100%;
     box-sizing: border-box;
     background-color: #7ebb34;

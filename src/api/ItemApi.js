@@ -29,6 +29,17 @@ export default {
     })
   },
 
+  searchItems(page, size, sort, keyword) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/search?sort=${sort}`;
+    return axios.get(url, {
+      params: {
+        page,
+        size,
+        keyword
+      }
+    })
+  },
+
   itemLike(token, id) {
     const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/item-likes`;
     return axios.post(url, {}, {
@@ -74,6 +85,5 @@ export default {
     } else {
       return axios.get(url);
     }
-
-  }
+  },
 }

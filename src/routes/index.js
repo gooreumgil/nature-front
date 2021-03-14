@@ -11,6 +11,7 @@ import Detail from "@/views/item/Detail";
 import OrderIndex from "@/views/order/Index"
 import OrderComplete from "@/views/order/Complete";
 import OrderDetail from "@/views/me/OrderDetail";
+import Search from "@/views/item/Search";
 
 
 Vue.use(VueRouter);
@@ -37,6 +38,10 @@ export const router = new VueRouter({
     {
       path: '/items',
       component: ItemIndex
+    },
+    {
+      path: '/items/search',
+      component: Search
     },
     {
       path: '/items/:id',
