@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/nature-portfolio?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
-    password: Tkrldmlskfk13@
+    password: aormfl123
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
