@@ -45,7 +45,7 @@ public class Delivery extends BaseTimeEntity {
         AddressRequestDto addressRequestDto = dto.getAddressRequestDto();
         delivery.orderAddress = new OrderAddress(addressRequestDto.getMainAddress(), addressRequestDto.getDetailAddress(), addressRequestDto.getZipCode());
         delivery.phoneNumber = new PhoneNumber(dto.getPhoneNum1(), dto.getPhoneNum2(), dto.getPhoneNum3());
-        delivery.deliveryStatus = DeliveryStatus.READY;
+        delivery.deliveryStatus = DeliveryStatus.COMP;
         delivery.setCreatedDate(LocalDateTime.now());
         delivery.setLastModifiedDate(LocalDateTime.now());
         return delivery;
