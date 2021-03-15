@@ -431,21 +431,25 @@ export default {
 
       orderApi.productOrder(token, orderSaveRequestDto)
       .then((res) => {
-        const cartItemIds = JSON.parse(this.$cookies.get('cart-items'));
         const items = this.items;
 
         const newCartItemIds = [];
+        const cartItemIds = JSON.parse(this.$cookies.get('cart-items'));
 
-        cartItemIds.forEach(cartItemId => {
-          let check = false;
-          items.forEach(item => {
-            if (item.id === cartItemId) check = true;
+        if (cartItemIds) {
+          cartItemIds.forEach(cartItemId => {
+            let check = false;
+            items.forEach(item => {
+              if (item.id === cartItemId) check = true;
+            })
+
+            if (!check) {
+              newCartItemIds.push(cartItemId);
+            }
           })
+        }
 
-          if (!check) {
-            newCartItemIds.push(cartItemId);
-          }
-        })
+
 
         if (newCartItemIds.length === 0) {
           this.$cookies.remove('cart-items');
