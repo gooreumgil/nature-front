@@ -12,7 +12,7 @@
         <input type="password" v-model="password" placeholder="비밀번호">
         <button type="submit">로그인</button>
         <div class="other">
-          <router-link to="sign-up">회원가입</router-link> <span></span> <router-link to="sign-up">비밀번호찾기</router-link>
+          <router-link to="sign-up">회원가입</router-link> <span></span> <router-link to="/password-find">비밀번호찾기</router-link>
         </div>
       </form>
     </div>
