@@ -7,5 +7,9 @@ export default {
   },
   SET_CURRENT_REVIEW_NAV(state, nav) {
     state.currentReviewNav = nav;
+  },
+
+  SET_SOURCE_CODE_LINK_MODAL_VIEW(state, modalView) {
+    state.sourceCodeLinkModalView = modalView;
   }
 }

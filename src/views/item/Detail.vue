@@ -160,6 +160,7 @@
     <CartModal v-bind:cart-add-view="cartAddView" :shopping-keep-going="shoppingKeepGoing"/>
     <ReviewImageModal v-if="reviewImgModalView" v-bind:img-src="reviewImgSrc" v-bind:review-img-modal-close="reviewImgModalClose" />
 
+    <SourceCodeLinkModal />
   </section>
 </template>
 
@@ -179,9 +180,11 @@ import commonUtils from "@/utils/commonUtils";
 import ItemReviews from "@/components/core/ItemReviews";
 import CommentIcon from "@/components/icon/CommentIcon";
 import ReviewImageModal from "@/components/core/ReviewImageModal";
+import SourceCodeLinkModal from "@/components/core/SourceCodeLinkModal";
 export default {
   name: "Detail",
   components: {
+    SourceCodeLinkModal,
     ReviewImageModal,
     CommentIcon, ItemReviews, Footer, Bottom, CartModal, CartIcon, LikeIcon, MinusIcon, PlusIcon, Header},
 

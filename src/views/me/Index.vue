@@ -60,6 +60,7 @@
 
     <Bottom />
     <Footer />
+    <SourceCodeLinkModal />
   </section>
 </template>
 
@@ -77,9 +78,11 @@ import UserReviews from "@/components/core/UserReviews";
 import commonUtils from "@/utils/commonUtils";
 import WriteReviewModal from "@/components/core/WriteReviewModal";
 import ReviewImageModal from "@/components/core/ReviewImageModal";
+import SourceCodeLinkModal from "@/components/core/SourceCodeLinkModal";
 export default {
   name: "Index",
   components: {
+    SourceCodeLinkModal,
     ReviewImageModal,
     WriteReviewModal, UserReviews, UserQnaList, Footer, Bottom, LikeItems, OrderList, MyPageNav, Header},
   data() {

@@ -63,6 +63,8 @@
     <Footer />
 
     <CartModal v-bind:cart-add-view="cartAddView" :shopping-keep-going="shoppingKeepGoing"/>
+
+    <SourceCodeLinkModal />
   </section>
 </template>
 
@@ -74,10 +76,11 @@ import ItemList from "@/components/core/ItemList";
 import Bottom from "@/components/core/Bottom";
 import Footer from "@/components/core/Footer";
 import CartModal from "@/components/core/CartModal";
+import SourceCodeLinkModal from "@/components/core/SourceCodeLinkModal";
 
 export default {
   name: "Index",
-  components: {CartModal, Footer, Bottom, ItemList, Header},
+  components: {SourceCodeLinkModal, CartModal, Footer, Bottom, ItemList, Header},
   data() {
     return {
       popularItems: [],

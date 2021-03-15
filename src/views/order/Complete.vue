@@ -17,6 +17,7 @@
 
     <Bottom />
     <Footer />
+    <SourceCodeLinkModal />
   </section>
 </template>
 
@@ -26,10 +27,11 @@ import Bottom from "@/components/core/Bottom";
 import Footer from "@/components/core/Footer";
 import OrderCompleteIcon from "@/components/icon/OrderCompleteIcon";
 import orderApi from "@/api/OrderApi";
+import SourceCodeLinkModal from "@/components/core/SourceCodeLinkModal";
 
 export default {
   name: "Complete",
-  components: {OrderCompleteIcon, Footer, Bottom, Header},
+  components: {SourceCodeLinkModal, OrderCompleteIcon, Footer, Bottom, Header},
   data() {
     return {
       init: false,

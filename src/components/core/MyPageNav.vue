@@ -25,7 +25,7 @@
         </div>
 
         <div class="tab-list">
-          <button v-bind:class="{active: isCurrentTabThis('profileUpdate')}" type="button">회원정보수정</button>
+          <button @click="noneDevelop" v-bind:class="{active: isCurrentTabThis('profileUpdate')}" type="button">회원정보수정</button>
         </div>
       </div>
     </div>
@@ -50,6 +50,10 @@ export default {
   methods: {
     isCurrentTabThis(tab) {
       return this.currentTab === tab;
+    },
+
+    noneDevelop() {
+      alert('개발중입니다.');
     }
   }
 }

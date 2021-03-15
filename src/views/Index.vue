@@ -1,7 +1,6 @@
 <template>
   <section class="main-container">
     <Header v-bind:transparent="true"/>
-
     <aside class="banner">
       <div class="banner__inner">
         <h2>
@@ -31,6 +30,7 @@
 
     <Bottom />
     <Footer />
+    <SourceCodeLinkModal />
   </section>
 </template>
 
@@ -42,14 +42,16 @@ import Footer from "@/components/core/Footer";
 import ItemList from "@/components/core/ItemList";
 import itemApi from "@/api/ItemApi";
 import authApi from "@/api/AuthApi";
+import SourceCodeLinkModal from "@/components/core/SourceCodeLinkModal";
 
 export default {
   name: "Index",
-  components: {Header, Bottom, Footer, ItemList},
+  components: {SourceCodeLinkModal, Header, Bottom, Footer, ItemList},
   data() {
     return {
       popularItems: [],
       latestItems: [],
+      sourceCodeLinkModalView: false
       // authenticated: false
     }
   },
@@ -94,7 +96,9 @@ export default {
         alert("문제가 발생하였습니다.");
         console.log(err);
       }
-    }
+    },
+
+
 
   }
 }

@@ -99,6 +99,7 @@
 
     <Bottom />
     <Footer />
+    <SourceCodeLinkModal />
   </section>
 </template>
 
@@ -113,9 +114,11 @@ import commonUtils from "@/utils/commonUtils";
 import WriteReviewModal from "@/components/core/WriteReviewModal";
 import DeliveryInfo from "@/components/core/DeliveryInfo";
 import PayInfo from "@/components/core/PayInfo";
+import SourceCodeLinkModal from "@/components/core/SourceCodeLinkModal";
 export default {
   name: "OrderDetail",
   components: {
+    SourceCodeLinkModal,
     PayInfo,
     DeliveryInfo,
     WriteReviewModal, Footer, Bottom, MyPageNav, Header},

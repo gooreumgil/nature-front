@@ -213,6 +213,7 @@
 
     <Bottom />
     <Footer />
+    <SourceCodeLinkModal />
   </section>
 </template>
 
@@ -224,10 +225,11 @@ import Bottom from "@/components/core/Bottom";
 import Footer from "@/components/core/Footer";
 import orderApi from "@/api/OrderApi";
 import AddressListModal from "@/components/core/AddressListModal";
+import SourceCodeLinkModal from "@/components/core/SourceCodeLinkModal";
 
 export default {
   name: "Index",
-  components: {AddressListModal, Footer, Bottom, Header},
+  components: {SourceCodeLinkModal, AddressListModal, Footer, Bottom, Header},
   data() {
     return {
       items: [],

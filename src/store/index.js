@@ -8,7 +8,8 @@ export const store = new Vuex.Store({
   state: {
     cartTotal: 0,
     currentMyPageTab: null,
-    currentReviewNav: null
+    currentReviewNav: null,
+    sourceCodeLinkModalView: false
   },
   mutations
 })

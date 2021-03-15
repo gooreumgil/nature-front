@@ -9,6 +9,7 @@
         <router-link v-bind:class="{textBoldWhite: isHeaderTab('brand')}" to="/brand">브랜드</router-link>
         <router-link v-bind:class="{textBold: isHeaderTab('item')}" to="/items">상품</router-link>
         <router-link v-bind:class="{textBold: isHeaderTab('my-page')}" to="/my-page" v-if="authenticated">마이페이지</router-link>
+        <button @click="sourceCodeLinkModalShow" type="button">소스코드 링크</button>
       </nav>
 
       <ul>
@@ -72,7 +73,7 @@ export default {
     },
     setItems: {
       type: Function
-    }
+    },
   },
 
   async created() {
@@ -130,6 +131,10 @@ export default {
       this.$router.push({path: '/items/search', query: {searchKeyword}});
 
 
+    },
+
+    sourceCodeLinkModalShow() {
+      this.$store.commit('SET_SOURCE_CODE_LINK_MODAL_VIEW', true);
     }
 
   }
@@ -154,11 +159,31 @@ export default {
     position: relative;
   }
 
+
+
   header nav {
     height: 90px;
     display: flex;
     align-items: center;
     padding-left: 10px;
+  }
+
+  header.fontBlack nav button {
+    color: #a0a0a0;
+  }
+
+  header nav button {
+    margin-right: 0;
+    box-sizing: border-box;
+    padding: 0;
+    outline: none;
+    background-color: transparent;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 50px;
+    color: #ddd;;
+    font-weight: 400;
+    transition: all .2s ease-in-out;
   }
 
   header.fontBlack {
@@ -170,6 +195,10 @@ export default {
   }
 
   header.fontBlack nav a:hover {
+    color: #333;
+  }
+
+  header.fontBlack nav button:hover {
     color: #333;
   }
 
@@ -191,6 +220,10 @@ export default {
   }
 
   header nav a:hover {
+    color: #fff;
+  }
+
+  header nav button:hover {
     color: #fff;
   }
 

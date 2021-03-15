@@ -91,6 +91,7 @@
 
     <Bottom />
     <Footer />
+    <SourceCodeLinkModal />
   </section>
 
 
@@ -101,9 +102,10 @@
 import Header from "@/components/core/Header";
 import Bottom from "@/components/core/Bottom";
 import Footer from "@/components/core/Footer";
+import SourceCodeLinkModal from "@/components/core/SourceCodeLinkModal";
 export default {
   name: "brand",
-  components: {Header, Bottom, Footer}
+  components: {SourceCodeLinkModal, Header, Bottom, Footer}
 }
 </script>
 

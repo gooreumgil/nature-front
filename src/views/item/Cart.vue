@@ -81,6 +81,7 @@
 
     <Bottom />
     <Footer />
+    <SourceCodeLinkModal />
   </section>
 </template>
 
@@ -93,10 +94,11 @@ import PlusIcon from "@/components/icon/PlusIcon";
 import MinusIcon from "@/components/icon/MinusIcon";
 import RemoveIcon from "@/components/icon/RemoveIcon";
 import EmptyCartIcon from "@/components/icon/EmptyCartIcon";
+import SourceCodeLinkModal from "@/components/core/SourceCodeLinkModal";
 
 export default {
 name: "Cart",
-  components: {EmptyCartIcon, RemoveIcon, MinusIcon, PlusIcon, Footer, Bottom, Header},
+  components: {SourceCodeLinkModal, EmptyCartIcon, RemoveIcon, MinusIcon, PlusIcon, Footer, Bottom, Header},
   data() {
     return {
       items: [],

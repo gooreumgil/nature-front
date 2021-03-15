@@ -4,6 +4,9 @@
       <h3>찜리스트</h3>
       <p>고객님의 위시리스트 상품입니다.</p>
     </div>
+    <div class="divider">
+      <div class="divider-inner"></div>
+    </div>
     <li class="like-item-list" v-for="(likeItem, index) in likeItems" v-bind:key="index">
       <div class="inner-box">
         <div @click="goItemDetail(likeItem.id)" class="img-box">
@@ -47,13 +50,15 @@ export default {
 <style scoped>
   ul {
     box-sizing: border-box;
-    padding-top: 20px;
+    padding-top: 10px;
+    /*padding-left: 10px;*/
+    /*padding-right: 10px;*/
   }
 
   ul div.title-box {
     box-sizing: border-box;
-    padding: 0 10px;
-    margin-bottom: 20px;
+    padding: 10px;
+    margin-bottom: 10px;
   }
 
   ul div.title-box h3 {
@@ -63,6 +68,18 @@ export default {
     font-size: 14px;
     color: #777;
     margin-top: 10px;
+  }
+
+  ul div.divider {
+    box-sizing: border-box;
+    padding-left: 10px;
+    margin-bottom: 10px;
+  }
+
+  ul div.divider div.divider-inner {
+    width: 100%;
+    height: 1px;
+    background-color: #eaeaea;
   }
 
 
