@@ -89,8 +89,11 @@ public class UserService {
 
             // 기존의 address 중 default인 것을 false로 바꿈
             List<Address> addressList = user.getAddressList();
-            addressList.stream().filter(Address::isDefault)
-                    .findFirst().ifPresent(address -> address.setIsDefault(false));
+
+            if (!addressList.isEmpty()) {
+                addressList.stream().filter(Address::isDefault)
+                        .findFirst().ifPresent(address -> address.setIsDefault(false));
+            }
 
             // 신규 배송지로 입력
             if (registerNewAddress) {
@@ -102,6 +105,12 @@ public class UserService {
                 addressList.stream().filter(address -> address.getId().equals(addressRequestDto.getExistingAddressId()))
                         .findFirst().ifPresent(address -> address.setIsDefault(true));
             }
+
+            // 신규 배송지 x, 기존의 address 사용 x
+            else {
+                user.addAddress(Address.create(addressRequestDto, true));
+            }
+
         }
 
         // 기본 주소로 등록 X
