@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -79,6 +80,8 @@ public class User extends BaseTimeEntity {
         user.phoneNumber = PhoneNumber.create(userSaveRequestDto.getPhoneNumber());
         user.userRole = UserRole.USER;
         user.userStatus = UserStatus.ACTIVE;
+        user.setCreatedDate(LocalDateTime.now());
+        user.setLastModifiedDate(LocalDateTime.now());
         return user;
     }
 
