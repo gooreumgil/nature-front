@@ -351,6 +351,34 @@ export default {
       const finalPrice = this.getFinalPrice();
       const deliveryPrice = this.getDeliveryPrice();
 
+      if (!receiver) {
+        alert('수취인을 입력해주세요');
+        return;
+      }
+
+      if (!phoneNum1 || !phoneNum2 || !phoneNum3) {
+        alert('연락처를 입력해주세요');
+        return;
+      }
+
+      if (!zipCode) {
+        alert('우편번호를 입력해주세요');
+        return;
+      }
+
+
+      if (!mainAddress) {
+        alert('메인주소를 입력해주세요');
+        return;
+      }
+
+
+      if (!detailAddress) {
+        alert('상세주소를 입력해주세요');
+        return;
+      }
+
+
       let paymentMethod = this.paymentMethod;
       if (this.paymentMethod === '신용카드') {
         paymentMethod = 'CREDIT_CARD';
