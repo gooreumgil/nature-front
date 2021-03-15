@@ -79,7 +79,7 @@
       </li>
     </ul>
 
-    <div class="btn-box">
+    <div v-if="items.length > 0" class="btn-box">
       <button @click="selectedItemOrder()" type="button">선택상품주문</button>
       <button @click="allItemOrder()" type="button">전체상품주문</button>
     </div>
@@ -244,6 +244,10 @@ name: "Cart",
       }
 
       const items = this.items;
+      if (items.length === 0) {
+        alert('상품이 존재하지 않습니다.');
+        return;
+      }
 
       let orderItems = [];
       items.forEach(selectedItem => orderItems.push(selectedItem));
