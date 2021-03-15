@@ -5,7 +5,7 @@
       <div class="title-box">
         <OrderCompleteIcon />
         <h1>주문완료</h1>
-        <h3>{{ order.orderItemResponseDtos[0].itemNameKor }}의</h3>
+        <h3>{{ order.orderItemResponseDtos[0].itemNameKor }} <span v-if="isOrderItemsMoreThanOne()">외 {{ countOrderItems() }}건의</span></h3>
         <p>주문이 완료되었습니다.</p>
       </div>
 
@@ -64,6 +64,14 @@ export default {
 
     shoppingKeepGoing() {
       this.$router.replace('/items');
+    },
+
+    countOrderItems() {
+      return this.order.orderItemResponseDtos.length - 1;
+    },
+
+    isOrderItemsMoreThanOne() {
+      return this.order.orderItemResponseDtos.length > 1;
     }
   }
 

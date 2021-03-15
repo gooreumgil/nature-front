@@ -30,7 +30,9 @@
         <div class="img-box">
           <img v-bind:src="order.orderItemResponseDtos[0].mainImgPath" alt="">
         </div>
-        <p class="item-name">{{ order.orderItemResponseDtos[0].itemNameKor }}</p>
+        <p class="item-name">
+          {{ order.orderItemResponseDtos[0].itemNameKor }} <span v-if="isOrderItemsMoreThanOne(order)">외 {{ countOrderItems(order) }}건</span>
+        </p>
       </div>
       <div class="inner-col item-price">
         <p>{{ order.finalPrice  | price}}</p>
@@ -128,6 +130,14 @@ export default {
 
     isOrdersEmpty() {
       return this.orders.length === 0;
+    },
+
+    isOrderItemsMoreThanOne(order) {
+      return order.orderItemResponseDtos.length > 1;
+    },
+
+    countOrderItems(order) {
+      return order.orderItemResponseDtos.length - 1;
     }
 
   },

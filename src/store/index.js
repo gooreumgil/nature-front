@@ -9,7 +9,8 @@ export const store = new Vuex.Store({
     cartTotal: 0,
     currentMyPageTab: null,
     currentReviewNav: null,
-    sourceCodeLinkModalView: false
+    sourceCodeLinkModalView: false,
+    orderItems: []
   },
   mutations
 })

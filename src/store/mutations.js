@@ -11,5 +11,9 @@ export default {
 
   SET_SOURCE_CODE_LINK_MODAL_VIEW(state, modalView) {
     state.sourceCodeLinkModalView = modalView;
+  },
+
+  SET_ORDER_ITEMS(state, orderItems) {
+    state.orderItems = orderItems;
   }
 }

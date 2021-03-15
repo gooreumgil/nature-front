@@ -62,7 +62,7 @@
           </div>
         </div>
         <div class="cart-col price">
-          <p>{{ priceSum(item) | price }}</p>
+          <p>{{ priceSum(item) | price }} 원</p>
         </div>
         <div class="cart-col discount">
           <p><span class="minus">(-)</span> {{ discountPriceSum(item) | price }} <span class="won">원</span></p>
@@ -78,6 +78,11 @@
         </div>
       </li>
     </ul>
+
+    <div class="btn-box">
+      <button @click="selectedItemOrder()" type="button">선택상품주문</button>
+      <button @click="allItemOrder()" type="button">전체상품주문</button>
+    </div>
 
     <Bottom />
     <Footer />
@@ -208,6 +213,43 @@ name: "Cart",
 
     async goItems() {
       await this.$router.push('/items');
+    },
+
+    selectedItemOrder() {
+      const selectedItems = this.items.filter(item => item.selected);
+      if (selectedItems.length === 0) {
+        alert('선택된 상품이 없습니다.');
+        return;
+      }
+
+      const token = this.$cookies.get('token');
+      if (!token) {
+        alert('로그인해주세요.');
+        return;
+      }
+
+      let orderItems = [];
+      selectedItems.forEach(selectedItem => orderItems.push(selectedItem));
+
+      this.$cookies.set('order-items', JSON.stringify(orderItems));
+      this.$router.push('/orders');
+
+    },
+
+    allItemOrder() {
+      const token = this.$cookies.get('token');
+      if (!token) {
+        alert('로그인해주세요.');
+        return;
+      }
+
+      const items = this.items;
+
+      let orderItems = [];
+      items.forEach(selectedItem => orderItems.push(selectedItem));
+
+      this.$cookies.set('order-items', JSON.stringify(orderItems));
+      this.$router.push('/orders');
     }
   }
 }
@@ -404,6 +446,26 @@ name: "Cart",
     width: 100%;
   }
 
+  section.main-container div.btn-box {
+    max-width: 1260px;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 20px;
+    box-sizing: border-box;
+    text-align: left;
+  }
 
+  section.main-container div.btn-box button {
+    cursor: pointer;
+    outline: none;
+    margin-right: 10px;
+    box-sizing: border-box;
+    background-color: #fff;
+    border: 1px solid #0fafbe;
+    border-radius: 3px;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: #555;
+  }
 
 </style>

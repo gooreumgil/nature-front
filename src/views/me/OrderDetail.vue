@@ -225,6 +225,7 @@ export default {
 
       try {
         await orderApi.confirmOrder(token, id);
+        this.order.status = 'COMP';
         const check = confirm('구매가 확정되었습니다. 리뷰를 작성하시겠습니까?');
         if (check) {
           this.$store.commit('SET_CURRENT_MY_PAGE_TAB', 'review');

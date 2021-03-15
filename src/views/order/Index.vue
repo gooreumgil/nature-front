@@ -258,8 +258,13 @@ export default {
     }
   },
 
+
+
   async created() {
     let orderItems = JSON.parse(this.$cookies.get('order-items'));
+    if (!orderItems) {
+      this.$router.history.go(-1);
+    }
     let ids = [];
     orderItems.forEach(orderItem => {
       ids.push(orderItem.id);
@@ -398,6 +403,28 @@ export default {
 
       orderApi.productOrder(token, orderSaveRequestDto)
       .then((res) => {
+        const cartItemIds = JSON.parse(this.$cookies.get('cart-items'));
+        const items = this.items;
+
+        const newCartItemIds = [];
+
+        cartItemIds.forEach(cartItemId => {
+          let check = false;
+          items.forEach(item => {
+            if (item.id === cartItemId) check = true;
+          })
+
+          if (!check) {
+            newCartItemIds.push(cartItemId);
+          }
+        })
+
+        if (newCartItemIds.length === 0) {
+          this.$cookies.remove('cart-items');
+        }
+
+        this.$cookies.set('cart-items', JSON.stringify(newCartItemIds));
+        this.$cookies.remove('order-items');
         this.$router.replace('/orders/' + res.data +  '/complete');
       }).catch((err) => {
         console.log(err);
@@ -640,15 +667,19 @@ export default {
     width: 15%;
   }
 
-
+  section.main-container section.inner-container div.order-info-box ul li.head div.order-item-col.name-and-img {
+    justify-content: center;
+  }
 
   section.main-container section.inner-container div.order-info-box ul li div.order-item-col.name-and-img {
     width: 35%;
+    justify-content: left;
   }
 
   section.main-container section.inner-container div.order-info-box ul li div.order-item-col.name-and-img img {
     max-width: 100px;
     margin-right: 30px;
+    margin-left: 10px;
   }
 
   section.main-container section.inner-container div.order-info-box ul li div.order-item-col.name-and-img div.name-box {

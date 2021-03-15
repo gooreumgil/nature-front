@@ -393,6 +393,12 @@ export default {
 
     productOrder(item) {
 
+      const token = this.$cookies.get('token');
+      if (!token) {
+        alert('로그인 해주세요.');
+        return;
+      }
+
       let orderItems = [];
       let orderItem = {
         'id': item.id,

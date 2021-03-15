@@ -7,7 +7,6 @@ export default {
       let ids = [];
       ids.push(id);
       this.$cookies.set('cart-items', JSON.stringify(ids));
-      this.setCartTotal(1);
     } else {
 
       let duplicate = false;
@@ -29,5 +28,6 @@ export default {
       }
     }
   },
+
 
 }
