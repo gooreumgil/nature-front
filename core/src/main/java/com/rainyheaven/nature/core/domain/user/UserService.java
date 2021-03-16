@@ -37,12 +37,9 @@ public class UserService {
 
     @Transactional
     public void save(UserSaveRequestDto userSaveRequestDto) {
-        boolean exist = existByEmail(userSaveRequestDto.getEmail());
-        if (exist) {
-            throw new RuntimeException("이미 존재하는 이메일입니다.");
-        }
         userSaveRequestDto.setEmail(aes256Util.encode(userSaveRequestDto.getEmail()));
         userSaveRequestDto.setPassword(passwordEncoder.encode(userSaveRequestDto.getPassword()));
+
         userRepository.save(User.create(userSaveRequestDto));
     }
 

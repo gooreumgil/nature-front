@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,10 +17,11 @@ import java.util.regex.Pattern;
 public class UserValidator {
 
     private final EmailVerifyService emailVerifyService;
+    private final UserService userService;
 
 
     public void registerValidate(UserSaveRequestDto userSaveRequestDto) {
-
+        isEmailDuplicated(userSaveRequestDto.getEmail());
         isValidName(userSaveRequestDto.getName());
         isValidEmail(userSaveRequestDto.getEmail());
         isValidPassword(userSaveRequestDto.getPassword(), userSaveRequestDto.getPasswordConfirm());
@@ -29,6 +29,13 @@ public class UserValidator {
         isValidBirthDay(userSaveRequestDto.getBirthDay());
         isEmailVerifyAccepted(userSaveRequestDto.getEmail());
 
+    }
+
+    private void isEmailDuplicated(String email) {
+        boolean exist = userService.existByEmail(email);
+        if (exist) {
+            throw new UserException(UserExceptionType.ALREADY_EXIST_EMAIL);
+        }
     }
 
     private void isEmailVerifyAccepted(String email) {
@@ -78,7 +85,7 @@ public class UserValidator {
             originalFormat.parse(birthDay);
 
         } catch (ParseException e) {
-            throw new UserException(UserExceptionType.BIRTH_DAY_NOT_VALID);
+            throw new UserException(UserExceptionType.BIRTH_DAY_FORM_NOT_VALID);
         }
 
     }
@@ -87,7 +94,7 @@ public class UserValidator {
         String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
         boolean matches = regEx.matches(phoneNumber);
         if (!matches) {
-            throw new UserException(UserExceptionType.PHONE_NUMBER_NOT_VALID);
+            throw new UserException(UserExceptionType.PHONE_NUMBER_FORM_NOT_VALID);
         }
     }
 

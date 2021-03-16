@@ -11,8 +11,8 @@ public enum UserExceptionType {
     USER_NAME_LENGTH_NOT_MATCHED("이름은 2 ~ 10자로 입력해주세요."),
     PASSWORD_LENGTH_NOT_MATCHED("비밀번호는 6 ~ 14자로 입력해주세요."),
     PASSWORD_NOT_MATCHED("비밀번호가 서로 일치하지 않습니다."),
-    BIRTH_DAY_NOT_VALID("생년월일이 형식에 맞지 않습니다."),
-    PHONE_NUMBER_NOT_VALID("연락처가 형식에 맞지 않습니다.");
+    BIRTH_DAY_FORM_NOT_VALID("생년월일이 형식에 맞지 않습니다."),
+    PHONE_NUMBER_FORM_NOT_VALID("연락처가 형식에 맞지 않습니다.");
 
     private final String message;
 
