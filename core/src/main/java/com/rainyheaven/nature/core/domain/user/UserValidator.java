@@ -6,6 +6,7 @@ import com.rainyheaven.nature.core.exception.UserException;
 import com.rainyheaven.nature.core.exception.UserExceptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,6 +33,9 @@ public class UserValidator {
     }
 
     private void isEmailDuplicated(String email) {
+        if (ObjectUtils.isEmpty(email)) {
+            throw new UserException(UserExceptionType.EMAIL_NULL);
+        }
         boolean exist = userService.existByEmail(email);
         if (exist) {
             throw new UserException(UserExceptionType.ALREADY_EXIST_EMAIL);
