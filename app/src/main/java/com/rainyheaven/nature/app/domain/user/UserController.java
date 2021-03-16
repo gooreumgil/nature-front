@@ -23,6 +23,8 @@ import com.rainyheaven.nature.core.domain.user.UserService;
 import com.rainyheaven.nature.core.domain.user.UserValidator;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserResponseDto;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserSaveRequestDto;
+import com.rainyheaven.nature.core.exception.UserException;
+import com.rainyheaven.nature.core.exception.UserExceptionType;
 import com.rainyheaven.nature.core.utils.AES256Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,11 +63,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<Void> register(@RequestBody UserSaveRequestDto userSaveRequestDto) {
 
-        boolean check = emailVerifyService.checkAccepted(userSaveRequestDto.getEmail());
-        if (!check) {
-            throw new RuntimeException("이메일 인증이 완료되지 않았습니다.");
-        }
-
+        userValidator.registerValidate(userSaveRequestDto);
         userService.save(userSaveRequestDto);
         return ResponseEntity.ok().build();
     }
