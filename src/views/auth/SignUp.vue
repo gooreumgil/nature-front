@@ -57,40 +57,40 @@ export default {
       const birthDay = this.birthDay;
       const emailVerify = this.emailVerify;
 
-      if (!nickname) {
-        alert('닉네임을 입력해주세요.');
-        return;
-      }
-
-      if (!email) {
-        alert('이메일을 입력해주세요.');
-        return;
-      }
-
-      if (!password) {
-        alert('비밀번호를 입력해주세요.');
-        return;
-      }
-
-      if (!phoneNumber) {
-        alert('연락처를 입력해주세요.');
-        return;
-      }
-
-      if (!birthDay) {
-        alert('생년월일을 입력해주세요.');
-        return;
-      }
-
-      if (password !== passwordConfirm) {
-        alert('비밀번호가 서로 일치하지 않습니다.');
-        return;
-      }
-
-      if (!emailVerify) {
-        alert('이메일 인증이 완료되지 않았습니다.');
-        return;
-      }
+      // if (!nickname) {
+      //   alert('닉네임을 입력해주세요.');
+      //   return;
+      // }
+      //
+      // if (!email) {
+      //   alert('이메일을 입력해주세요.');
+      //   return;
+      // }
+      //
+      // if (!password) {
+      //   alert('비밀번호를 입력해주세요.');
+      //   return;
+      // }
+      //
+      // if (!phoneNumber) {
+      //   alert('연락처를 입력해주세요.');
+      //   return;
+      // }
+      //
+      // if (!birthDay) {
+      //   alert('생년월일을 입력해주세요.');
+      //   return;
+      // }
+      //
+      // if (password !== passwordConfirm) {
+      //   alert('비밀번호가 서로 일치하지 않습니다.');
+      //   return;
+      // }
+      //
+      // if (!emailVerify) {
+      //   alert('이메일 인증이 완료되지 않았습니다.');
+      //   return;
+      // }
 
       authApi.signUp(nickname, email, password, passwordConfirm, phoneNumber, birthDay)
           .then((response) => {
@@ -98,8 +98,7 @@ export default {
             this.$router.replace('/login');
           })
           .catch((err) => {
-            alert('문제가 발생하였습니다.');
-            console.log(err);
+            alert(err.response.data.message);
           })
     },
 
