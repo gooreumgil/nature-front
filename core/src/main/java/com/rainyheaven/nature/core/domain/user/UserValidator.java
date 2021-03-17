@@ -126,7 +126,6 @@ public class UserValidator {
             throw new UserException(UserExceptionType.PHONE_NUMBER_NULL);
         }
 
-        //        Pattern regEx = Pattern.compile("(\\d{3})(\\d{3,4})(\\d{4})");
         String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
         boolean matches = Pattern.matches(regEx, phoneNumber);
 

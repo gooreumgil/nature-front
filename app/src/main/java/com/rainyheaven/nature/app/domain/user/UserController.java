@@ -4,6 +4,7 @@ import com.rainyheaven.nature.core.domain.emailverify.EmailVerifyService;
 import com.rainyheaven.nature.core.domain.item.dto.app.ItemSimpleResponseDto;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLike;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLikeService;
+import com.rainyheaven.nature.core.domain.itemlike.dto.app.ItemLikeResponseDto;
 import com.rainyheaven.nature.core.domain.order.Order;
 import com.rainyheaven.nature.core.domain.order.OrderService;
 import com.rainyheaven.nature.core.domain.order.OrderStatus;
@@ -129,13 +130,13 @@ public class UserController {
 
 
     @GetMapping("/item-likes")
-    public ResponseEntity<Page<ItemSimpleResponseDto>> getLikeItems(
+    public ResponseEntity<Page<ItemLikeResponseDto>> getLikeItems(
             @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable,
             @AuthenticationPrincipal TokenUser tokenUser) {
 
         Page<ItemLike> itemLikePage = itemLikeService.pageByUser(tokenUser.getId(), pageable);
-        Page<ItemSimpleResponseDto> itemLikePageMap = itemLikePage
-                .map(itemLike -> new ItemSimpleResponseDto(itemLike.getItem(), imgSrcPrefix));
+        Page<ItemLikeResponseDto> itemLikePageMap = itemLikePage
+                .map(itemLike -> new ItemLikeResponseDto(itemLike, imgSrcPrefix));
 
         return ResponseEntity.ok(itemLikePageMap);
 
