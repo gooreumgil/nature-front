@@ -124,22 +124,32 @@
         <ul class="qna-wrapper" v-if="!qnaListIsEmpty()">
           <li class="qna-list clearfix" v-bind:class="{contentShow: qna.showContent}" v-for="(qna, index) in qnaList.content" v-bind:key="index">
             <div class="list-inner" @click="qnaShowContentToggle(qna)">
-              <div class="status">
-                <p>{{ getQnaStatus(qna.status) }}</p>
-              </div>
+
               <div class="content">
                 <p>{{ qnaContentSlice(qna.content) }}</p>
+                <span v-if="qna.isSecret" class="isSecret">
+                  <LockIcon />
+                </span>
+                <span v-else class="public">
+                  <UnLockIcon />
+                </span>
               </div>
               <div class="writer">
-                <p>{{ qna.writer }}</p>
+                <p>
+                  {{ qna.writer }} <span v-if="qna.isOwn">나</span>
+                </p>
               </div>
-              <div class="wroteAt">
-                <p>{{ convertTimeToStr(qna.wroteAt, 'monthAndDay') }}</p>
+<!--              <div class="wroteAt">-->
+<!--                <p>{{ convertTimeToStr(qna.wroteAt, 'monthAndDay') }}</p>-->
+<!--              </div>-->
+              <div class="status">
+                <p>{{ getQnaStatus(qna.status) }}</p>
               </div>
             </div>
 
             <div class="qna-content" v-if="qna.showContent">
               <p>{{ qna.content }}</p>
+              <span class="wrote-at">작성일: {{ convertTimeToStr(qna.wroteAt, 'monthAndDay') }}</span>
             </div>
           </li>
         </ul>
@@ -181,9 +191,13 @@ import ItemReviews from "@/components/core/ItemReviews";
 import CommentIcon from "@/components/icon/CommentIcon";
 import ReviewImageModal from "@/components/core/ReviewImageModal";
 import SourceCodeLinkModal from "@/components/core/SourceCodeLinkModal";
+import LockIcon from "@/components/icon/LockIcon";
+import UnLockIcon from "@/components/icon/UnLockIcon";
 export default {
   name: "Detail",
   components: {
+    UnLockIcon,
+    LockIcon,
     SourceCodeLinkModal,
     ReviewImageModal,
     CommentIcon, ItemReviews, Footer, Bottom, CartModal, CartIcon, LikeIcon, MinusIcon, PlusIcon, Header},
@@ -251,9 +265,10 @@ export default {
     },
 
     async setQnaList() {
+      const token = this.$cookies.get('token');
       const id = this.item.id;
       try {
-        const res = await itemApi.getQnaList(id);
+        const res = await itemApi.getQnaList(token, id);
         const qnaList = res.data;
         qnaList.content.forEach(qna => qna.showContent = false);
 
@@ -310,7 +325,7 @@ export default {
 
     },
 
-    saveQna() {
+    async saveQna() {
       const token = this.$cookies.get('token');
       if (!token) {
         alert('로그인해주세요.');
@@ -322,9 +337,10 @@ export default {
       const id = this.item.id;
 
       try {
-        const res = itemApi.addQna(token, id, qnaContent, qnaSecret);
-        console.log(res);
-
+        await itemApi.addQna(token, id, qnaContent, qnaSecret);
+        alert('문의가 등록되었습니다.');
+        this.qnaContent = null;
+        await this.setQnaList();
       } catch (err) {
         alert('문제가 발생하였습니다.');
         console.log(err);
@@ -413,6 +429,10 @@ export default {
     },
 
     qnaShowContentToggle(qna) {
+      if (qna.isSecret && !qna.isOwn) {
+        alert('비밀글은 작성자만 볼 수 있습니다.');
+        return;
+      }
       qna.showContent = !qna.showContent;
     },
 
@@ -794,6 +814,7 @@ export default {
   }
 
   section.main-container section.detail-container div.item-qna-box .item-qna-inner form button {
+    cursor: pointer;
     outline: none;
     box-sizing: border-box;
     padding: 5px 13px;
@@ -910,10 +931,12 @@ export default {
   }
 
   section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.status {
-    width: 10%;
+    width: 15%;
+    text-align: right;
   }
 
   section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.content {
+    position: relative;
     width: 70%;
   }
 
@@ -922,15 +945,50 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    box-sizing: border-box;
+    padding-left: 40px;
+  }
+
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.content span {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+  }
+
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.content span svg {
+    max-width: 20px;
+    width: 100%;
   }
 
   section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.writer {
-    width: 10%;
+    width: 15%;
+    text-align: center;
   }
 
   section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.wroteAt {
     width: 10%;
     text-align: right;
+  }
+
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.writer p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.writer span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #0fafbe;
+    border-radius: 50%;
+    margin-left: 5px;
+    font-size: 12px;
+    color: #333;
+
   }
 
   section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.writer p {
@@ -943,7 +1001,16 @@ export default {
   }
 
   section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.qna-content p {
+    box-sizing: border-box;
     line-height: 1.4;
+  }
+
+  section.main-container section.detail-container div.item-qna-box ul.qna-wrapper li.qna-list div.qna-content span.wrote-at {
+    font-size: 13px;
+    font-weight: 400;
+    color: #888;
+    margin-top: 15px;
+    display: inline-block;
   }
 
 </style>

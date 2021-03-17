@@ -69,9 +69,17 @@ export default {
     })
   },
 
-  getQnaList(id) {
+  getQnaList(token, id) {
     const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/qnas`;
-    return axios.get(url);
+    if (token) {
+      return axios.get(url, {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+    } else {
+      return axios.get(url);
+    }
   },
 
   getReviews(token, id) {
