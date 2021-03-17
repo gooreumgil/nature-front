@@ -7,19 +7,19 @@
       </div>
       <div class="form-container">
         <form @submit.prevent="signUp">
-          <input type="text" v-model="nickname" placeholder="닉네임">
+          <input type="text" v-model.trim="nickname" placeholder="닉네임">
           <div class="email-box">
-            <input type="email" v-model="email" placeholder="이메일">
+            <input type="email" v-model.trim="email" placeholder="이메일">
             <button @click="verifyNumSend()" type="button">인증번호받기</button>
           </div>
           <div class="email-verify" v-if="verifyNumView">
-            <input type="text" v-model="verifyNum" placeholder="인증번호를 입력하세요.">
+            <input type="text" v-model.trim="verifyNum" placeholder="인증번호를 입력하세요.">
             <button @click="verifyNumConfirm" type="button">확인</button>
           </div>
-          <input type="password" v-model="password" placeholder="패스워드">
-          <input type="password" v-model="passwordConfirm" placeholder="패스워드 재입력">
-          <input type="text" v-model="phoneNumber" placeholder="휴대폰번호 - 없이 입력">
-          <input type="text" v-model="birthDay" placeholder="생년월일입력 - 8자리 숫자로 입력 (ex.19920101)">
+          <input type="password" v-model.trim="password" placeholder="패스워드">
+          <input type="password" v-model.trim="passwordConfirm" placeholder="패스워드 재입력">
+          <input type="text" v-model.trim="phoneNumber" placeholder="휴대폰번호 - 없이 입력">
+          <input type="text" v-model.trim="birthDay" placeholder="생년월일입력 - 8자리 숫자로 입력 (ex.19920101)">
           <button class="signUp" type="submit">회원가입</button>
         </form>
       </div>

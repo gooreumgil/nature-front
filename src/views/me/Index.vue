@@ -34,7 +34,8 @@
           <OrderList v-if="isCurrentTabThis('orderAndDelivery')"
                      v-bind:orders="orders"
                      v-bind:cancel-order="cancelOrder" v-bind:go-order-detail="goOrderDetail" />
-          <LikeItems v-if="isCurrentTabThis('likes')" v-bind:like-items="likeItems"/>
+          <LikeItems v-if="isCurrentTabThis('likes')"
+                     v-bind:like-items="likeItems" @allSelectLikeItemsToggle="allSelectLikeItemsToggle" @setLikeItems="setLikeItems"/>
           <UserQnaList v-if="isCurrentTabThis('qna')" v-bind:qna-list="qnaList"/>
           <UserReviews v-if="isCurrentTabThis('review')"
                        v-bind:can-review-items="canReviewItems"
@@ -95,6 +96,7 @@ export default {
       deliveryOnGoingTotal: 0,
       reviewTotal: 0,
       likeItems: [],
+      likeItemAllSelected: false,
       qnaList: [],
       basicInfoView: true,
       canReviewItems: [],
@@ -187,7 +189,14 @@ export default {
       const token = this.$cookies.get('token');
       try {
         const res = await userApi.getLikeItems(token);
-        this.likeItems = res.data.content;
+
+        const likeItems = res.data.content;
+        likeItems.forEach(likeItem => {
+          likeItem.selected = false;
+        })
+
+        this.likeItems = likeItems;
+
         const tab = 'likes';
 
         this.currentTab = tab;
@@ -198,6 +207,42 @@ export default {
         console.log(err);
       }
     },
+
+    allSelectLikeItemsToggle() {
+      const allSelected = this.likeItemAllSelected;
+      if (allSelected) {
+        this.likeItems.forEach(likeItem => {
+          likeItem.selected = false;
+        })
+        this.likeItemAllSelected = false;
+      } else {
+        this.likeItems.forEach(likeItem => {
+          likeItem.selected = true;
+        })
+        this.likeItemAllSelected = true;
+      }
+    },
+
+    // removeLikeItems(ids) {
+    //   const likeItems = [];
+    //
+    //   ids.forEach(id => {
+    //
+    //     this.likeItems.forEach(likeItem => {
+    //       let exist = false;
+    //       if (likeItem.id === id) {
+    //         exist = true;
+    //       }
+    //       if (!exist) {
+    //         likeItems.push(likeItem);
+    //       }
+    //     })
+    //   })
+    //
+    //   this.likeItems = likeItems;
+    //
+    // },
+
 
     async setQnaList() {
       const token = this.$cookies.get('token');

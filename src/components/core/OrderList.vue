@@ -61,7 +61,7 @@
 <script>
 import commonUtils from "@/utils/commonUtils";
 import orderApi from "@/api/OrderApi";
-import ExclamationIcon from "@/components/core/ExclamationIcon";
+import ExclamationIcon from "@/components/icon/ExclamationIcon";
 export default {
   name: "OrderList",
   components: {ExclamationIcon},

@@ -6,6 +6,15 @@
     </div>
     <div class="divider"></div>
 
+    <div class="qna-empty-box">
+      <div class="qna-empty-inner">
+        <span class="img-helper">
+          <ExclamationIcon v-bind:stroke="'#a0a0a0'" />
+        </span>
+        <p>문의 내역이 없습니다.</p>
+      </div>
+    </div>
+
     <li v-bind:class="{showContent: qna.showContent}" class="qna-list" v-for="(qna, index) in qnaList" v-bind:key="index">
       <div class="list-inner" @click="showContentToggle(qna)">
         <div class="img-box">
@@ -34,9 +43,11 @@
 
 <script>
 import commonUtils from "@/utils/commonUtils";
+import ExclamationIcon from "@/components/icon/ExclamationIcon";
 
 export default {
   name: "UserQnaList",
+  components: {ExclamationIcon},
   props: {
     qnaList: {
       value: []
@@ -93,6 +104,40 @@ export default {
     height: 1px;
     background-color: #eaeaea;
   }
+
+  ul div.qna-empty-box {
+
+  }
+
+  ul div.qna-empty-box div.qna-empty-inner {
+    text-align: center;
+    box-sizing: border-box;
+    padding: 150px 0;
+    border-bottom: 1px solid #eaeaea;
+  }
+
+  ul div.qna-empty-box div.qna-empty-inner span {
+    margin: 0 auto;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  ul div.qna-empty-box div.qna-empty-inner span svg {
+    max-width: 40px;
+    width: 100%;
+  }
+
+  ul div.qna-empty-box div.qna-empty-inner p {
+    margin-top: 30px;
+    font-size: 14px;
+    color: #555;
+  }
+
 
   ul li {
     padding: 20px 0;

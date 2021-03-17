@@ -3,26 +3,44 @@
     <div class="title-box">
       <h3>찜리스트</h3>
       <p>고객님의 위시리스트 상품입니다.</p>
+      <div class="btn-box" v-if="!isLikeItemsEmpty()">
+        <button @click="$emit('allSelectLikeItemsToggle')" type="button">전체선택</button>
+        <button @click="selectedLikeItemDelete()" type="button">선택삭제</button>
+        <button @click="allLikeItemDelete()" type="button">모두삭제</button>
+      </div>
     </div>
+
     <div class="divider">
       <div class="divider-inner"></div>
     </div>
+
+    <div class="like-item-empty" v-if="isLikeItemsEmpty()">
+      <div class="like-item-empty-inner">
+        <span class="img-helper">
+          <ExclamationIcon v-bind:stroke="'#a0a0a0'" />
+        </span>
+        <p>찜한 상품이 없습니다.</p>
+      </div>
+    </div>
     <li class="like-item-list" v-for="(likeItem, index) in likeItems" v-bind:key="index">
+      <div class="check-box">
+        <input type="checkbox" v-model="likeItem.selected">
+      </div>
       <div class="inner-box">
-        <div @click="goItemDetail(likeItem.id)" class="img-box">
-          <img v-bind:src="likeItem.mainImgPath" alt="">
+        <div @click="goItemDetail(likeItem.itemResponseDto.id)" class="img-box">
+          <img v-bind:src="getItemMainImgPath(likeItem)" alt="">
           <div class="hover-box"></div>
         </div>
         <div class="description borderBottom">
           <div class="item-name">
-            <h4>{{ likeItem.nameKor }}</h4>
+            <h4>{{ getItemName(likeItem) }}</h4>
           </div>
 
-          <span class="price" v-bind:class="{disable: likeItem.discountPrice}">
-            {{ likeItem.price | price }} <span class="won" v-if="!likeItem.discountPrice">원</span>
+          <span class="price" v-bind:class="{disable: !isDiscountPriceNull(likeItem)}">
+            {{ getItemPrice(likeItem) | price }} <span class="won" v-if="isDiscountPriceNull(likeItem)">원</span>
           </span>
-          <span class="discountPrice" v-if="likeItem.discountPrice">
-            {{ (likeItem.price - likeItem.discountPrice) | price }} <span class="won">원</span>
+          <span class="discountPrice" v-if="!isDiscountPriceNull(likeItem)">
+            {{ (getResultPrice(likeItem)) | price }} <span class="won">원</span>
           </span>
         </div>
       </div>
@@ -31,17 +49,94 @@
 </template>
 
 <script>
+import ExclamationIcon from "@/components/icon/ExclamationIcon";
+import itemLikeApi from "@/api/ItemLikeApi";
 export default {
   name: "LikeItems",
+  components: {ExclamationIcon},
   props: {
     likeItems: {
-      value: []
+      type: Array,
+      default: () => {
+        return [];
+      }
     }
   },
 
   methods: {
     goItemDetail(id) {
       this.$router.push('/items/' + id);
+    },
+
+    isLikeItemsEmpty() {
+      return this.likeItems.length === 0;
+    },
+
+    async allLikeItemDelete() {
+
+      const check = confirm('모든 찜한 상품 목록이 삭제됩니다. 계속 하시겠습니까?');
+      if (!check) {
+        return;
+      }
+
+      const token = this.$cookies.get('token');
+      const ids = [];
+      this.likeItems.forEach(likeItem => {
+        ids.push(likeItem.id);
+      })
+
+      try {
+        await itemLikeApi.delete(token, ids);
+        this.$emit('setLikeItems');
+      } catch (err) {
+        alert('문제가 발생하였습니다.');
+        console.log(err);
+      }
+
+    },
+
+    async selectedLikeItemDelete() {
+
+      const token = this.$cookies.get('token');
+
+      const ids = []
+      const selectedLikeItems = this.likeItems.filter(likeItem => likeItem.selected);
+      if (selectedLikeItems.length === 0) {
+        alert('선택된 상품이 없습니다.');
+        return;
+      }
+
+
+      selectedLikeItems.forEach(selectedLikeItem => ids.push(selectedLikeItem.id));
+      try {
+        await itemLikeApi.delete(token, ids);
+        this.$emit('setLikeItems');
+      } catch (err) {
+        alert('문제가 발생하였습니다.');
+        console.log(err);
+      }
+
+    },
+
+    getItemName(likeItem) {
+      return likeItem.itemResponseDto.nameKor;
+    },
+
+    getItemPrice(likeItem) {
+      return likeItem.itemResponseDto.price;
+    },
+
+    isDiscountPriceNull(likeItem) {
+      return likeItem.itemResponseDto.discountPrice === null || likeItem.itemResponseDto.discountPrice === 0;
+    },
+
+    getResultPrice(likeItem) {
+      const itemResponseDto = likeItem.itemResponseDto;
+      return itemResponseDto.price - itemResponseDto.discountPrice;
+    },
+
+    getItemMainImgPath(likeItem) {
+      return likeItem.itemResponseDto.mainImgPath;
     }
   }
 }
@@ -56,6 +151,7 @@ export default {
   }
 
   ul div.title-box {
+    position: relative;
     box-sizing: border-box;
     padding: 10px;
     margin-bottom: 10px;
@@ -70,6 +166,28 @@ export default {
     margin-top: 10px;
   }
 
+  ul div.title-box div.btn-box {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  ul div.title-box div.btn-box button {
+    cursor: pointer;
+    outline: none;
+    margin-right: 10px;
+    box-sizing: border-box;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: #0fafbe;
+
+  }
+
+
   ul div.divider {
     box-sizing: border-box;
     padding-left: 10px;
@@ -82,13 +200,56 @@ export default {
     background-color: #eaeaea;
   }
 
+  ul div.like-item-empty {
+    width: 100%;
+
+  }
+
+  ul div.like-item-empty div.like-item-empty-inner {
+    text-align: center;
+    box-sizing: border-box;
+    padding: 150px 0;
+    border-bottom: 1px solid #eaeaea;
+  }
+
+  ul div.like-item-empty div.like-item-empty-inner span {
+    margin: 0 auto;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  ul div.like-item-empty div.like-item-empty-inner span svg {
+    max-width: 40px;
+    width: 100%;
+  }
+
+  ul div.like-item-empty div.like-item-empty-inner p {
+
+  margin-top: 30px;
+  font-size: 14px;
+  color: #555;
+  }
+
 
   ul li {
+    position: relative;
     float: left;
     width: 25%;
     box-sizing: border-box;
     padding: 10px;
     padding-bottom: 30px;
+  }
+
+  ul li div.check-box {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    z-index: 1;
   }
 
   ul li div.inner-box {

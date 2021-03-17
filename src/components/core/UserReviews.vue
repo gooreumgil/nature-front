@@ -82,7 +82,7 @@
 
 <script>
 import StarIcon from "@/components/icon/StarIcon";
-import ExclamationIcon from "@/components/core/ExclamationIcon";
+import ExclamationIcon from "@/components/icon/ExclamationIcon";
 import LikeIcon from "@/components/icon/LikeIcon";
 export default {
   name: "UserReviews",
