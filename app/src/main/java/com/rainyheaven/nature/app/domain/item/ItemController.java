@@ -108,10 +108,17 @@ public class ItemController {
     @GetMapping("/{id}/qnas")
     public ResponseEntity<Page<QnaResponseDto>> getQnas(
             @PathVariable Long id,
-            @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable,
+            @AuthenticationPrincipal TokenUser tokenUser) {
 
         Page<Qna> qnaPage = qnaService.pageByItem(id, pageable);
-        Page<QnaResponseDto> qnaResponseDtos = qnaPage.map(QnaResponseDto::new);
+        Page<QnaResponseDto> qnaResponseDtos = qnaPage.map(qna -> {
+            if (ObjectUtils.isNotEmpty(tokenUser)) {
+                return new QnaResponseDto(qna, tokenUser.getId());
+            } else {
+                return new QnaResponseDto(qna);
+            }
+        });
 
         return ResponseEntity.ok(qnaResponseDtos);
 

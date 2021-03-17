@@ -16,4 +16,6 @@ public interface QnaRepository extends JpaRepository<Qna, Long> {
             countQuery = "select count (q) from Qna q where q.user.id = :userId")
     Page<Qna> findByUserWithItem(@Param("userId") Long userId, Pageable pageable);
 
+    boolean existsByIdAndUserId(Long id, Long userId);
+
 }

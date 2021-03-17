@@ -20,4 +20,8 @@ public class QnaService {
     public Page<Qna> pageByUser(Long userId, Pageable pageable) {
         return qnaRepository.findByUserWithItem(userId, pageable);
     }
+
+    public boolean checkWriter(Long id, Long userId) {
+        return qnaRepository.existsByIdAndUserId(id, userId);
+    }
 }
