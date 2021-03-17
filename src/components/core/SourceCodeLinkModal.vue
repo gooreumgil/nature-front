@@ -12,7 +12,7 @@
         <a href="https://bitbucket.org/gooreumgil47/nature/src/master/" target="_blank">https://bitbucket.org/gooreumgil47/nature/src/master/</a><br>
 
         <p>프론트엔드 소스코드</p>
-        <a href="https://bitbucket.org/gooreumgil47/nature/src/master/" target="_blank">https://bitbucket.org/gooreumgil47/nature-front/src</a>
+        <a href="https://bitbucket.org/gooreumgil47/nature-front/src/master/" target="_blank">https://bitbucket.org/gooreumgil47/nature-front/src/master/</a>
       </div>
     </div>
   </div>
