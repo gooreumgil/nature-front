@@ -69,15 +69,15 @@ public class User extends BaseTimeEntity {
     public static User create(UserSaveRequestDto userSaveRequestDto) {
         User user = new User();
         user.email = userSaveRequestDto.getEmail();
-        user.name = userSaveRequestDto.getName();
+        user.name = userSaveRequestDto.getName().trim();
         user.password = userSaveRequestDto.getPassword();
 
         GregorianCalendar calendar = new GregorianCalendar();
-        Date date = user.convertToDate(userSaveRequestDto.getBirthDay());
+        Date date = user.convertToDate(userSaveRequestDto.getBirthDay().trim());
         calendar.setTime(date);
         user.birthDay = BirthDay.create(calendar);
 
-        user.phoneNumber = PhoneNumber.create(userSaveRequestDto.getPhoneNumber());
+        user.phoneNumber = PhoneNumber.create(userSaveRequestDto.getPhoneNumber().trim());
         user.userRole = UserRole.USER;
         user.userStatus = UserStatus.ACTIVE;
         user.setCreatedDate(LocalDateTime.now());

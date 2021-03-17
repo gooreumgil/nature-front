@@ -37,8 +37,8 @@ public class UserService {
 
     @Transactional
     public void save(UserSaveRequestDto userSaveRequestDto) {
-        userSaveRequestDto.setEmail(aes256Util.encode(userSaveRequestDto.getEmail()));
-        userSaveRequestDto.setPassword(passwordEncoder.encode(userSaveRequestDto.getPassword()));
+        userSaveRequestDto.setEmail(aes256Util.encode(userSaveRequestDto.getEmail().trim()));
+        userSaveRequestDto.setPassword(passwordEncoder.encode(userSaveRequestDto.getPassword().trim()));
 
         userRepository.save(User.create(userSaveRequestDto));
     }

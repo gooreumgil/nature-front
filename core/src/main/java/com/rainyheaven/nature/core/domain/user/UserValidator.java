@@ -22,8 +22,8 @@ public class UserValidator {
 
 
     public void registerValidate(UserSaveRequestDto userSaveRequestDto) {
-        isEmailDuplicated(userSaveRequestDto.getEmail());
         isValidName(userSaveRequestDto.getName());
+        isEmailDuplicated(userSaveRequestDto.getEmail());
         isValidEmail(userSaveRequestDto.getEmail());
         isValidPassword(userSaveRequestDto.getPassword(), userSaveRequestDto.getPasswordConfirm());
         isValidPhoneNumber(userSaveRequestDto.getPhoneNumber());
@@ -33,24 +33,33 @@ public class UserValidator {
     }
 
     private void isEmailDuplicated(String email) {
-        if (ObjectUtils.isEmpty(email)) {
+        if (checkNull(email)) {
             throw new UserException(UserExceptionType.EMAIL_NULL);
         }
-        boolean exist = userService.existByEmail(email);
+        boolean exist = userService.existByEmail(email.trim());
         if (exist) {
             throw new UserException(UserExceptionType.ALREADY_EXIST_EMAIL);
         }
     }
 
     private void isEmailVerifyAccepted(String email) {
-        boolean accepted = emailVerifyService.checkAccepted(email);
+        if (checkNull(email)) {
+            throw new UserException(UserExceptionType.EMAIL_NULL);
+        }
+        boolean accepted = emailVerifyService.checkAccepted(email.trim());
         if (!accepted) {
             throw new UserException(UserExceptionType.EMAIL_NOT_VERIFIED);
         }
     }
 
     public void isValidName(String name) {
-        int length = name.length();
+        if (checkNull(name)) {
+            throw new UserException(UserExceptionType.USER_NAME_NULL);
+        }
+
+        String trim = name.trim();
+        int length = trim.length();
+
         if (length < 2 || length > 10) {
             throw new UserException(UserExceptionType.USER_NAME_LENGTH_NOT_MATCHED);
         }
@@ -58,9 +67,12 @@ public class UserValidator {
     }
 
     public void isValidEmail(String email) {
+        if (checkNull(email)) {
+            throw new UserException(UserExceptionType.EMAIL_NULL);
+        }
         String regex = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$";
         Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(email);
+        Matcher m = p.matcher(email.trim());
         if(!m.matches()) {
             throw new UserException(UserExceptionType.EMAIL_FORM_NOT_VALID);
         }
@@ -70,7 +82,12 @@ public class UserValidator {
 
     private void isValidPassword(String password, String passwordConfirm) {
 
-        int length = password.length();
+        if (checkNull(password) || checkNull(passwordConfirm)) {
+            throw new UserException(UserExceptionType.PASSWORD_NULL);
+        }
+
+        String trim = password.trim();
+        int length = trim.length();
 
         if (length < 6 || length > 14) {
             throw new UserException(UserExceptionType.PASSWORD_LENGTH_NOT_MATCHED);
@@ -83,6 +100,16 @@ public class UserValidator {
     }
 
     public void isValidBirthDay(String birthDay) {
+        if (checkNull(birthDay)) {
+            throw new UserException(UserExceptionType.BIRTH_DAY_NULL);
+        }
+
+        String trim = birthDay.trim();
+        int length = trim.length();
+
+        if (length != 8) {
+            throw new UserException(UserExceptionType.BIRTH_DAY_LENGTH_NOT_MATCHED);
+        }
 
         SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMdd");
         try {
@@ -95,11 +122,22 @@ public class UserValidator {
     }
 
     private void isValidPhoneNumber(String phoneNumber) {
+        if (checkNull(phoneNumber)) {
+            throw new UserException(UserExceptionType.PHONE_NUMBER_NULL);
+        }
+
+        //        Pattern regEx = Pattern.compile("(\\d{3})(\\d{3,4})(\\d{4})");
         String regEx = "(\\d{3})(\\d{3,4})(\\d{4})";
-        boolean matches = regEx.matches(phoneNumber);
+        boolean matches = Pattern.matches(regEx, phoneNumber);
+
         if (!matches) {
             throw new UserException(UserExceptionType.PHONE_NUMBER_FORM_NOT_VALID);
         }
+    }
+
+    private boolean checkNull(String val) {
+        if (ObjectUtils.isEmpty(val)) return true;
+        else return ObjectUtils.isEmpty(val.trim());
     }
 
 }
