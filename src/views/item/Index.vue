@@ -261,15 +261,15 @@ export default {
   }
 
   .top h1 {
-    padding: 130px 10px 5px 10px;
-    font-size: 60px;
+    padding: 150px 10px 15px 10px;
+    font-size: 50px;
     font-weight: 400;
     color: #fff;
     line-height: 1.3;
   }
 
   .top_name p {
-    font-size: 16px;
+    font-size: 15px;
     padding: 0 10px;
     color: rgba(255, 255, 255, .8);
     font-weight: 300;

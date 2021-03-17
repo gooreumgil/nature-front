@@ -50,6 +50,7 @@ export default {
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, .3);
+    z-index: 2;
   }
 
   div.modal-container div.modal-inner {

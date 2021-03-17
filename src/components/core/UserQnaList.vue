@@ -6,7 +6,7 @@
     </div>
     <div class="divider"></div>
 
-    <div class="qna-empty-box">
+    <div class="qna-empty-box" v-if="isQnaListEmpty()">
       <div class="qna-empty-inner">
         <span class="img-helper">
           <ExclamationIcon v-bind:stroke="'#a0a0a0'" />
@@ -71,6 +71,10 @@ export default {
     qnaContentSlice(qnaContent) {
       return qnaContent.substring(0, 80);
     },
+
+    isQnaListEmpty() {
+      return this.qnaList.length === 0;
+    }
   }
 }
 </script>

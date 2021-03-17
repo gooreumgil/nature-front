@@ -131,15 +131,15 @@ export default {
   }
 
   .banner h1 {
-    padding: 100px 10px 5px 10px;
-    font-size: 50px;
+    padding: 120px 10px 5px 10px;
+    font-size: 45px;
     font-weight: 400;
     color: #fff;
     line-height: 1.3;
   }
 
   .banner h3 {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 600;
     color: #fff;
     margin-top: 20px;
@@ -189,14 +189,14 @@ export default {
   }
 
   section.container ul li h3 {
-    margin-top: 5px;
+    margin-top: 15px;
     font-size: 32px;
     font-weight: 500;
     color: #333;
   }
 
   section.container ul li p {
-    margin-top: 15px;
+    margin-top: 20px;
     font-size: 16px;
     color: #818181;
     font-weight: 300;

@@ -35,6 +35,7 @@ export default {
     background-color: rgba(0, 0, 0, .35);
     top: 0;
     left: 0;
+    z-index: 2;
   }
 
   div.modal-container div.modal-inner {

@@ -330,9 +330,10 @@ export default {
     position: fixed;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, .15);
+    background-color: rgba(0, 0, 0, .3);
     top: 0;
     left: 0;
+    z-index: 2;
   }
 
   div.modal-container div.modal-inner {
