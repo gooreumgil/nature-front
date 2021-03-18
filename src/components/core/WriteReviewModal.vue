@@ -34,7 +34,7 @@
         </nav>
 
         <div class="review-text" v-if="isReviewModalNavThis('text')">
-          <textarea v-model="reviewContent" cols="30" rows="10" placeholder="내용을 입력해주세요.(최대 300자)"></textarea>
+          <textarea v-model.trim="reviewContent" cols="30" rows="10" placeholder="내용을 입력해주세요.(최대 500자)"></textarea>
         </div>
         <div class="review-img" v-if="isReviewModalNavThis('img')">
 
@@ -113,7 +113,7 @@ export default {
   },
 
   methods: {
-    writeReview() {
+    async writeReview() {
 
       const checkedStar = this.stars.filter(star => star.checked === true);
 
@@ -153,14 +153,13 @@ export default {
       }
 
       try {
-        reviewApi.writeReview(token, itemId, orderItemId, form);
+        await reviewApi.writeReview(token, itemId, orderItemId, form);
         alert('완료');
         this.writeModalViewToggle(this.reviewItem);
         this.writeReviewComplete(this.reviewItem);
 
       } catch (err) {
-        alert('문제가 발생하였습니다.');
-        console.log(err);
+        alert(err.response.data.message);
       }
 
 
