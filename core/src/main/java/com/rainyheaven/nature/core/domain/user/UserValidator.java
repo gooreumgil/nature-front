@@ -7,6 +7,7 @@ import com.rainyheaven.nature.core.exception.UserExceptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,7 +37,9 @@ public class UserValidator {
         if (checkNull(email)) {
             throw new UserException(UserExceptionType.EMAIL_NULL);
         }
+
         boolean exist = userService.existByEmail(email.trim());
+
         if (exist) {
             throw new UserException(UserExceptionType.ALREADY_EXIST_EMAIL);
         }
@@ -135,8 +138,7 @@ public class UserValidator {
     }
 
     private boolean checkNull(String val) {
-        if (ObjectUtils.isEmpty(val)) return true;
-        else return ObjectUtils.isEmpty(val.trim());
+        return !StringUtils.hasText(val);
     }
 
 }

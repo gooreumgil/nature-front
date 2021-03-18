@@ -4,6 +4,7 @@ import com.rainyheaven.nature.core.domain.orderitem.OrderItemService;
 import com.rainyheaven.nature.core.domain.review.ReviewService;
 import com.rainyheaven.nature.core.domain.review.dto.app.ReviewSaveRequestDto;
 import com.rainyheaven.nature.core.domain.user.TokenUser;
+import com.rainyheaven.nature.core.exception.ReviewValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,12 +16,14 @@ import org.springframework.web.bind.annotation.*;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final ReviewValidator reviewValidator;
 
     @PostMapping
     public ResponseEntity<Void> save(@ModelAttribute ReviewSaveRequestDto reviewSaveRequestDto,
                                      @AuthenticationPrincipal TokenUser tokenUser,
                                      @RequestParam Long itemId, @RequestParam Long orderItemId) {
 
+        reviewValidator.saveValidate(reviewSaveRequestDto);
         reviewService.save(reviewSaveRequestDto, tokenUser.getId(), itemId, orderItemId);
         return ResponseEntity.ok().build();
 

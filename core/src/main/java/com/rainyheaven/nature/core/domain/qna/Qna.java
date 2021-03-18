@@ -7,6 +7,7 @@ import com.rainyheaven.nature.core.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -21,6 +22,9 @@ public class Qna extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "qna_id")
     private Long id;
+
+
+    @Column(columnDefinition = "TEXT")
     private String content;
     private boolean isSecret;
 
@@ -38,8 +42,8 @@ public class Qna extends BaseTimeEntity {
     public static Qna create(QnaSaveRequestDto dto, Item item, User user) {
 
         Qna qna = new Qna();
-        qna.content = dto.getContent();
-        qna.isSecret = dto.getIsSecret();
+        qna.content = dto.getContent().trim();
+        qna.isSecret = dto.isSecret();
         qna.setUser(user);
         qna.setItem(item);
         qna.qnaStatus = QnaStatus.WAIT;

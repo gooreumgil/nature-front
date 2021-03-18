@@ -12,6 +12,6 @@ import lombok.Setter;
 public class QnaSaveRequestDto {
 
     private String content;
-    private Boolean isSecret;
+    private boolean isSecret = true;
 
 }

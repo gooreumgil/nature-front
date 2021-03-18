@@ -8,6 +8,7 @@ import com.rainyheaven.nature.core.domain.item.dto.app.ItemSimpleResponseDto;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLikeService;
 import com.rainyheaven.nature.core.domain.qna.Qna;
 import com.rainyheaven.nature.core.domain.qna.QnaService;
+import com.rainyheaven.nature.core.domain.qna.QnaValidator;
 import com.rainyheaven.nature.core.domain.qna.dto.app.QnaResponseDto;
 import com.rainyheaven.nature.core.domain.qna.dto.app.QnaSaveRequestDto;
 import com.rainyheaven.nature.core.domain.review.Review;
@@ -40,6 +41,8 @@ public class ItemController {
     private final QnaService qnaService;
     private final ReviewService reviewService;
     private final ReviewLikeService reviewLikeService;
+
+    private final QnaValidator qnaValidator;
 
     private static final String ALL = "ALL";
 
@@ -130,6 +133,7 @@ public class ItemController {
             @RequestBody QnaSaveRequestDto qnaSaveRequestDto,
             @AuthenticationPrincipal TokenUser tokenUser) {
 
+        qnaValidator.saveValidate(qnaSaveRequestDto);
         itemService.addQna(qnaSaveRequestDto, id, tokenUser.getId());
         return ResponseEntity.ok().build();
 

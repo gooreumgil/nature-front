@@ -48,7 +48,7 @@ public class Review extends BaseTimeEntity {
 
     public static Review create(ReviewSaveRequestDto reviewSaveRequestDto, Item item, User user) {
         Review review = new Review();
-        review.content = reviewSaveRequestDto.getContent();
+        review.content = reviewSaveRequestDto.getContent().trim();
         review.rating = reviewSaveRequestDto.getRating();
         review.setItem(item);
         review.setUser(user);
