@@ -342,8 +342,7 @@ export default {
         this.qnaContent = null;
         await this.setQnaList();
       } catch (err) {
-        alert('문제가 발생하였습니다.');
-        console.log(err);
+        alert(err.response.data.message);
       }
 
     },

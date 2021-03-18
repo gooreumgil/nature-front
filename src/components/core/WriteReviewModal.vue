@@ -145,7 +145,9 @@ export default {
       const files = this.files;
 
       form.append('rating', rating);
-      form.append('content', reviewContent);
+      if (reviewContent) {
+        form.append('content', reviewContent);
+      }
       if (files) {
         files.forEach(file => {
           form.append('files', file)
