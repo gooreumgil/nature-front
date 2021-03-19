@@ -7,6 +7,8 @@ import com.amazonaws.services.simpleemail.model.*;
 import com.rainyheaven.nature.core.common.dto.AwsEmailRequest;
 import com.rainyheaven.nature.core.common.dto.EmailVerifyNumSendRequestDto;
 import com.rainyheaven.nature.core.common.dto.PasswordChangeLinkRequestDto;
+import com.rainyheaven.nature.core.exception.UserException;
+import com.rainyheaven.nature.core.exception.UserExceptionType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -57,7 +59,32 @@ public class AwsEmailSendService implements EmailSender {
 
     @Override
     public void sendPasswordChangeLink(PasswordChangeLinkRequestDto passwordChangeLinkRequestDto) {
+        String url = passwordChangeLinkRequestDto.getUrl();
+        String textBody = "안녕하세요. 네이처 리퍼블릭입니다. 비밀번호 변경링크입니다. ";
+        String textHtml = "<html><body>"
+                + "<h2 style=\"display:flex; align-items:center; font-size:14px; font-weight:400; margin-top:30px; margin-bottom:5px\">"
+                + "안녕하세요. 네이처 리퍼블릭입니다.</h2>"
+                + "<p style=\"font-size:13px;\"><a href='" + url + "' style=\"color:#0081b3;\"> 비밀번호 변경 링크</a> 입니다.<p>"
+                + "<div style=\"margin-top: 20px; font-size:11px; text-align:left; color:#555\"> <span>상호명: 네이처 리퍼블릭</span> | <span>주소: 서울특별시 도봉구 김봉박네</span> | <span>대표자: 김덕배</span> <br><span>사업자등록번호: 123-456-78910</span> | <span>통신판매업신고번호: 제2017-서울강동-12345호</span> </div>"
+                + "</body></html>";
 
+        String subject = "네이처 리퍼블릭 패스워드 변경 링크입니다.";
+        String to = passwordChangeLinkRequestDto.getEmail();
+
+        AwsEmailRequest awsEmailRequest = new AwsEmailRequest();
+        awsEmailRequest.setFrom(FROM);
+        awsEmailRequest.setReplyTo(REPLY_TO);
+        awsEmailRequest.setSubject(subject);
+        awsEmailRequest.setTo(to);
+        awsEmailRequest.setTextBody(textBody);
+        awsEmailRequest.setTextHtml(textHtml);
+
+        try {
+            send(awsEmailRequest);
+        } catch (Exception ex) {
+            log.error("[ERROR] EMAIL_SEND_FAILED - " + ex.getMessage());
+            throw new UserException(UserExceptionType.EMAIL_SEND_FAILED);
+        }
     }
 
     private void send(AwsEmailRequest awsEmailRequest) {
