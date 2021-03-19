@@ -12,6 +12,8 @@ import OrderIndex from "@/views/order/Index"
 import OrderComplete from "@/views/order/Complete";
 import OrderDetail from "@/views/me/OrderDetail";
 import Search from "@/views/item/Search";
+import PasswordFind from "@/views/auth/PasswordFind";
+import PasswordChangeByEmail from "@/views/auth/PasswordChangeByEmail";
 
 
 Vue.use(VueRouter);
@@ -30,6 +32,14 @@ export const router = new VueRouter({
     {
       path: '/login',
       component: Login
+    },
+    {
+      path: '/password-find',
+      component: PasswordFind
+    },
+    {
+      path: '/password-change-by-email/:email',
+      component: PasswordChangeByEmail
     },
     {
       path: '/sign-up',

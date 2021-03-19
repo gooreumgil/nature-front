@@ -127,12 +127,16 @@ export default {
         return;
       }
 
+      let fileSizeOver = false;
+
       this.files.forEach(file => {
-        if (file.size > 10485760) {
-          alert('리뷰 이미지는 10MB를 넘길 수 업습니다.');
-          return;
-        }
+        if (file.size > 10485760) fileSizeOver = true;
       });
+
+      if (fileSizeOver) {
+        alert('리뷰 이미지는 10MB를 넘길 수 업습니다.');
+        return;
+      }
 
       const form = new FormData();
 

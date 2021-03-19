@@ -86,5 +86,15 @@ export default {
       }
     })
 
+  },
+
+  sendPasswordChangeLink(email) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/users/${email}/password/change-link-send`;
+    return axios.post(url);
+  },
+
+  passwordChangeByEmail(email, password, passwordConfirm) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/users/${email}/password/change-by-email`;
+    return axios.patch(url, {password, passwordConfirm});
   }
 }
