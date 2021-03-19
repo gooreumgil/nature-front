@@ -1,12 +1,18 @@
 <template>
   <section class="main-container">
-    <div class="title-box">
-      <h2>비밀번호찾기</h2>
+    <div class="inner-container">
+      <div class="title-box">
+        <h1>비밀번호찾기</h1>
+      </div>
+      <div class="form-container">
+        <form @submit.prevent="passwordChangeLinkEmailSend">
+          <input type="email" v-model="email" placeholder="가입시 사용했던 이메일을 입력하세요.">
+          <button type="submit">입력</button>
+        </form>
+      </div>
+
     </div>
-    <form @submit.prevent="passwordChangeLinkEmailSend">
-      <input type="email" v-model="email" placeholder="가입시 사용했던 이메일을 입력하세요.">
-      <button type="submit">입력</button>
-    </form>
+
   </section>
 </template>
 
@@ -36,5 +42,56 @@ export default {
 </script>
 
 <style scoped>
+  section.main-container {
+    padding-top: 80px;
+
+  }
+
+  section.main-container div.inner-container {
+    max-width: 340px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  section.main-container div.inner-container div.title-box {
+
+  }
+
+  section.main-container div.inner-container div.title-box h1 {
+    font-size: 24px;
+  }
+
+  section.main-container div.inner-container div.form-container {
+    margin-top: 30px;
+  }
+
+  section.main-container div.inner-container div.form-container form {
+
+  }
+
+  section.main-container div.inner-container div.form-container form input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    border: 1px solid #eaeaea;
+    outline-color: #ddd;
+    outline-width: thin;
+  }
+
+  section.main-container div.inner-container div.form-container form button {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #7ebb34;
+    padding: 15px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+
 
 </style>

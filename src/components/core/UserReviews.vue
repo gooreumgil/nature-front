@@ -46,7 +46,12 @@
                 <img v-bind:src="myReview.itemResponseDto.mainImgPath" alt="">
               </div>
               <div class="info">
-                <h4>{{ myReview.itemResponseDto.nameKor }}</h4>
+                <h4>
+                  {{ myReview.itemResponseDto.nameKor }}
+                  <span class="exist-review-image" v-if="isExistReviewImage(myReview)">
+                    <CameraIcon />
+                  </span>
+                </h4>
                 <div class="rating">
                   <p>평점:</p>
                   <span v-for="(star, index) in stars" v-bind:key="index">
@@ -64,7 +69,7 @@
             </div>
 
             <div class="review-info" v-if="myReview.showContent">
-              <div v-if="myReview.reviewImageResponseDtos.length > 0" class="img-box">
+              <div v-if="isExistReviewImage(myReview)" class="img-box">
                 <div @click="reviewImgModalShow(image.s3Key)" v-bind:style="{backgroundImage: getReviewImageUrl(image)}" v-for="(image, index) in myReview.reviewImageResponseDtos" v-bind:key="index"></div>
               </div>
               <div class="text-box">
@@ -84,9 +89,10 @@
 import StarIcon from "@/components/icon/StarIcon";
 import ExclamationIcon from "@/components/icon/ExclamationIcon";
 import LikeIcon from "@/components/icon/LikeIcon";
+import CameraIcon from "@/components/icon/CameraIcon";
 export default {
   name: "UserReviews",
-  components: {LikeIcon, ExclamationIcon, StarIcon},
+  components: {CameraIcon, LikeIcon, ExclamationIcon, StarIcon},
   props: {
     canReviewItems: {
       value: []
@@ -167,6 +173,10 @@ export default {
 
     getReviewImageUrl(image) {
       return 'url(' + this.s3UrlPrefix + image.s3Key + ')'
+    },
+
+    isExistReviewImage(myReview) {
+      return myReview.reviewImageResponseDtos.length > 0;
     }
   }
 }
@@ -375,12 +385,29 @@ export default {
     font-size: 16px;
     font-weight: 400;
     color: #333;
+    position: relative;
   }
 
   ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.item-info div.info h4 span {
     font-weight: 700;
     color: #333;
   }
+
+  ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.item-info div.info h4 span.exist-review-image {
+    font-weight: 700;
+    color: #333;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: -30px;
+
+  }
+
+  ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.item-info div.info h4 span.exist-review-image svg {
+    max-width: 20px;
+    width: 100%;
+  }
+
 
   ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.item-info div.info div.rating {
     display: flex;

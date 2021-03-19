@@ -21,7 +21,8 @@
           <img v-bind:src="qna.itemResponseDto.mainImgPath" alt="">
         </div>
         <div class="info-box">
-          <h4>{{ qnaContentSlice(qna.content) }}</h4>
+<!--          <h4>{{ qnaContentSlice(qna.content) }}</h4>-->
+          <h4>{{ qna.content }}</h4>
           <h5>상품명: {{ qna.itemResponseDto.nameKor }}</h5>
           <p>날짜: {{ convertTime(qna.wroteAt) }}</p>
         </div>

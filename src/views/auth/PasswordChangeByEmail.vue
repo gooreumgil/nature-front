@@ -1,15 +1,18 @@
 <template>
   <section class="main-container">
-    <div class="title-box">
-      <h2>비밀번호변경</h2>
+    <div class="inner-container">
+      <div class="title-box">
+        <h1>비밀번호변경</h1>
+      </div>
+      <div class="form-container">
+        <form @submit.prevent="passwordChange">
+          <input type="password" v-model.trim="password" placeholder="새로운 비밀번호">
+          <input type="password" v-model.trim="passwordConfirm" placeholder="비밀번호 재입력">
+          <button type="submit">변경하기</button>
+        </form>
+      </div>
     </div>
-    <div class="form-container">
-      <form @submit.prevent="passwordChange">
-        <input type="password" v-model.trim="password" placeholder="새로운 비밀번호">
-        <input type="password" v-model.trim="passwordConfirm" placeholder="비밀번호 재입력">
-        <button type="submit">변경하기</button>
-      </form>
-    </div>
+
   </section>
 </template>
 
@@ -52,5 +55,55 @@ export default {
 </script>
 
 <style scoped>
+  section.main-container {
+    padding-top: 80px;
 
+  }
+
+  section.main-container div.inner-container {
+    max-width: 340px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  section.main-container div.inner-container div.title-box {
+
+  }
+
+  section.main-container div.inner-container div.title-box h1 {
+    font-size: 24px;
+  }
+
+  section.main-container div.inner-container div.form-container {
+    margin-top: 30px;
+  }
+
+  section.main-container div.inner-container div.form-container form {
+
+  }
+
+  section.main-container div.inner-container div.form-container form input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    border: 1px solid #eaeaea;
+    outline-color: #ddd;
+    outline-width: thin;
+  }
+
+  section.main-container div.inner-container div.form-container form button {
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #7ebb34;
+    padding: 15px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 14px;
+    margin-top: 10px;
+  }
 </style>

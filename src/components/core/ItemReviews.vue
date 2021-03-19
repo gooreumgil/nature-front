@@ -29,7 +29,8 @@
               <p>{{ review.writer }}</p>
             </div>
             <div class="review-title-box">
-              <h4>{{ getReviewTitle(review) }}</h4>
+<!--              <h4>{{ getReviewTitle(review) }}</h4>-->
+              <h4>{{ review.content }}</h4>
             </div>
             <div class="info">
               <div class="rating">
@@ -145,10 +146,10 @@ export default {
       return this.reviews.content.length === 0;
     },
 
-    getReviewTitle(review) {
-      const substring = review.content.substring(0, 80);
-      return review.content.length > 80 ? substring + '...' : substring;
-    },
+    // getReviewTitle(review) {
+    //   const substring = review.content.substring(0, 80);
+    //   return review.content.length > 80 ? substring + '...' : substring;
+    // },
 
     getLikeIconFill(review) {
       return review.userLike === true ? '#ff1a5a' : 'none';
@@ -239,8 +240,13 @@ export default {
     padding: 25px 10px;
     padding-left: 80px;
     border-bottom: 1px solid #eaeaea;
+    border-top: 1px solid #eaeaea;
     flex-direction: column;
     justify-content: left;
+  }
+
+  div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info:first-child {
+    border-top: none;
   }
 
   div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.like-box {
@@ -299,7 +305,7 @@ export default {
   }
 
   div.review-container ul.review-wrapper li.review-list div.inner-box div.item-info div.review-title-box h4 {
-    width: 75%;
+    width: 80%;
     font-size: 14px;
     font-weight: 400;
     overflow: hidden;
