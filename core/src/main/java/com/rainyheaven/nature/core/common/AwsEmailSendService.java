@@ -6,6 +6,7 @@ import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
 import com.amazonaws.services.simpleemail.model.*;
 import com.rainyheaven.nature.core.common.dto.AwsEmailRequest;
 import com.rainyheaven.nature.core.common.dto.EmailVerifyNumSendRequestDto;
+import com.rainyheaven.nature.core.common.dto.PasswordChangeLinkRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -55,7 +56,7 @@ public class AwsEmailSendService implements EmailSender {
     }
 
     @Override
-    public void sendPasswordChangeLink() {
+    public void sendPasswordChangeLink(PasswordChangeLinkRequestDto passwordChangeLinkRequestDto) {
 
     }
 

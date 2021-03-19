@@ -2,7 +2,10 @@ package com.rainyheaven.nature.core.domain.user;
 
 import com.rainyheaven.nature.core.domain.address.Address;
 import com.rainyheaven.nature.core.domain.address.dto.app.AddressRequestDto;
+import com.rainyheaven.nature.core.domain.user.dto.app.PasswordChangeRequestDto;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserSaveRequestDto;
+import com.rainyheaven.nature.core.exception.UserException;
+import com.rainyheaven.nature.core.exception.UserExceptionType;
 import com.rainyheaven.nature.core.utils.AES256Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,7 +35,13 @@ public class UserService {
     }
 
     public User findByEmail(String email) {
-        return userRepository.findByEmailAndUserStatus(aes256Util.encode(email), UserStatus.ACTIVE).orElseThrow(RuntimeException::new);
+        return userRepository.findByEmailAndUserStatus(aes256Util.encode(email), UserStatus.ACTIVE)
+                .orElseThrow(() -> new UserException(UserExceptionType.NOT_EXIST_USER));
+    }
+
+    public User findByEncodedEmail(String encodedEmail) {
+        return userRepository.findByEmailAndUserStatus(encodedEmail, UserStatus.ACTIVE)
+                .orElseThrow(() -> new UserException(UserExceptionType.NOT_EXIST_USER));
     }
 
     @Transactional
@@ -49,7 +58,7 @@ public class UserService {
     }
 
     public boolean existByEmail(String email) {
-        return userRepository.existsByEmail(aes256Util.encode(email));
+        return userRepository.existsByEmailAndUserStatus(aes256Util.encode(email), UserStatus.ACTIVE);
     }
 
     public boolean checkTokenExpiredTime(Date expiration) {
@@ -120,4 +129,11 @@ public class UserService {
 
         }
     }
+
+    @Transactional
+    public void changePassword(String encodedEmail, PasswordChangeRequestDto passwordChangeRequestDto) {
+        User user = findByEncodedEmail(encodedEmail);
+        user.changePassword(passwordEncoder.encode(passwordChangeRequestDto.getPassword()));
+    }
+
 }

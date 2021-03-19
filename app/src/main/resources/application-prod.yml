@@ -14,3 +14,5 @@ src-prefix:
 custom:
   upload-path: /home/ljs/Works/nature/upload
 
+front-url-prefix: http://nature-portfolio.rainy-heaven.com
+

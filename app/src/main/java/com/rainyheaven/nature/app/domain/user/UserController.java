@@ -1,5 +1,7 @@
 package com.rainyheaven.nature.app.domain.user;
 
+import com.rainyheaven.nature.core.common.EmailSender;
+import com.rainyheaven.nature.core.common.dto.PasswordChangeLinkRequestDto;
 import com.rainyheaven.nature.core.domain.emailverify.EmailVerifyService;
 import com.rainyheaven.nature.core.domain.item.dto.app.ItemSimpleResponseDto;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLike;
@@ -22,6 +24,7 @@ import com.rainyheaven.nature.core.domain.user.TokenUser;
 import com.rainyheaven.nature.core.domain.user.User;
 import com.rainyheaven.nature.core.domain.user.UserService;
 import com.rainyheaven.nature.core.domain.user.UserValidator;
+import com.rainyheaven.nature.core.domain.user.dto.app.PasswordChangeRequestDto;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserResponseDto;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserSaveRequestDto;
 import com.rainyheaven.nature.core.exception.UserException;
@@ -49,11 +52,15 @@ public class UserController {
     private final ItemLikeService itemLikeService;
     private final QnaService qnaService;
     private final OrderItemService orderItemService;
-    private final EmailVerifyService emailVerifyService;
     private final UserValidator userValidator;
+    private final EmailSender emailSender;
 
     @Value("${src-prefix}")
     private String imgSrcPrefix;
+
+    @Value("${front-url-prefix}")
+    private String frontUrlPrefix;
+
 
     @GetMapping
     public ResponseEntity<UserResponseDto> get(@AuthenticationPrincipal TokenUser tokenUser) {
@@ -104,6 +111,25 @@ public class UserController {
 
     }
 
+    @PostMapping("/{email}/password/change-link-send")
+    public ResponseEntity<Void> passwordChangeLinkSend(@PathVariable String email) {
+        String encodedEmail = aes256Util.encode(email);
+        String url = frontUrlPrefix + "/password-change-by-email/" + encodedEmail;
+
+        emailSender.sendPasswordChangeLink(new PasswordChangeLinkRequestDto(email, url));
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{email}/password/change-by-email")
+    public ResponseEntity<Void> passwordChangeByEmail(
+            @PathVariable String email,
+            @RequestBody PasswordChangeRequestDto passwordChangeRequestDto) {
+        userService.changePassword(email, passwordChangeRequestDto);
+        return null;
+    }
+
+
     @GetMapping("/count/reviews")
     public ResponseEntity<Integer> getTotalReviews(@AuthenticationPrincipal TokenUser tokenUser) {
         int totalUserReviews = reviewService.getTotalByUser(tokenUser.getId());
@@ -127,7 +153,6 @@ public class UserController {
         return ResponseEntity.ok(orderItemPageMap);
 
     }
-
 
     @GetMapping("/item-likes")
     public ResponseEntity<Page<ItemLikeResponseDto>> getLikeItems(

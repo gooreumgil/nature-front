@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 public enum UserExceptionType {
 
     ALREADY_EXIST_EMAIL("이미 존재하는 이메일입니다."),
+    NOT_EXIST_USER("존재하지 않는 유저입니다."),
     EMAIL_NOT_VERIFIED("이메일 인증이 완료되지 않았습니다."),
     EMAIL_FORM_NOT_VALID("형식에 맞지 않는 이메일입니다."),
     EMAIL_NULL("이메일을 입력해주세요."),

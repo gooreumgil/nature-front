@@ -43,3 +43,5 @@ aws:
 
 custom:
   upload-path: ./upload/
+
+front-url-prefix: http://localhost:8082

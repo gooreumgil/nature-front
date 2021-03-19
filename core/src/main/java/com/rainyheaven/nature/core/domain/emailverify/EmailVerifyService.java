@@ -2,6 +2,8 @@ package com.rainyheaven.nature.core.domain.emailverify;
 
 import com.rainyheaven.nature.core.common.dto.EmailVerifyNumConfirmRequestDto;
 import com.rainyheaven.nature.core.domain.user.UserService;
+import com.rainyheaven.nature.core.exception.UserException;
+import com.rainyheaven.nature.core.exception.UserExceptionType;
 import com.rainyheaven.nature.core.utils.AES256Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,7 @@ public class EmailVerifyService {
     public EmailVerify save(String email) {
 
         if (userService.existByEmail(email)) {
-            throw new RuntimeException("이미 가입된 이메일입니다.");
+            throw new UserException(UserExceptionType.ALREADY_EXIST_EMAIL);
         }
 
         Optional<EmailVerify> optionalEmailVerify = emailVerifyRepository.findByEmail(aes256Util.encode(email));

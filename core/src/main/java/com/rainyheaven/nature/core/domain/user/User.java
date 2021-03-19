@@ -142,4 +142,9 @@ public class User extends BaseTimeEntity {
         this.addressList.add(address);
         address.setUser(this);
     }
+
+    public void changePassword(String newPassword) {
+        this.password = newPassword;
+        setLastModifiedDate(LocalDateTime.now());
+    }
 }
