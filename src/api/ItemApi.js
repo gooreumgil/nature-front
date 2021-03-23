@@ -69,8 +69,8 @@ export default {
     })
   },
 
-  getQnaList(token, id) {
-    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/qnas`;
+  getQnaList(token, id, page) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/qnas?page=${page}`;
     if (token) {
       return axios.get(url, {
         headers: {
@@ -82,8 +82,8 @@ export default {
     }
   },
 
-  getReviews(token, id) {
-    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/reviews`;
+  getReviews(token, id, page) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/reviews?page=${page}`;
     if (token) {
       return axios.get(url, {
         headers: {
@@ -94,4 +94,14 @@ export default {
       return axios.get(url);
     }
   },
+
+  getQnaTotal(id) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/count/qnas`;
+    return axios.get(url);
+  },
+
+  getReviewTotal(id) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/count/reviews`;
+    return axios.get(url);
+  }
 }

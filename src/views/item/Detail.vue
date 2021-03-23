@@ -88,7 +88,11 @@
     <section class="detail-container" v-if="init">
       <nav class="detail-tab clearfix">
         <div class="nav-inner" v-for="(tab, index) in tabs" v-bind:key="index">
-          <button type="button" @click="setCurrentTab(tab.val)" v-bind:class="{active: isCurrentTab(tab.val)}">{{ tab.name }}</button>
+          <button type="button" @click="setCurrentTab(tab.val)" v-bind:class="{active: isCurrentTab(tab.val)}">
+            {{ tab.name }}
+            <span v-if="tab.val === 'review'">({{ reviewTotal }})</span>
+            <span v-if="tab.val === 'qna'">({{ qnaTotal }})</span>
+          </button>
         </div>
       </nav>
 
@@ -122,7 +126,7 @@
         </div>
 
         <ul class="qna-wrapper" v-if="!qnaListIsEmpty()">
-          <li class="qna-list clearfix" v-bind:class="{contentShow: qna.showContent}" v-for="(qna, index) in qnaList.content" v-bind:key="index">
+          <li class="qna-list clearfix" v-bind:class="{contentShow: qna.showContent}" v-for="(qna, index) in qnaList" v-bind:key="index">
             <div class="list-inner" @click="qnaShowContentToggle(qna)">
 
               <div class="content">
@@ -154,13 +158,19 @@
           </li>
         </ul>
 
+        <Pagination v-bind:page="qnaPageable" @nextPage="nextQnaPage" @previousPage="previousQnaPage" @goPage="goQnaPage"/>
+
 
       </div>
 
       <ItemReviews v-if="reviewInit && isCurrentTab('review')"
                    v-bind:reviews="reviews"
                    v-bind:convert-time-to-str="convertTimeToStr"
-                   v-bind:s3-url-prefix="s3UrlPrefix" v-bind:review-img-modal-show="reviewImgModalShow"/>
+                   v-bind:s3-url-prefix="s3UrlPrefix"
+                   v-bind:review-img-modal-show="reviewImgModalShow"
+                   v-bind:go-review-page="goReviewPage"
+                   v-bind:next-review-page="nextReviewPage"
+                   v-bind:previous-review-page="previousReviewPage"/>
 
 
     </section>
@@ -193,9 +203,11 @@ import ReviewImageModal from "@/components/core/ReviewImageModal";
 import SourceCodeLinkModal from "@/components/core/SourceCodeLinkModal";
 import LockIcon from "@/components/icon/LockIcon";
 import UnLockIcon from "@/components/icon/UnLockIcon";
+import Pagination from "@/components/core/Pagination";
 export default {
   name: "Detail",
   components: {
+    Pagination,
     UnLockIcon,
     LockIcon,
     SourceCodeLinkModal,
@@ -223,7 +235,10 @@ export default {
       reviews: [],
       s3UrlPrefix: 'https://nature-portfolio.s3.ap-northeast-2.amazonaws.com/',
       reviewImgModalView: false,
-      reviewImgSrc: null
+      reviewImgSrc: null,
+      reviewTotal: 0,
+      qnaTotal: 0,
+      qnaPageable: null
     }
   },
 
@@ -231,6 +246,8 @@ export default {
     const id = this.$route.params.id;
     await this.setItem(id);
     await this.checkItemLike();
+    await this.setReviewTotal();
+    await this.setQnaTotal();
   },
 
   methods: {
@@ -264,15 +281,19 @@ export default {
 
     },
 
-    async setQnaList() {
+    async setQnaList(page) {
+      if(!page) {
+        page = 0;
+      }
       const token = this.$cookies.get('token');
       const id = this.item.id;
       try {
-        const res = await itemApi.getQnaList(token, id);
-        const qnaList = res.data;
-        qnaList.content.forEach(qna => qna.showContent = false);
-
-        this.qnaList = qnaList;
+        const res = await itemApi.getQnaList(token, id, page);
+        const qnaPage = res.data;
+        qnaPage.content.forEach(qna => qna.showContent = false);
+        this.qnaList = qnaPage.content;
+        this.qnaPageable = qnaPage;
+        console.log(this.qnaPageable);
         this.qnaInit = true;
       } catch (err) {
         alert('문제가 발생했습니다.');
@@ -280,11 +301,22 @@ export default {
       }
     },
 
-    async setReviews() {
+    nextQnaPage(page) {
+      this.setQnaList(page)
+    },
+
+    previousQnaPage(page) {
+      this.setQnaList(page);
+    },
+
+    async setReviews(page) {
+      if (!page) {
+        page = 0;
+      }
       const id = this.item.id;
       const token = this.$cookies.get('token');
       try {
-        const res = await itemApi.getReviews(token, id);
+        const res = await itemApi.getReviews(token, id, page);
         const reviews = res.data;
         reviews.content.forEach(review => review.showContent = false);
         this.reviews = reviews;
@@ -294,6 +326,14 @@ export default {
         console.log(err);
       }
 
+    },
+
+    nextReviewPage(page) {
+      this.setReviews(page)
+    },
+
+    previousReviewPage(page) {
+      this.setReviews(page);
     },
 
     itemLike() {
@@ -347,8 +387,45 @@ export default {
 
     },
 
+    async goQnaPage(pageNum) {
+      await this.setQnaList(pageNum - 1);
+    },
+
+    async goReviewPage(pageNum) {
+      await this.setReviews(pageNum - 1);
+    },
+
+    async setReviewTotal() {
+
+      const id = this.item.id;
+
+      try {
+
+        const res = await itemApi.getReviewTotal(id);
+        this.reviewTotal = res.data;
+
+      } catch (err) {
+        alert(err.response.data.message);
+        console.log(err);
+      }
+    },
+
+    async setQnaTotal() {
+
+      const id = this.item.id;
+
+      try {
+
+        const res = await itemApi.getQnaTotal(id);
+        this.qnaTotal = res.data;
+      } catch (err) {
+        alert(err.response.data.message);
+        console.log(err);
+      }
+    },
+
     qnaListIsEmpty() {
-      return this.qnaList.content.length === 0;
+      return this.qnaList.length === 0;
     },
 
     getStroke() {
@@ -762,12 +839,19 @@ export default {
     transition: all .1s ease-in-out;
   }
 
-
   section.main-container section.detail-container nav div.nav-inner button.active {
     background-color: #555;
     color: #fff;
     font-weight: 700;
     transition: all .1s ease-in-out;
+  }
+
+  section.main-container section.detail-container nav div.nav-inner button span {
+    color: #7ebb34;
+  }
+
+  section.main-container section.detail-container nav div.nav-inner button.active span {
+    color: #9ce546;
   }
 
   section.main-container section.detail-container div.detail-info-box {
@@ -1011,5 +1095,19 @@ export default {
     margin-top: 15px;
     display: inline-block;
   }
+
+  section.main-container section.detail-container div.item-qna-box div.page-container {
+    width: 1110px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 25px;
+  }
+
+  section.main-container section.detail-container div.item-qna-box div.page-container ul.page-wrapper {
+    /*display: flex;*/
+    /*align-items: center;*/
+    /*justify-content: center;*/
+  }
+
 
 </style>

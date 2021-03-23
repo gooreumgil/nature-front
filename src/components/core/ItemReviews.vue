@@ -56,6 +56,8 @@
       </li>
     </ul>
 
+    <Pagination v-bind:page="reviews" @goPage="goReviewPage" @nextPage="nextReviewPage" @previousPage="previousReviewPage"/>
+
   </div>
 
 </template>
@@ -66,9 +68,10 @@ import CommentIcon from "@/components/icon/CommentIcon";
 import UserIcon from "@/components/icon/UserIcon";
 import LikeIcon from "@/components/icon/LikeIcon";
 import reviewApi from "@/api/ReviewApi";
+import Pagination from "@/components/core/Pagination";
 export default {
   name: "ItemReviews",
-  components: {LikeIcon, UserIcon, CommentIcon, StarIcon},
+  components: {Pagination, LikeIcon, UserIcon, CommentIcon, StarIcon},
   props: {
     reviews: {
       value: []
@@ -80,6 +83,15 @@ export default {
       type: String
     },
     reviewImgModalShow: {
+      type: Function
+    },
+    goReviewPage: {
+      type: Function
+    },
+    nextReviewPage: {
+      type: Function
+    },
+    previousReviewPage: {
       type: Function
     }
   },
@@ -157,7 +169,10 @@ export default {
 
     isReviewImagesNotEmpty(review) {
       return review.reviewImageResponseDtos.length > 0;
-    }
+    },
+
+
+
 
   }
 }
@@ -223,10 +238,15 @@ export default {
   div.review-container ul.review-wrapper {
     padding: 0;
     box-sizing: border-box;
+    margin-bottom: 40px;
   }
 
   div.review-container ul.review-wrapper li.review-list {
+    border-top: 1px solid #eaeaea;
+  }
 
+  div.review-container ul.review-wrapper li.review-list:first-child {
+    border-top: none;
   }
 
   div.review-container ul.review-wrapper li.review-list div.inner-box {

@@ -404,7 +404,7 @@ export default {
   }
 
   ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.item-info div.info h4 span.exist-review-image svg {
-    max-width: 20px;
+    max-width: 18px;
     width: 100%;
   }
 
