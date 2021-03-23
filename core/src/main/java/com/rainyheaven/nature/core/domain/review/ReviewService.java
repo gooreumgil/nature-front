@@ -92,6 +92,31 @@ public class ReviewService {
         return reviewRepository.countAllByUserId(userId);
     }
 
+    public int getTotalByItem(Long itemId) {
+        return reviewRepository.countAllByItemId(itemId);
+    }
+
+    @Transactional
+    public void addLike(Long id, Long userId) {
+        Review review = findById(id);
+        User user = userService.findById(userId);
+        boolean exist = reviewLikeService.existByReviewAndUser(review.getId(), user.getId());
+
+        // 해당 글에 해당 유저가 좋아요를 했다면 에러
+        if (exist) {
+            throw new RuntimeException("이미 좋아요한 글입니다.");
+        }
+        ReviewLike.create(review, user);
+
+    }
+
+    @Transactional
+    public void deleteLike(Long id, Long userId) {
+        Review review = findById(id);
+        reviewLikeService.deleteByReviewAndUser(id, userId);
+        review.minusLikesCount();
+    }
+
     private List<ReviewImage> imageUpload(List<MultipartFile> letterImages) {
 
         List<ReviewImage> reviewImages = new ArrayList<>();
@@ -127,27 +152,6 @@ public class ReviewService {
         }
 
         return reviewImages;
-    }
-
-    @Transactional
-    public void addLike(Long id, Long userId) {
-        Review review = findById(id);
-        User user = userService.findById(userId);
-        boolean exist = reviewLikeService.existByReviewAndUser(review.getId(), user.getId());
-
-        // 해당 글에 해당 유저가 좋아요를 했다면 에러
-        if (exist) {
-            throw new RuntimeException("이미 좋아요한 글입니다.");
-        }
-        ReviewLike.create(review, user);
-
-    }
-
-    @Transactional
-    public void deleteLike(Long id, Long userId) {
-        Review review = findById(id);
-        reviewLikeService.deleteByReviewAndUser(id, userId);
-        review.minusLikesCount();
     }
 
 }

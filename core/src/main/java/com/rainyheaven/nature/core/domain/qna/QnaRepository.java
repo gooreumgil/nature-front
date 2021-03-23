@@ -18,4 +18,6 @@ public interface QnaRepository extends JpaRepository<Qna, Long> {
 
     boolean existsByIdAndUserId(Long id, Long userId);
 
+    int countAllByItemId(Long id);
+
 }

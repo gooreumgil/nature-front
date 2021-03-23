@@ -49,6 +49,12 @@ public class ItemController {
     @Value("${src-prefix}")
     private String imgSrcPrefix;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ItemDetailResponseDto> get(@PathVariable Long id) {
+        Item item = itemService.findByIdWithImages(id);
+        return ResponseEntity.ok(new ItemDetailResponseDto(item, imgSrcPrefix));
+    }
+
     @GetMapping
     public ResponseEntity<?> findAll(
             Pageable pageable,
@@ -90,12 +96,6 @@ public class ItemController {
 
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ItemDetailResponseDto> get(@PathVariable Long id) {
-        Item item = itemService.findByIdWithImages(id);
-        return ResponseEntity.ok(new ItemDetailResponseDto(item, imgSrcPrefix));
-    }
-
     @PostMapping("/{id}/item-likes")
     public ResponseEntity<Void> saveItemLike(@PathVariable Long id, @AuthenticationPrincipal TokenUser tokenUser) {
         itemService.addItemLike(id, tokenUser.getId());
@@ -111,7 +111,7 @@ public class ItemController {
     @GetMapping("/{id}/qnas")
     public ResponseEntity<Page<QnaResponseDto>> getQnas(
             @PathVariable Long id,
-            @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable,
             @AuthenticationPrincipal TokenUser tokenUser) {
 
         Page<Qna> qnaPage = qnaService.pageByItem(id, pageable);
@@ -142,7 +142,7 @@ public class ItemController {
     @GetMapping("/{id}/reviews")
     public ResponseEntity<Page<ReviewResponseDto>> getReviews(
             @PathVariable Long id,
-            @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable,
             @AuthenticationPrincipal TokenUser tokenUser) {
 
         Page<Review> reviewPage = reviewService.getPageByItem(id, pageable);
@@ -162,5 +162,27 @@ public class ItemController {
         return ResponseEntity.ok(reviewPageMap);
 
     }
+
+    @GetMapping("/{id}/count/qnas")
+    public ResponseEntity<Integer> getQnaTotal(@PathVariable Long id) {
+        int qnaTotal = qnaService.getTotalByItem(id);
+        return ResponseEntity.ok(qnaTotal);
+    }
+
+    @GetMapping("/{id}/count/reviews")
+    public ResponseEntity<Integer> getReviewTotal(@PathVariable Long id) {
+        int reviewTotal = reviewService.getTotalByItem(id);
+        return ResponseEntity.ok(reviewTotal);
+
+    }
+
+
+
+
+
+
+
+
+
 
 }

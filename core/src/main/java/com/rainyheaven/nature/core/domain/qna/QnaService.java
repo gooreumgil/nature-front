@@ -21,7 +21,8 @@ public class QnaService {
         return qnaRepository.findByUserWithItem(userId, pageable);
     }
 
-    public boolean checkWriter(Long id, Long userId) {
-        return qnaRepository.existsByIdAndUserId(id, userId);
+    public int getTotalByItem(Long itemId) {
+        return qnaRepository.countAllByItemId(itemId);
     }
+
 }
