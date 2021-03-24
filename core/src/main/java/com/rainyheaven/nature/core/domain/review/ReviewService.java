@@ -57,6 +57,9 @@ public class ReviewService {
         }
 
         OrderItem orderItem = orderItemService.findById(orderItemId);
+        if (orderItem.isLeaveReview()) {
+            throw new RuntimeException("이미 리뷰를 작성하셨습니다.");
+        }
         boolean containsFile = false;
         if (!reviewSaveRequestDto.getFiles().isEmpty()) {
             containsFile = true;

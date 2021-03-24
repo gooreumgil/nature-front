@@ -79,7 +79,7 @@ public class UserController {
     @GetMapping("/orders")
     public ResponseEntity<Page<OrderResponseDto>> getOrderPages(
             @AuthenticationPrincipal TokenUser tokenUser,
-            @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Order> orderPages = orderService.findByUserId(tokenUser.getId(), pageable);
         Page<OrderResponseDto> orderResponseDtoPages = orderPages.map(order -> {
@@ -102,7 +102,7 @@ public class UserController {
     @GetMapping("/reviews")
     public ResponseEntity<Page<ReviewResponseDto>> getReviews(
             @AuthenticationPrincipal TokenUser tokenUser,
-            @PageableDefault(sort = "createdDate",  direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(size = 5, sort = "createdDate",  direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Review> reviewPage = reviewService.getPageByUser(tokenUser.getId(), pageable);
         Page<ReviewResponseDto> reviewPageMap = reviewPage.map(review -> new ReviewResponseDto(review, imgSrcPrefix));
@@ -140,7 +140,7 @@ public class UserController {
     @GetMapping("/order-items")
     public ResponseEntity<Page<OrderItemResponseDto>> getOrderItems(
             @AuthenticationPrincipal TokenUser tokenUser,
-            @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<OrderItem> orderItemPage = orderItemService.pageByUserIdAndOrderStatus(tokenUser.getId(), OrderStatus.COMP, pageable);
         Page<OrderItemResponseDto> orderItemPageMap = orderItemPage
@@ -156,7 +156,7 @@ public class UserController {
 
     @GetMapping("/item-likes")
     public ResponseEntity<Page<ItemLikeResponseDto>> getLikeItems(
-            @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 8, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable,
             @AuthenticationPrincipal TokenUser tokenUser) {
 
         Page<ItemLike> itemLikePage = itemLikeService.pageByUser(tokenUser.getId(), pageable);
@@ -176,7 +176,7 @@ public class UserController {
     @GetMapping("/qnas")
     public ResponseEntity<Page<QnaResponseDto>> getQnaPage(
             @AuthenticationPrincipal TokenUser tokenUser,
-            @PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Qna> qnaPage = qnaService.pageByUser(tokenUser.getId(), pageable);
         Page<QnaResponseDto> qnaPageMap = qnaPage.map(qna -> new QnaResponseDto(qna, imgSrcPrefix));
