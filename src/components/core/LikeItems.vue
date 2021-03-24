@@ -22,7 +22,7 @@
         <p>찜한 상품이 없습니다.</p>
       </div>
     </div>
-    <li class="like-item-list" v-for="(likeItem, index) in likeItems" v-bind:key="index">
+    <li class="like-item-list" v-for="(likeItem, index) in likeItems.content" v-bind:key="index">
       <div class="check-box">
         <input type="checkbox" v-model="likeItem.selected">
       </div>
@@ -45,22 +45,24 @@
         </div>
       </div>
     </li>
+
   </ul>
 </template>
 
 <script>
 import ExclamationIcon from "@/components/icon/ExclamationIcon";
 import itemLikeApi from "@/api/ItemLikeApi";
+import Pagination from "@/components/core/Pagination";
 export default {
   name: "LikeItems",
   components: {ExclamationIcon},
   props: {
     likeItems: {
-      type: Array,
+      type: Object,
       default: () => {
         return [];
       }
-    }
+    },
   },
 
   methods: {
@@ -69,7 +71,7 @@ export default {
     },
 
     isLikeItemsEmpty() {
-      return this.likeItems.length === 0;
+      return this.likeItems.content.length === 0;
     },
 
     async allLikeItemDelete() {
@@ -81,7 +83,7 @@ export default {
 
       const token = this.$cookies.get('token');
       const ids = [];
-      this.likeItems.forEach(likeItem => {
+      this.likeItems.content.forEach(likeItem => {
         ids.push(likeItem.id);
       })
 
@@ -100,7 +102,7 @@ export default {
       const token = this.$cookies.get('token');
 
       const ids = []
-      const selectedLikeItems = this.likeItems.filter(likeItem => likeItem.selected);
+      const selectedLikeItems = this.likeItems.content.filter(likeItem => likeItem.selected);
       if (selectedLikeItems.length === 0) {
         alert('선택된 상품이 없습니다.');
         return;

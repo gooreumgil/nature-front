@@ -165,7 +165,10 @@ export default {
         this.writeReviewComplete(this.reviewItem);
 
       } catch (err) {
-        alert(err.response.data.message);
+        alert(err);
+        if (err) {
+          alert(err.response.data.message);
+        }
       }
 
 

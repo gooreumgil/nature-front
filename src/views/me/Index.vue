@@ -33,10 +33,32 @@
 
           <OrderList v-if="isCurrentTabThis('orderAndDelivery')"
                      v-bind:orders="orders"
-                     v-bind:cancel-order="cancelOrder" v-bind:go-order-detail="goOrderDetail" />
+                     v-bind:cancel-order="cancelOrder"
+                     v-bind:go-order-detail="goOrderDetail"
+                     v-bind:next-order-page="nextOrderPage"
+                     v-bind:previous-order-page="previousOrderPage"
+                     v-bind:go-order-page="goOrderPage" />
+
+
           <LikeItems v-if="isCurrentTabThis('likes')"
-                     v-bind:like-items="likeItems" @allSelectLikeItemsToggle="allSelectLikeItemsToggle" @setLikeItems="setLikeItems"/>
-          <UserQnaList v-if="isCurrentTabThis('qna')" v-bind:qna-list="qnaList"/>
+                     v-bind:like-items="likeItems"
+                     @allSelectLikeItemsToggle="allSelectLikeItemsToggle"
+                     @setLikeItems="setLikeItems"/>
+
+          <Pagination v-if="isCurrentTabThis('likes') && this.likeItems.content.length > 1"
+                      v-bind:page="likeItems"
+                      @nextPage="nextLikeItemPage"
+                      @previousPage="previousLikeItemPage"
+                      @goPage="goLikeItemPage" />
+
+
+
+          <UserQnaList v-if="isCurrentTabThis('qna')"
+                       v-bind:qna-list="qnaList"
+                       v-bind:next-qna-page="nextQnaPage"
+                       v-bind:previous-qna-page="previousQnaPage"
+                       v-bind:go-qna-page="goQnaPage"/>
+
           <UserReviews v-if="isCurrentTabThis('review')"
                        v-bind:can-review-items="canReviewItems"
                        v-bind:my-reviews="myReviews"
@@ -46,7 +68,13 @@
                        v-bind:review-nav="reviewNav"
                        v-bind:convert-time-to-str="convertTimeToStr"
                        v-bind:write-modal-view-toggle="writeModalViewToggle"
-                       v-bind:review-img-modal-show="reviewImgModalShow"/>
+                       v-bind:review-img-modal-show="reviewImgModalShow"
+                       v-bind:my-review-next-page="myReviewNextPage"
+                       v-bind:my-review-previous-page="myReviewPreviousPage"
+                       v-bind:go-my-review-page="goMyReviewPage"
+                       v-bind:can-review-next-page="canReviewNextPage"
+                       v-bind:can-review-previous-page="canReviewPreviousPage"
+                       v-bind:go-can-review-page="goCanReviewPage"/>
         </div>
       </div>
     </div>
@@ -80,12 +108,14 @@ import commonUtils from "@/utils/commonUtils";
 import WriteReviewModal from "@/components/core/WriteReviewModal";
 import ReviewImageModal from "@/components/core/ReviewImageModal";
 import SourceCodeLinkModal from "@/components/core/SourceCodeLinkModal";
+import Pagination from "@/components/core/Pagination";
+
 export default {
   name: "Index",
   components: {
     SourceCodeLinkModal,
     ReviewImageModal,
-    WriteReviewModal, UserReviews, UserQnaList, Footer, Bottom, LikeItems, OrderList, MyPageNav, Header},
+    WriteReviewModal, UserReviews, UserQnaList, Footer, Bottom, LikeItems, OrderList, MyPageNav, Header, Pagination},
   data() {
     return {
       init: false,
@@ -136,11 +166,14 @@ export default {
 
   },
   methods: {
-    async setOrders() {
+    async setOrders(page) {
+      if (!page) {
+        page = 0;
+      }
       const token = this.$cookies.get('token');
       try {
-        const res = await userApi.getUserOrders(token);
-        this.orders = res.data.content;
+        const res = await userApi.getUserOrders(token, page);
+        this.orders = res.data;
         const tab = 'orderAndDelivery';
         this.currentTab = tab;
         this.$store.commit('SET_CURRENT_MY_PAGE_TAB', tab);
@@ -150,6 +183,19 @@ export default {
         console.log(err);
       }
     },
+
+    async nextOrderPage(page) {
+      await this.setOrders(page)
+    },
+
+    async previousOrderPage(page) {
+      await this.setOrders(page);
+    },
+
+    async goOrderPage(page) {
+      await this.setOrders(page - 1);
+    },
+
 
     async setUser() {
       const token = this.$cookies.get('token');
@@ -185,13 +231,17 @@ export default {
       }
     },
 
-    async setLikeItems() {
+    async setLikeItems(page) {
+      if (!page) {
+        page = 0;
+      }
+
       const token = this.$cookies.get('token');
       try {
-        const res = await userApi.getLikeItems(token);
+        const res = await userApi.getLikeItems(token, page);
 
-        const likeItems = res.data.content;
-        likeItems.forEach(likeItem => {
+        const likeItems = res.data;
+        likeItems.content.forEach(likeItem => {
           likeItem.selected = false;
         })
 
@@ -202,55 +252,51 @@ export default {
         this.currentTab = tab;
         this.$store.commit('SET_CURRENT_MY_PAGE_TAB', tab);
         this.basicInfoView = false;
+        this.likeItemAllSelected = false;
       } catch (err) {
         alert('문제가 발생하였습니다.');
         console.log(err);
       }
     },
 
+    async nextLikeItemPage(page) {
+      await this.setLikeItems(page)
+    },
+
+    async previousLikeItemPage(page) {
+      await this.setLikeItems(page);
+    },
+
+    async goLikeItemPage(page) {
+      await this.setLikeItems(page - 1);
+    },
+
     allSelectLikeItemsToggle() {
       const allSelected = this.likeItemAllSelected;
       if (allSelected) {
-        this.likeItems.forEach(likeItem => {
+        this.likeItems.content.forEach(likeItem => {
           likeItem.selected = false;
         })
         this.likeItemAllSelected = false;
       } else {
-        this.likeItems.forEach(likeItem => {
+        this.likeItems.content.forEach(likeItem => {
           likeItem.selected = true;
         })
         this.likeItemAllSelected = true;
       }
     },
 
-    // removeLikeItems(ids) {
-    //   const likeItems = [];
-    //
-    //   ids.forEach(id => {
-    //
-    //     this.likeItems.forEach(likeItem => {
-    //       let exist = false;
-    //       if (likeItem.id === id) {
-    //         exist = true;
-    //       }
-    //       if (!exist) {
-    //         likeItems.push(likeItem);
-    //       }
-    //     })
-    //   })
-    //
-    //   this.likeItems = likeItems;
-    //
-    // },
 
-
-    async setQnaList() {
+    async setQnaList(page) {
+      if (!page) {
+        page = 0;
+      }
       const token = this.$cookies.get('token');
       try {
 
-        const res = await userApi.getQnaList(token);
-        const qnaList = res.data.content;
-        qnaList.forEach(qna => qna.showContent = false);
+        const res = await userApi.getQnaList(token, page);
+        const qnaList = res.data;
+        qnaList.content.forEach(qna => qna.showContent = false);
         this.qnaList = qnaList;
 
         this.currentTab = 'qna';
@@ -262,11 +308,26 @@ export default {
 
     },
 
-    async setCanReviewItems() {
+    async nextQnaPage(page) {
+      await this.setQnaList(page)
+    },
+
+    async previousQnaPage(page) {
+      await this.setQnaList(page);
+    },
+
+    async goQnaPage(page) {
+      await this.setQnaList(page - 1);
+    },
+
+    async setCanReviewItems(page) {
+      if (!page) {
+        page = 0;
+      }
       const token = this.$cookies.get('token');
       try {
-        const res = await userApi.getCanReviewItems(token);
-        this.canReviewItems = res.data.content;
+        const res = await userApi.getCanReviewItems(token, page);
+        this.canReviewItems = res.data;
         this.currentTab = 'review';
         this.reviewNav = 'canReview';
         this.basicInfoView = false;
@@ -276,17 +337,33 @@ export default {
       }
     },
 
-    async setMyReviews() {
+    async canReviewNextPage(page) {
+      await this.setCanReviewItems(page)
+    },
+
+    async canReviewPreviousPage(page) {
+      await this.setCanReviewItems(page);
+    },
+
+    async goCanReviewPage(page) {
+      await this.setCanReviewItems(page - 1);
+    },
+
+    async setMyReviews(page) {
+
+      if (!page) {
+        page = 0;
+      }
 
       const token = this.$cookies.get('token');
 
       try {
-        const res = await userApi.getReviews(token);
+        const res = await userApi.getReviews(token, page);
         this.currentTab = 'review';
         this.reviewNav = 'myReviews';
 
-        const myReviews = res.data.content;
-        myReviews.forEach(myReview => myReview.showContent = false);
+        const myReviews = res.data;
+        myReviews.content.forEach(myReview => myReview.showContent = false);
         this.myReviews = myReviews;
         this.basicInfoView = false;
       } catch (err) {
@@ -294,6 +371,18 @@ export default {
         console.log(err);
       }
 
+    },
+
+    async myReviewNextPage(page) {
+      await this.setMyReviews(page)
+    },
+
+    async myReviewPreviousPage(page) {
+      await this.setMyReviews(page);
+    },
+
+    async goMyReviewPage(page) {
+      await this.setMyReviews(page - 1);
     },
 
     isReviewsEmpty() {
@@ -305,13 +394,14 @@ export default {
       else this.setCanReviewItems();
     },
 
-    writeReviewComplete(review) {
-      this.canReviewItems.forEach(canReviewItem => {
-        if (canReviewItem.id === review.id) {
-          const indexOfReview = this.canReviewItems.indexOf(canReviewItem);
-          this.canReviewItems.splice(indexOfReview, 1);
-        }
-      })
+    writeReviewComplete() {
+      this.setCanReviewItems();
+      // this.canReviewItems.content.forEach(canReviewItem => {
+      //   if (canReviewItem.id === review.id) {
+      //     const indexOfReview = this.canReviewItems.content.indexOf(canReviewItem);
+      //     this.canReviewItems.content.splice(indexOfReview, 1);
+      //   }
+      // })
     },
 
     getOwnPoints() {
@@ -420,6 +510,10 @@ export default {
     width: 80%;
     text-align: left;
     padding-left: 20px;
+  }
+
+  section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.page-container {
+    margin-top: 40px;
   }
 
   section.main-container .inner-container div.my-page-wrapper div.my-page-list.content div.basic-info {

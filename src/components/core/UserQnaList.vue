@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <li v-bind:class="{showContent: qna.showContent}" class="qna-list" v-for="(qna, index) in qnaList" v-bind:key="index">
+    <li v-bind:class="{showContent: qna.showContent}" class="qna-list" v-for="(qna, index) in qnaList.content" v-bind:key="index">
       <div class="list-inner" @click="showContentToggle(qna)">
         <div class="img-box">
           <img v-bind:src="qna.itemResponseDto.mainImgPath" alt="">
@@ -39,20 +39,32 @@
 
 
     </li>
+
+    <Pagination v-bind:page="qnaList" @nextPage="nextQnaPage" @previousPage="previousQnaPage" @goPage="goQnaPage" />
   </ul>
 </template>
 
 <script>
 import commonUtils from "@/utils/commonUtils";
 import ExclamationIcon from "@/components/icon/ExclamationIcon";
+import Pagination from "@/components/core/Pagination";
 
 export default {
   name: "UserQnaList",
-  components: {ExclamationIcon},
+  components: {ExclamationIcon, Pagination},
   props: {
     qnaList: {
       value: []
     },
+    nextQnaPage: {
+      type: Function
+    },
+    previousQnaPage: {
+      type: Function
+    },
+    goQnaPage: {
+      type: Function
+    }
 
   },
 
@@ -86,6 +98,10 @@ export default {
     padding-top: 10px;
     padding-left: 10px;
     padding-right: 10px;
+  }
+
+  ul div.page-container {
+    margin-top: 40px;
   }
 
   ul div.title-box {

@@ -11,8 +11,8 @@ export default {
     })
   },
 
-  getUserOrders(token) {
-    const url = `${commonUtils.getApiBaseUrl()}/v1/users/orders`;
+  getUserOrders(token, page) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/users/orders?page=${page}`;
     return axios.get(url, {
       headers: {
         'Authorization': 'Bearer ' + token
@@ -50,8 +50,8 @@ export default {
     })
   },
 
-  getLikeItems(token) {
-    const url = `${commonUtils.getApiBaseUrl()}/v1/users/item-likes`;
+  getLikeItems(token, page) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/users/item-likes?page=${page}`;
     return axios.get(url, {
       headers: {
         'Authorization': 'Bearer ' + token
@@ -59,8 +59,8 @@ export default {
     })
   },
 
-  getQnaList(token) {
-    const url = `${commonUtils.getApiBaseUrl()}/v1/users/qnas`;
+  getQnaList(token, page) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/users/qnas?page=${page}`;
     return axios.get(url, {
       headers: {
         'Authorization': 'Bearer ' + token
@@ -68,8 +68,8 @@ export default {
     })
   },
 
-  getCanReviewItems(token) {
-    const url = `${commonUtils.getApiBaseUrl()}/v1/users/order-items`;
+  getCanReviewItems(token, page) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/users/order-items?page=${page}`;
     return axios.get(url, {
       headers: {
         'Authorization': 'Bearer ' + token
@@ -77,9 +77,9 @@ export default {
     })
   },
 
-  getReviews(token) {
+  getReviews(token, page) {
 
-    const url = `${commonUtils.getApiBaseUrl()}/v1/users/reviews`;
+    const url = `${commonUtils.getApiBaseUrl()}/v1/users/reviews?page=${page}`;
     return axios.get(url, {
       headers: {
         'Authorization': 'Bearer ' + token

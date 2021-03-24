@@ -5,7 +5,7 @@
       <nav @click="setReviewNav('canReview')" v-bind:class="{active: isReviewNavThis('canReview')}">작성 가능한 리뷰</nav>
     </div>
 
-    <div v-bind:class="{borderBottom: canReviewItems.length > 0}" v-if="isReviewNavThis('canReview')" class="can-review-container">
+    <div v-bind:class="{borderBottom: canReviewItems.content.length > 0}" v-if="isReviewNavThis('canReview')" class="can-review-container">
       <div v-if="isCanReviewsEmpty()" class="reviewEmpty">
         <span class="img-helper">
           <ExclamationIcon v-bind:stroke="'#a0a0a0'" />
@@ -13,7 +13,7 @@
         <p>리뷰 작성 가능한 상품이 없습니다.</p>
       </div>
 
-      <div class="can-review-items" v-for="(item, index) in canReviewItems" v-bind:key="index">
+      <div class="can-review-items" v-for="(item, index) in canReviewItems.content" v-bind:key="index">
         <div class="inner-box">
           <div class="img-box">
             <img v-bind:src="item.mainImgPath" alt="">
@@ -28,6 +28,7 @@
         </div>
       </div>
 
+      <Pagination v-if="canReviewItems.totalPages > 1" v-bind:page="canReviewItems" @nextPage="canReviewNextPage" @previousPage="canReviewPreviousPage" @goPage="goCanReviewPage"/>
 
     </div>
 
@@ -39,7 +40,7 @@
         <p>작성한 상품 리뷰가 없습니다.</p>
       </div>
       <ul v-else class="my-review-wrapper">
-        <li class="my-review-list" v-for="(myReview, index) in myReviews" v-bind:key="index">
+        <li class="my-review-list" v-for="(myReview, index) in myReviews.content" v-bind:key="index">
           <div class="inner-box">
             <div @click="myReviewShowContentToggle(myReview)" class="item-info">
               <div class="img-box">
@@ -81,6 +82,7 @@
           </div>
         </li>
       </ul>
+      <Pagination v-if="myReviews.totalPages > 1" v-bind:page="myReviews" @nextPage="myReviewNextPage" @previousPage="myReviewPreviousPage" @goPage="goMyReviewPage"/>
     </div>
   </ul>
 </template>
@@ -90,9 +92,10 @@ import StarIcon from "@/components/icon/StarIcon";
 import ExclamationIcon from "@/components/icon/ExclamationIcon";
 import LikeIcon from "@/components/icon/LikeIcon";
 import CameraIcon from "@/components/icon/CameraIcon";
+import Pagination from "@/components/core/Pagination";
 export default {
   name: "UserReviews",
-  components: {CameraIcon, LikeIcon, ExclamationIcon, StarIcon},
+  components: {Pagination, CameraIcon, LikeIcon, ExclamationIcon, StarIcon},
   props: {
     canReviewItems: {
       value: []
@@ -117,7 +120,26 @@ export default {
     },
     reviewImgModalShow: {
       type: Function
-    }
+    },
+    myReviewNextPage: {
+      type: Function
+    },
+    myReviewPreviousPage: {
+      type: Function
+    },
+    goMyReviewPage: {
+      type: Function
+    },
+    canReviewNextPage: {
+      type: Function
+    },
+    canReviewPreviousPage: {
+      type: Function
+    },
+    goCanReviewPage: {
+      type: Function
+    },
+
   },
 
   computed: {
@@ -164,7 +186,7 @@ export default {
     },
 
     isCanReviewsEmpty() {
-      return this.canReviewItems.length === 0;
+      return this.canReviewItems.content.length === 0;
     },
 
     myReviewShowContentToggle(myReview) {
@@ -177,7 +199,7 @@ export default {
 
     isExistReviewImage(myReview) {
       return myReview.reviewImageResponseDtos.length > 0;
-    }
+    },
   }
 }
 </script>
@@ -234,6 +256,10 @@ export default {
   ul div.can-review-container.borderBottom {
     /*border-bottom: 1px solid #eaeaea;*/
 
+  }
+
+  ul div.can-review-container div.page-container {
+    margin-top: 40px;
   }
 
   ul div.can-review-items {
@@ -345,6 +371,7 @@ export default {
 
   ul div.my-review-container ul.my-review-wrapper {
     padding: 0;
+    margin-bottom: 40px;
 
   }
 

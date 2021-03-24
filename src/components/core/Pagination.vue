@@ -71,7 +71,7 @@ export default {
         }
       }
 
-      return this.getStartIndex() + 2 < totalPages ? this.pageColumn : number;
+      return this.getStartIndex() + (this.pageColumn - 1) < totalPages ? this.pageColumn : number;
 
     },
 

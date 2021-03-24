@@ -21,7 +21,7 @@
         <p>상태</p>
       </div>
     </li>
-    <li class="order-list clearfix" v-for="(order, index) in orders" v-bind:key="index">
+    <li class="order-list clearfix" v-for="(order, index) in orders.content" v-bind:key="index">
       <div class="inner-col no">
         <p>{{ getOrderAt(order.orderAt) }}</p>
         <button v-if="isNotOrderCancel(order)" class="goOrderDetail" @click="goOrderDetail(order.id)" type="button">주문상세</button>
@@ -55,6 +55,8 @@
         <p>주문 내역이 존재하지 않습니다.</p>
       </div>
     </div>
+
+    <Pagination v-bind:page="orders" @nextPage="nextOrderPage" @previousPage="previousOrderPage" @goPage="goOrderPage" />
   </ul>
 </template>
 
@@ -62,9 +64,10 @@
 import commonUtils from "@/utils/commonUtils";
 import orderApi from "@/api/OrderApi";
 import ExclamationIcon from "@/components/icon/ExclamationIcon";
+import Pagination from "@/components/core/Pagination";
 export default {
   name: "OrderList",
-  components: {ExclamationIcon},
+  components: {Pagination, ExclamationIcon},
   props: {
     orders: {
       value: []
@@ -73,6 +76,15 @@ export default {
       type: Function
     },
     goOrderDetail: {
+      type: Function
+    },
+    nextOrderPage: {
+      type: Function
+    },
+    previousOrderPage: {
+      type: Function
+    },
+    goOrderPage: {
       type: Function
     }
   },
@@ -152,6 +164,10 @@ export default {
     padding-top: 30px;
     padding-left: 10px;
     padding-right: 10px;
+  }
+
+  ul div.page-container {
+    margin-top: 40px;
   }
 
   ul div.title-box {
