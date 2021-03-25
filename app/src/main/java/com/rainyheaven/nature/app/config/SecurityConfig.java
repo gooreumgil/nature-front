@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeRequests()
-                    .antMatchers("/**").permitAll()
+                    .antMatchers("/v1/users/**").hasAnyRole("ADMIN", "USER")
                 .and().cors()
                 .and().addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtUtil))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
