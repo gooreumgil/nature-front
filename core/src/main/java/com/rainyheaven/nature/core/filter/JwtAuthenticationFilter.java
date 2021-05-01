@@ -64,8 +64,10 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         Set<GrantedAuthority> roles = new HashSet<>();
         String role = String.valueOf(claims.get("role"));
         roles.add(new SimpleGrantedAuthority("ROLE_" + role));
+        TokenUser tokenUser = new TokenUser(claims);
 
-        return new UsernamePasswordAuthenticationToken(new TokenUser(claims), null, roles);
+        return new UsernamePasswordAuthenticationToken(tokenUser, null, roles);
+
 
     }
 }

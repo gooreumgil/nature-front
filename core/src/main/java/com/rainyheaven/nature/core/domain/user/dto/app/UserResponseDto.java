@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +34,12 @@ public class UserResponseDto {
         this.name = user.getName();
 
         PhoneNumber phoneNumber = user.getPhoneNumber();
-        this.phoneNum1 = phoneNumber.getPhoneNum1();
-        this.phoneNum2 = phoneNumber.getPhoneNum2();
-        this.phoneNum3 = phoneNumber.getPhoneNum3();
+        if (!ObjectUtils.isEmpty(phoneNumber)) {
+            this.phoneNum1 = phoneNumber.getPhoneNum1();
+            this.phoneNum2 = phoneNumber.getPhoneNum2();
+            this.phoneNum3 = phoneNumber.getPhoneNum3();
+        }
+
 
         this.email = decodedEmail;
         this.ownPoints = user.getPoints();

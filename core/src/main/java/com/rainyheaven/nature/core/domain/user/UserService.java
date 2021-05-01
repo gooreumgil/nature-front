@@ -8,6 +8,8 @@ import com.rainyheaven.nature.core.exception.UserException;
 import com.rainyheaven.nature.core.exception.UserExceptionType;
 import com.rainyheaven.nature.core.utils.AES256Util;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,9 +41,18 @@ public class UserService {
                 .orElseThrow(() -> new UserException(UserExceptionType.NOT_EXIST_USER));
     }
 
+    public User findByEmailAdmin(String email) {
+        return userRepository.findByEmailAndUserStatusAndUserRole(aes256Util.encode(email), UserStatus.ACTIVE, UserRole.ADMIN)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 관리자입니다."));
+    }
+
     public User findByEncodedEmail(String encodedEmail) {
         return userRepository.findByEmailAndUserStatus(encodedEmail, UserStatus.ACTIVE)
                 .orElseThrow(() -> new UserException(UserExceptionType.NOT_EXIST_USER));
+    }
+
+    public Page<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     @Transactional
@@ -54,7 +65,12 @@ public class UserService {
 
     public void existCheck(Long id) {
         boolean exists = userRepository.existsById(id);
-        if (!exists) throw new RuntimeException("존재하지 않는 유저입니다.");
+        if (!exists) throw new UserException(UserExceptionType.NOT_EXIST_USER);
+    }
+
+    public void existCheckAdmin(Long id) {
+        boolean exists = userRepository.existsByIdAndUserStatusAndUserRole(id, UserStatus.ACTIVE, UserRole.ADMIN);
+        if (!exists) throw new UserException(UserExceptionType.NOT_EXIST_ADMIN);
     }
 
     public boolean existByEmail(String email) {
@@ -83,6 +99,16 @@ public class UserService {
             throw new RuntimeException();
         }
         return user;
+    }
+
+    public User authenticateAdmin(String email, String password) {
+        User admin = findByEmailAdmin(email);
+        if (!passwordEncoder.matches(password, admin.getPassword())) {
+            throw new RuntimeException("패스워드가 일치하지 않습니다.");
+        }
+
+        return admin;
+
     }
 
     public void saveAddress(AddressRequestDto addressRequestDto, User user) {
