@@ -52,14 +52,10 @@ export default {
       popularItems: [],
       latestItems: [],
       sourceCodeLinkModalView: false
-      // authenticated: false
     }
   },
   async created() {
-    // const token = this.$cookies.get('token');
-    // if (token) {
-    //   await this.setAuthenticate(token);
-    // }
+
     await this.setPopularItems(0, 4);
     await this.setLatestItems(0, 4);
   },

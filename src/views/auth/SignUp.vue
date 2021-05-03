@@ -98,7 +98,14 @@ export default {
             this.$router.replace('/login');
           })
           .catch((err) => {
-            alert(err.response.data.message);
+            const data = err.response.data;
+            if (data && data.errorList.length > 0) {
+              const errorList = data.errorList;
+              errorList.forEach(error => {
+                alert(error.message);
+              })
+            }
+            // alert(err.response.data.message);
           })
     },
 

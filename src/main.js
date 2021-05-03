@@ -4,6 +4,7 @@ import {router} from "@/routes";
 import {store} from "@/store";
 import VueRouter from "vue-router";
 import VueCookie from 'vue-cookies';
+import axios from "axios";
 
 Vue.config.productionTip = false
 

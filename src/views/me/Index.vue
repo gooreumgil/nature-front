@@ -150,6 +150,7 @@ export default {
 
 
     const currentMyPageStoreTab = this.currentMyPageStoreTab;
+
     if (!currentMyPageStoreTab || currentMyPageStoreTab === 'orderAndDelivery') {
       await this.setOrders();
     } else if (currentMyPageStoreTab === 'likes') {
@@ -171,6 +172,11 @@ export default {
         page = 0;
       }
       const token = this.$cookies.get('token');
+      if (!token) {
+        window.location.href = '/';
+        return;
+      }
+
       try {
         const res = await userApi.getUserOrders(token, page);
         this.orders = res.data;
@@ -181,6 +187,7 @@ export default {
       } catch (err) {
         alert('문제가 발생하였습니다.');
         console.log(err);
+        console.log(err.response);
       }
     },
 
