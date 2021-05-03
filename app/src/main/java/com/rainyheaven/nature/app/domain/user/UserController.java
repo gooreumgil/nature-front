@@ -2,8 +2,6 @@ package com.rainyheaven.nature.app.domain.user;
 
 import com.rainyheaven.nature.core.common.EmailSender;
 import com.rainyheaven.nature.core.common.dto.PasswordChangeLinkRequestDto;
-import com.rainyheaven.nature.core.domain.emailverify.EmailVerifyService;
-import com.rainyheaven.nature.core.domain.item.dto.app.ItemSimpleResponseDto;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLike;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLikeService;
 import com.rainyheaven.nature.core.domain.itemlike.dto.app.ItemLikeResponseDto;
@@ -27,9 +25,8 @@ import com.rainyheaven.nature.core.domain.user.UserValidator;
 import com.rainyheaven.nature.core.domain.user.dto.app.PasswordChangeRequestDto;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserResponseDto;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserSaveRequestDto;
-import com.rainyheaven.nature.core.exception.UserException;
-import com.rainyheaven.nature.core.exception.UserExceptionType;
 import com.rainyheaven.nature.core.utils.AES256Util;
+import com.rainyheaven.nature.core.validator.ValidationSequence;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -38,7 +35,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/v1/users")
@@ -69,9 +69,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> register(@RequestBody UserSaveRequestDto userSaveRequestDto) {
-
-        userValidator.registerValidate(userSaveRequestDto);
+    public ResponseEntity<Void> register(@RequestBody @Valid UserSaveRequestDto userSaveRequestDto) {
         userService.save(userSaveRequestDto);
         return ResponseEntity.ok().build();
     }

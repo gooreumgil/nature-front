@@ -24,13 +24,12 @@ public class UserValidator {
 
     public void registerValidate(UserSaveRequestDto userSaveRequestDto) {
         isValidName(userSaveRequestDto.getName());
-        isEmailDuplicated(userSaveRequestDto.getEmail());
         isValidEmail(userSaveRequestDto.getEmail());
+        isEmailDuplicated(userSaveRequestDto.getEmail());
         isValidPassword(userSaveRequestDto.getPassword(), userSaveRequestDto.getPasswordConfirm());
         isValidPhoneNumber(userSaveRequestDto.getPhoneNumber());
         isValidBirthDay(userSaveRequestDto.getBirthDay());
         isEmailVerifyAccepted(userSaveRequestDto.getEmail());
-
     }
 
     private void isEmailDuplicated(String email) {
@@ -80,7 +79,9 @@ public class UserValidator {
             throw new UserException(UserExceptionType.EMAIL_FORM_NOT_VALID);
         }
 
-
+        if (email.length() > 30) {
+            throw new UserException(UserExceptionType.EMAIL_LENGTH_NOT_MATCHED);
+        }
     }
 
     private void isValidPassword(String password, String passwordConfirm) {

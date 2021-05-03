@@ -1,5 +1,6 @@
 package com.rainyheaven.nature.core.domain.address.dto.app;
 
+import com.rainyheaven.nature.core.annotation.BirthDay;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
