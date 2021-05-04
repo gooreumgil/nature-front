@@ -18,8 +18,8 @@ public class UserFactory {
     private final PasswordEncoder passwordEncoder;
     private final AES256Util aes256Util;
 
-    public User createUser(UserSaveRequestDto dto) {
-
+    public User createUser(String email, String name, String password, String passwordConfirm, String phoneNumber, String birthDay) {
+        UserSaveRequestDto dto = getUserSaveRequestDto(email, name, password, passwordConfirm, phoneNumber, birthDay);
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
         dto.setEmail(aes256Util.encode(dto.getEmail().trim()));
 
@@ -29,6 +29,10 @@ public class UserFactory {
 
     public void deleteByEmail(String email) {
         userRepository.deleteByEmail(aes256Util.encode(email));
+    }
+
+    public UserSaveRequestDto getUserSaveRequestDto(String email, String name, String password, String passwordConfirm, String phoneNumber, String birthDay) {
+        return new UserSaveRequestDto(email, name, password, passwordConfirm, phoneNumber, birthDay);
     }
 
 }

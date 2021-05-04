@@ -41,8 +41,15 @@ public class UserSaveRequestDto {
     private String phoneNumber;
 
     @NotBlank(message = "생년월일을 입력해주세요.")
+    @Size(max = 8, min = 8, message = "생년월일은 8자로 입력해주세요")
     @BirthDay
     private String birthDay;
+
+    @AssertTrue(message = "패스워드가 서로 다릅니다.")
+    public boolean isPasswordMatchedValidator() {
+        if (password == null || passwordConfirm == null) return false;
+        return this.password.equals(this.passwordConfirm);
+    }
 
 
 

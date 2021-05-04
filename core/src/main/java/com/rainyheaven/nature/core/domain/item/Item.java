@@ -2,6 +2,7 @@ package com.rainyheaven.nature.core.domain.item;
 
 import com.rainyheaven.nature.core.domain.base.BaseTimeEntity;
 import com.rainyheaven.nature.core.domain.categoryitem.CategoryItem;
+import com.rainyheaven.nature.core.domain.item.dto.app.ItemSaveRequestDto;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLike;
 import com.rainyheaven.nature.core.domain.itemimage.ItemImage;
 import com.rainyheaven.nature.core.domain.orderitem.OrderItem;
@@ -12,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +55,23 @@ public class Item extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
+
+    public static Item create(ItemSaveRequestDto dto) {
+        Item item = new Item();
+        item.nameKor = dto.getNameKor();
+        item.nameEng = dto.getNameEng();
+        item.mainImgPath = dto.getMainImgPath();
+        item.price = dto.getPrice();
+        item.discountPrice = dto.getDiscountPrice();
+        item.stockQuantity = dto.getStockQuantity();
+        item.sellTotal = 0;
+        item.likesCount = 0;
+        item.description = dto.getDescription();
+        item.capacity = dto.getCapacity();
+        item.setCreatedDate(LocalDateTime.now());
+        item.setLastModifiedDate(LocalDateTime.now());
+        return item;
+    }
     
     // 연관관계 편의 메소드
     public void addOrderItems(OrderItem orderItem) {
