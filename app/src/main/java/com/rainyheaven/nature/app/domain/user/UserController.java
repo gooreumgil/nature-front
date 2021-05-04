@@ -25,6 +25,8 @@ import com.rainyheaven.nature.core.domain.user.UserValidator;
 import com.rainyheaven.nature.core.domain.user.dto.app.PasswordChangeRequestDto;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserResponseDto;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserSaveRequestDto;
+import com.rainyheaven.nature.core.exception.UserException;
+import com.rainyheaven.nature.core.exception.UserExceptionType;
 import com.rainyheaven.nature.core.utils.AES256Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,9 +36,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/v1/users")
@@ -108,7 +112,10 @@ public class UserController {
     }
 
     @PostMapping("/{email}/password/change-link-send")
-    public ResponseEntity<Void> passwordChangeLinkSend(@PathVariable String email) {
+    public ResponseEntity<Void> passwordChangeLinkSend(@PathVariable @NotNull String email) {
+
+        if (!userService.existByEmail(email)) throw new UserException(UserExceptionType.NOT_EXIST_USER);
+
         String encodedEmail = aes256Util.encode(email);
         String url = frontUrlPrefix + "/password-change-by-email/" + encodedEmail;
 
@@ -120,9 +127,9 @@ public class UserController {
     @PatchMapping("/{email}/password/change-by-email")
     public ResponseEntity<Void> passwordChangeByEmail(
             @PathVariable String email,
-            @RequestBody PasswordChangeRequestDto passwordChangeRequestDto) {
+            @RequestBody @Valid PasswordChangeRequestDto passwordChangeRequestDto) {
         userService.changePassword(email, passwordChangeRequestDto);
-        return null;
+        return ResponseEntity.ok().build();
     }
 
 

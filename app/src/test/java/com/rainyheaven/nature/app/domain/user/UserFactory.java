@@ -2,7 +2,10 @@ package com.rainyheaven.nature.app.domain.user;
 
 import com.rainyheaven.nature.core.domain.user.User;
 import com.rainyheaven.nature.core.domain.user.UserRepository;
+import com.rainyheaven.nature.core.domain.user.UserStatus;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserSaveRequestDto;
+import com.rainyheaven.nature.core.exception.UserException;
+import com.rainyheaven.nature.core.exception.UserExceptionType;
 import com.rainyheaven.nature.core.utils.AES256Util;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -25,6 +28,10 @@ public class UserFactory {
 
         User user = User.create(dto);
         return userRepository.save(user);
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmailAndUserStatus(email, UserStatus.ACTIVE).orElseThrow(() -> new UserException(UserExceptionType.NOT_EXIST_USER));
     }
 
     public void deleteByEmail(String email) {

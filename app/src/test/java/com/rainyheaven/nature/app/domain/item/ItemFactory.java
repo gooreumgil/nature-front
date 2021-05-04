@@ -15,6 +15,13 @@ public class ItemFactory {
 
     private final ItemRepository itemRepository;
 
+    public Item save(String nameKor, String nameEng, String mainImgPath, int price, int discountPrice, int stockQuantity, String description, int capacity) {
+        ItemSaveRequestDto saveRequestDto = getSaveRequestDto(nameKor, nameEng, mainImgPath, price, discountPrice, stockQuantity, description, capacity);
+        Item item = Item.create(saveRequestDto);
+        return itemRepository.save(item);
+
+    }
+
     public List<Item> listInit() {
 
         List<Item> items = new ArrayList<>();

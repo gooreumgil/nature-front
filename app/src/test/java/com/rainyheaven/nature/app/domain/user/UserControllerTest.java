@@ -4,18 +4,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rainyheaven.nature.app.domain.emailverify.EmailVerifyFactory;
 import com.rainyheaven.nature.app.domain.item.ItemFactory;
 import com.rainyheaven.nature.app.domain.order.OrderFactory;
+import com.rainyheaven.nature.app.domain.review.ReviewFactory;
 import com.rainyheaven.nature.app.utils.TokenGenerator;
 import com.rainyheaven.nature.core.domain.item.Item;
 import com.rainyheaven.nature.core.domain.item.ItemRepository;
 import com.rainyheaven.nature.core.domain.order.Order;
+import com.rainyheaven.nature.core.domain.review.Review;
 import com.rainyheaven.nature.core.domain.user.User;
+import com.rainyheaven.nature.core.domain.user.dto.app.PasswordChangeRequestDto;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserSaveRequestDto;
+import com.rainyheaven.nature.core.exception.UserException;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.event.annotation.BeforeTestClass;
@@ -25,13 +30,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -61,10 +66,16 @@ class UserControllerTest {
     OrderFactory orderFactory;
 
     @Autowired
+    ReviewFactory reviewFactory;
+
+    @Autowired
     TokenGenerator tokenGenerator;
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     private User user;
 
@@ -563,24 +574,120 @@ class UserControllerTest {
 
     @DisplayName("21.리뷰 불러오기")
     @Test
-    void getReviews() {
+    void get_reviews() throws Exception {
+
+        Item item = itemFactory.save(
+                "한글이름",
+                "englishName",
+                "mainImgPath",
+                15000,
+                1000,
+                1000,
+                "좋은상품이다",
+                100
+        );
+
+        reviewFactory.save(5, "써보니까 좋네요", item, user);
+
+        mvc.perform(get("/v1/users/reviews").header("Authorization", tokenGenerator.getToken(user)))
+                .andExpect(status().isOk());
+
 
     }
 
+    @DisplayName("22. 패스워드 변경 링크 전송 성공")
     @Test
-    void passwordChangeLinkSend() {
+    void password_change_link_send() throws Exception {
+
+        mvc.perform(post("/v1/users/" + "test1@email.com" + "/password/change-link-send"))
+                .andExpect(status().isOk());
+
     }
 
+    @DisplayName("23. 패스워드 변경 링크 전송 실패 - 존재하지 않는 이메일")
     @Test
-    void passwordChangeByEmail() {
+    void password_change_link_send_fail_not_exist_user() throws Exception {
+
+        mvc.perform(post("/v1/users/" + "unknown@email.com" + "/password/change-link-send"))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof UserException));
+
     }
 
+    @DisplayName("23. 패스워드 변경 링크 전송 실패 - email null")
     @Test
-    void getTotalReviews() {
+    void password_change_link_send_fail_email_null() throws Exception {
+
+        mvc.perform(post("/v1/users/" + null + "/password/change-link-send"))
+                .andExpect(status().isBadRequest());
+
     }
 
+    @DisplayName("25. 패스워드 변경 성공")
     @Test
-    void getOrderItems() {
+    void password_change_by_email() throws Exception {
+
+        PasswordChangeRequestDto passwordChangeRequestDto = new PasswordChangeRequestDto("testpassword", "testpassword");
+        String email = "test1@email.com";
+
+        mvc.perform(patch("/v1/users/" + email + "/password/change-by-email")
+                .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(passwordChangeRequestDto)))
+                .andExpect(status().isOk());
+
+        assertNotEquals(passwordEncoder.encode(passwordChangeRequestDto.getPassword()), user.getPassword());
+
+    }
+
+    @DisplayName("26. 패스워드 변경 실패 - 존재하지 않는 이메일")
+    @Test
+    void password_change_by_email_fail_not_exist_email() throws Exception {
+
+        PasswordChangeRequestDto passwordChangeRequestDto = new PasswordChangeRequestDto("testpassword", "testpassword");
+        String email = "unknown@email.com";
+
+        mvc.perform(patch("/v1/users/" + email + "/password/change-by-email")
+                .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(passwordChangeRequestDto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof UserException));
+
+
+    }
+
+    @DisplayName("27. 리뷰 총 개수 구하기")
+    @Test
+    void get_total_reviews() throws Exception {
+
+        Item item = itemFactory.save(
+                "한글이름",
+                "englishName",
+                "mainImgPath",
+                15000,
+                1000,
+                1000,
+                "좋은상품이다",
+                100
+        );
+
+        reviewFactory.save(5, "써보니까 좋네요", item, user);
+
+        mvc.perform(get("/v1/users/count/reviews").header("Authorization", tokenGenerator.getToken(user)))
+                .andExpect(status().isOk())
+                .andExpect(content().string("1"));
+
+
+    }
+
+    @DisplayName("28. orderItems orderComp 조회")
+    @Test
+    void get_order_items() throws Exception {
+
+        List<Item> items = itemFactory.listInit();
+        Order order = orderFactory.save(user, items);
+        orderFactory.comp(order);
+
+        mvc.perform(get("/v1/users/order-items").header("Authorization", tokenGenerator.getToken(user)))
+                .andExpect(status().isOk());
+
     }
 
     @Test

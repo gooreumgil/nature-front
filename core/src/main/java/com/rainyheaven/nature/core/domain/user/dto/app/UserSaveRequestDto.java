@@ -48,7 +48,7 @@ public class UserSaveRequestDto {
     @AssertTrue(message = "패스워드가 서로 다릅니다.")
     public boolean isPasswordMatchedValidator() {
         if (password == null || passwordConfirm == null) return false;
-        return this.password.equals(this.passwordConfirm);
+        return password.equals(passwordConfirm);
     }
 
 

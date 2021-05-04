@@ -5,6 +5,7 @@ import com.rainyheaven.nature.core.domain.delivery.Delivery;
 import com.rainyheaven.nature.core.domain.item.Item;
 import com.rainyheaven.nature.core.domain.order.Order;
 import com.rainyheaven.nature.core.domain.order.OrderRepository;
+import com.rainyheaven.nature.core.domain.order.OrderStatus;
 import com.rainyheaven.nature.core.domain.order.PaymentMethod;
 import com.rainyheaven.nature.core.domain.order.dto.app.OrderSaveRequestDto;
 import com.rainyheaven.nature.core.domain.orderitem.OrderItem;
@@ -104,4 +105,8 @@ public class OrderFactory {
 
     }
 
+    public void comp(Order order) {
+        order.setOrderStatus(OrderStatus.COMP);
+        orderRepository.save(order);
+    }
 }
