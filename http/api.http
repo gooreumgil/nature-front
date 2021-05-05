@@ -1,8 +1,0 @@
-POST {{ api_prefix }}/users
-Content-Type: application/json
-
-{
-  "email": "user@email.com",
-  "name": "소낙비",
-  "password": "aormfl123"
-}
