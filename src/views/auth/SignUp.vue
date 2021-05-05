@@ -32,6 +32,20 @@
 import authApi from "@/api/AuthApi";
 import emailVerifyApi from "@/api/EmailVerifyApi";
 
+function errorHandle(err) {
+  const data = err.response.data;
+  const errorList = data.errorList;
+  if (data && errorList.length > 0) {
+    errorList.forEach(error => {
+      alert(error.message);
+    })
+  } else if (data && errorList.length === 0) {
+    alert(data.message);
+  } else {
+    alert('문제가 발생하였습니다.');
+  }
+}
+
 export default {
   name: "SignUp",
   data() {
@@ -57,40 +71,40 @@ export default {
       const birthDay = this.birthDay;
       const emailVerify = this.emailVerify;
 
-      // if (!nickname) {
-      //   alert('닉네임을 입력해주세요.');
-      //   return;
-      // }
-      //
-      // if (!email) {
-      //   alert('이메일을 입력해주세요.');
-      //   return;
-      // }
-      //
-      // if (!password) {
-      //   alert('비밀번호를 입력해주세요.');
-      //   return;
-      // }
-      //
-      // if (!phoneNumber) {
-      //   alert('연락처를 입력해주세요.');
-      //   return;
-      // }
-      //
-      // if (!birthDay) {
-      //   alert('생년월일을 입력해주세요.');
-      //   return;
-      // }
-      //
-      // if (password !== passwordConfirm) {
-      //   alert('비밀번호가 서로 일치하지 않습니다.');
-      //   return;
-      // }
-      //
-      // if (!emailVerify) {
-      //   alert('이메일 인증이 완료되지 않았습니다.');
-      //   return;
-      // }
+      if (!nickname) {
+        alert('닉네임을 입력해주세요.');
+        return;
+      }
+
+      if (!email) {
+        alert('이메일을 입력해주세요.');
+        return;
+      }
+
+      if (!password) {
+        alert('비밀번호를 입력해주세요.');
+        return;
+      }
+
+      if (!phoneNumber) {
+        alert('연락처를 입력해주세요.');
+        return;
+      }
+
+      if (!birthDay) {
+        alert('생년월일을 입력해주세요.');
+        return;
+      }
+
+      if (password !== passwordConfirm) {
+        alert('비밀번호가 서로 일치하지 않습니다.');
+        return;
+      }
+
+      if (!emailVerify) {
+        alert('이메일 인증이 완료되지 않았습니다.');
+        return;
+      }
 
       authApi.signUp(nickname, email, password, passwordConfirm, phoneNumber, birthDay)
           .then((response) => {
@@ -98,14 +112,7 @@ export default {
             this.$router.replace('/login');
           })
           .catch((err) => {
-            const data = err.response.data;
-            if (data && data.errorList.length > 0) {
-              const errorList = data.errorList;
-              errorList.forEach(error => {
-                alert(error.message);
-              })
-            }
-            // alert(err.response.data.message);
+            errorHandle(err);
           })
     },
 
@@ -117,8 +124,6 @@ export default {
         alert('인증번호가 이메일로 발송되었습니다. 인증번호는 10분 동안만 유효합니다');
         this.verifyNumView = true;
       } catch (err) {
-        alert('문제가 발생하였습니다.');
-        console.log(err);
       }
     },
 
@@ -133,8 +138,7 @@ export default {
         this.verifyNum = null;
         alert('이메일 인증이 완료 되었습니다.');
       } catch (err) {
-        alert('문제가 발생하였습니다.');
-        console.log(err);
+        errorHandle(err);
       }
 
     }
