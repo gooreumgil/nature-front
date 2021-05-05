@@ -26,10 +26,10 @@ public class ItemFactory {
 
     }
 
-    public Item saveWithCategoryItem(String nameKor, String nameEng, String mainImgPath, int price, int discountPrice, int stockQuantity, String description, int capacity) {
+    public Item saveWithCategoryItem(String nameKor, String nameEng, String mainImgPath, int price, int discountPrice, int stockQuantity, String description, int capacity, String categoryName) {
         ItemSaveRequestDto saveRequestDto = getSaveRequestDto(nameKor, nameEng, mainImgPath, price, discountPrice, stockQuantity, description, capacity);
         Item item = Item.create(saveRequestDto);
-        Category testCategory = categoryRepository.findByName("testCategory").get();
+        Category testCategory = categoryRepository.findByName(categoryName).get();
         CategoryItem categoryItem = CategoryItem.create(true);
         categoryItem.setItem(item);
         categoryItem.setCategory(testCategory);

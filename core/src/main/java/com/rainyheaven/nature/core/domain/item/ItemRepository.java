@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface ItemRepository extends JpaRepository<Item, Long>, ItemRepositoryCustom {
 
-    @Query("select i from Item i join fetch i.itemImages where i.id = :id")
+    @Query("select i from Item i left join fetch i.itemImages where i.id = :id")
     Optional<Item> findByIdWithImages(@Param("id") Long id);
 
     @Query(value = "select i from Item i left join i.categoryItems ci where ci.categoryName = :categoryName",
