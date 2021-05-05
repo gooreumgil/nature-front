@@ -5,6 +5,7 @@ import com.rainyheaven.nature.core.exception.dto.ErrorResponseDto;
 import com.rainyheaven.nature.core.exception.dto.ErrorResponseDtoWrapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -28,7 +29,7 @@ public class AdviceController {
 
         List<ErrorResponseDto> errorList = new ArrayList<>();
         ErrorResponseDtoWrapper errorResponseDtoWrapper =
-                getValidErrorResponseDtoWrapper(request.getRequestURI(), "DomainException." + e.getType(), e.getMessage(), errorList);
+                getErrorResponseDtoWrapper(request.getRequestURI(), "DomainException." + e.getType(), e.getMessage(), errorList);
 
         return ResponseEntity.badRequest().body(errorResponseDtoWrapper);
     }
@@ -37,13 +38,23 @@ public class AdviceController {
     public ResponseEntity<ErrorResponseDtoWrapper> methodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request) {
 
         List<ErrorResponseDto> errorList = new ArrayList<>();
-        methodArgumentNotValidExceptionConvert(e, errorList);
+        bindingResultConvert(e.getBindingResult(), errorList);
         ErrorResponseDtoWrapper errorResponseDtoWrapper =
-                getValidErrorResponseDtoWrapper(request.getRequestURI(), "MethodArgumentException", "", errorList);
+                getErrorResponseDtoWrapper(request.getRequestURI(), "MethodArgumentException", "", errorList);
 
         return ResponseEntity.badRequest().body(errorResponseDtoWrapper);
 
 
+    }
+
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<ErrorResponseDtoWrapper> bindException(BindException e, HttpServletRequest request) {
+        List<ErrorResponseDto> errorList = new ArrayList<>();
+        bindingResultConvert(e.getBindingResult(), errorList);
+        ErrorResponseDtoWrapper errorResponseDtoWrapper =
+                getErrorResponseDtoWrapper(request.getRequestURI(), "BindException", "", errorList);
+
+        return ResponseEntity.badRequest().body(errorResponseDtoWrapper);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -52,7 +63,7 @@ public class AdviceController {
         List<ErrorResponseDto> errorList = new ArrayList<>();
         constraintViolationExceptionConvert(e, errorList);
         ErrorResponseDtoWrapper errorResponseDtoWrapper =
-                getValidErrorResponseDtoWrapper(request.getRequestURI(), "ConstraintViolationException", "", errorList);
+                getErrorResponseDtoWrapper(request.getRequestURI(), "ConstraintViolationException", "", errorList);
 
         return ResponseEntity.badRequest().body(errorResponseDtoWrapper);
 
@@ -73,9 +84,8 @@ public class AdviceController {
     }
 
 
-    private void methodArgumentNotValidExceptionConvert(MethodArgumentNotValidException e, List<ErrorResponseDto> errorList) {
+    private void bindingResultConvert(BindingResult bindingResult, List<ErrorResponseDto> errorList) {
 
-        BindingResult bindingResult = e.getBindingResult();
         bindingResult.getAllErrors().forEach(error -> {
 
             FieldError field = (FieldError) error;
@@ -92,7 +102,7 @@ public class AdviceController {
         });
     }
 
-    private ErrorResponseDtoWrapper getValidErrorResponseDtoWrapper(String requestUrl, String type, String message, List<ErrorResponseDto> errorList) {
+    private ErrorResponseDtoWrapper getErrorResponseDtoWrapper(String requestUrl, String type, String message, List<ErrorResponseDto> errorList) {
         return new ErrorResponseDtoWrapper(HttpStatus.BAD_REQUEST.name(), requestUrl, type, message, "FAIL", errorList);
     }
 

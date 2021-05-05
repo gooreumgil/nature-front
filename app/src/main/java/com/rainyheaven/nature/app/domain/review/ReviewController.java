@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/v1/reviews")
 @RequiredArgsConstructor
@@ -19,7 +21,7 @@ public class ReviewController {
     private final ReviewValidator reviewValidator;
 
     @PostMapping
-    public ResponseEntity<Void> save(@ModelAttribute ReviewSaveRequestDto reviewSaveRequestDto,
+    public ResponseEntity<Void> save(@ModelAttribute @Valid ReviewSaveRequestDto reviewSaveRequestDto,
                                      @AuthenticationPrincipal TokenUser tokenUser,
                                      @RequestParam Long itemId, @RequestParam Long orderItemId) {
 

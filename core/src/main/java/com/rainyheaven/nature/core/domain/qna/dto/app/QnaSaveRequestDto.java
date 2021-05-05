@@ -14,9 +14,10 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class QnaSaveRequestDto {
 
-    @NotBlank
-    @Size(min = 10, max = 500)
+    @NotBlank(message = "내용을 입력해주세요.")
+    @Size(min = 10, max = 500, message = "10 ~ 500자로 입력해주세요.")
     private String content;
+
     private boolean isSecret = true;
 
 }

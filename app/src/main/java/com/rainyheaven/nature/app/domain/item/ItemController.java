@@ -28,6 +28,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -130,10 +131,10 @@ public class ItemController {
     @PostMapping("/{id}/qnas")
     public ResponseEntity<Void> addQna(
             @PathVariable Long id,
-            @RequestBody QnaSaveRequestDto qnaSaveRequestDto,
+            @RequestBody @Valid QnaSaveRequestDto qnaSaveRequestDto,
             @AuthenticationPrincipal TokenUser tokenUser) {
 
-        qnaValidator.saveValidate(qnaSaveRequestDto);
+//        qnaValidator.saveValidate(qnaSaveRequestDto);
         itemService.addQna(qnaSaveRequestDto, id, tokenUser.getId());
         return ResponseEntity.ok().build();
 

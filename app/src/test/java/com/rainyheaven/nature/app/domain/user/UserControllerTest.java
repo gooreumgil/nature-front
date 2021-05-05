@@ -393,7 +393,7 @@ class UserControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect((result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException)))
                 .andExpect(content().string(containsString("errorList")))
-                .andExpect(content().string(containsString("passwordMatchedValidator")));
+                .andExpect(content().string(containsString("passwordMatched")));
 
     }
 

@@ -22,7 +22,8 @@ public enum UserExceptionType {
     BIRTH_DAY_LENGTH_NOT_MATCHED("생년월일은 8자로 입력해주세요."),
     PHONE_NUMBER_NULL("연락처를 입력해주세요."),
     PHONE_NUMBER_FORM_NOT_VALID("연락처가 형식에 맞지 않습니다."),
-    EMAIL_SEND_FAILED("이메일 전송에 실패하였습니다.");
+    EMAIL_SEND_FAILED("이메일 전송에 실패하였습니다."),
+    UNCERTAIN_USER("가입되지 않은 사용자이거나 비밀번호가 일치하지 않습니다.");
 
     private final String message;
 

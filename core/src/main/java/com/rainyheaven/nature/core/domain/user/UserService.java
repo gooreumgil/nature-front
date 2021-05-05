@@ -96,7 +96,7 @@ public class UserService {
     public User authenticate(String email, String password) {
         User user = findByEmail(email);
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException();
+            throw new UserException(UserExceptionType.UNCERTAIN_USER);
         }
         return user;
     }
@@ -104,7 +104,7 @@ public class UserService {
     public User authenticateAdmin(String email, String password) {
         User admin = findByEmailAdmin(email);
         if (!passwordEncoder.matches(password, admin.getPassword())) {
-            throw new RuntimeException("패스워드가 일치하지 않습니다.");
+            throw new UserException(UserExceptionType.UNCERTAIN_USER);
         }
 
         return admin;
@@ -126,33 +126,26 @@ public class UserService {
                 addressList.stream().filter(Address::isDefault)
                         .findFirst().ifPresent(address -> address.setIsDefault(false));
             }
-
             // 신규 배송지로 입력
             if (registerNewAddress) {
                 user.addAddress(Address.create(addressRequestDto, true));
             }
-
             // 기존의 address 사용
             else if (useExistingAddress){
                 addressList.stream().filter(address -> address.getId().equals(addressRequestDto.getExistingAddressId()))
                         .findFirst().ifPresent(address -> address.setIsDefault(true));
             }
-
             // 신규 배송지 x, 기존의 address 사용 x
             else {
                 user.addAddress(Address.create(addressRequestDto, true));
             }
-
         }
-
         // 기본 주소로 등록 X
         else {
-
             // 신규 배송지 입력
             if (registerNewAddress) {
                 user.addAddress(Address.create(addressRequestDto, false));
             }
-
         }
     }
 
