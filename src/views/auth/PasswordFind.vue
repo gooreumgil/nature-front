@@ -33,8 +33,20 @@ export default {
         await userApi.sendPasswordChangeLink(email);
         alert('해당 이메일로 패스워드 변경 링크가 전송되었습니다.');
       } catch (err) {
-        alert(err.response.data.message);
-        console.log(err);
+        const data = err.response.data;
+        const errorList = data.errorList;
+        if (data && errorList.length > 0) {
+          const errors = data.errorList;
+          errors.forEach(e => {
+            alert(e.message);
+          })
+
+        } else if (data && errorList.length === 0) {
+          alert(data.message)
+
+        } else {
+          alert('문제가 발생하였습니다.');
+        }
       }
     }
   }

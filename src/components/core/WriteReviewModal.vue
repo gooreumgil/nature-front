@@ -75,6 +75,22 @@ import CameraIcon from "@/components/icon/CameraIcon";
 import reviewApi from "@/api/ReviewApi";
 import CloseIcon from "@/components/icon/CloseIcon";
 import PlusIcon from "@/components/icon/PlusIcon";
+
+function errorHandle(err) {
+  const data = err.response.data;
+  const errorList = data.errorList;
+  if (data && errorList.length > 0) {
+    const errors = errorList;
+    errors.forEach(error => {
+      alert(error.message);
+    })
+  } else if (data && errorList.length === 0) {
+    alert(data.message);
+  } else {
+    alert('문제가 발생하였습니다.');
+  }
+}
+
 export default {
   name: "WriteReviewModal",
   components: {PlusIcon, CloseIcon, CameraIcon, PencilIcon, StarIcon},
@@ -165,10 +181,7 @@ export default {
         this.writeReviewComplete(this.reviewItem);
 
       } catch (err) {
-        alert(err);
-        if (err) {
-          alert(err.response.data.message);
-        }
+        errorHandle(err);
       }
 
 

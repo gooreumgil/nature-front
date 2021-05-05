@@ -42,9 +42,19 @@ export default {
         await userApi.passwordChangeByEmail(email, password, passwordConfirm);
         alert('비밀번호 변경이 완료 되었습니다.');
         window.close();
-      } catch (err) {
-        alert(err.response.data.message);
-        console.log(err);
+      }
+      catch (err) {
+        const data = err.response.data;
+        const errorList = data.errorList;
+        if (data && errorList.length > 0) {
+          errorList.forEach(e => {
+            alert(e.message);
+          })
+        } else if (data && errorList.length === 0) {
+          alert(data.message);
+        } else {
+          alert('문제가 발생하였습니다.');
+        }
       }
     }
 

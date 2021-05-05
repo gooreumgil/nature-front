@@ -204,6 +204,22 @@ import SourceCodeLinkModal from "@/components/core/SourceCodeLinkModal";
 import LockIcon from "@/components/icon/LockIcon";
 import UnLockIcon from "@/components/icon/UnLockIcon";
 import Pagination from "@/components/core/Pagination";
+
+function errorHandle(err) {
+  const data = err.response.data;
+  const errorList = data.errorList;
+  if (data && errorList.length > 0) {
+    const errors = errorList;
+    errors.forEach(error => {
+      alert(error.message);
+    })
+  } else if (data && errorList.length === 0) {
+    alert(data.message);
+  } else {
+    alert('문제가 발생하였습니다.');
+  }
+}
+
 export default {
   name: "Detail",
   components: {
@@ -382,7 +398,7 @@ export default {
         this.qnaContent = null;
         await this.setQnaList();
       } catch (err) {
-        alert(err.response.data.message);
+        errorHandle(err);
       }
 
     },
