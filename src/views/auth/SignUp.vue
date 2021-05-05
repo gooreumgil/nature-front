@@ -107,7 +107,7 @@ export default {
       }
 
       authApi.signUp(nickname, email, password, passwordConfirm, phoneNumber, birthDay)
-          .then((response) => {
+          .then(() => {
             alert('회원가입이 완료되었습니다. 로그인 화면으로 이동합니다.');
             this.$router.replace('/login');
           })
