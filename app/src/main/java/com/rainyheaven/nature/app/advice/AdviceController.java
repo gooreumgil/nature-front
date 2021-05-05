@@ -1,37 +1,79 @@
 package com.rainyheaven.nature.app.advice;
 
-import com.rainyheaven.nature.app.domain.user.UserController;
 import com.rainyheaven.nature.core.exception.DomainException;
-import com.rainyheaven.nature.core.exception.dto.ExceptionResponseDto;
-import com.rainyheaven.nature.core.exception.dto.ValidErrorResponseDto;
-import com.rainyheaven.nature.core.exception.dto.ValidErrorResponseDtoWrapper;
+import com.rainyheaven.nature.core.exception.dto.ErrorResponseDto;
+import com.rainyheaven.nature.core.exception.dto.ErrorResponseDtoWrapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @RestControllerAdvice
 public class AdviceController {
 
     @ExceptionHandler(DomainException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ExceptionResponseDto> domainException(DomainException e) {
-        return ResponseEntity.badRequest().body(new ExceptionResponseDto(e));
+    public ResponseEntity<ErrorResponseDtoWrapper> domainException(DomainException e, HttpServletRequest request) {
+
+        List<ErrorResponseDto> errorList = new ArrayList<>();
+        ErrorResponseDtoWrapper errorResponseDtoWrapper =
+                getValidErrorResponseDtoWrapper(request.getRequestURI(), "DomainException." + e.getType(), e.getMessage(), errorList);
+
+        return ResponseEntity.badRequest().body(errorResponseDtoWrapper);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ValidErrorResponseDtoWrapper> methodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request) {
+    public ResponseEntity<ErrorResponseDtoWrapper> methodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request) {
 
-        List<ValidErrorResponseDto> errorList = new ArrayList<>();
+        List<ErrorResponseDto> errorList = new ArrayList<>();
+        methodArgumentNotValidExceptionConvert(e, errorList);
+        ErrorResponseDtoWrapper errorResponseDtoWrapper =
+                getValidErrorResponseDtoWrapper(request.getRequestURI(), "MethodArgumentException", "", errorList);
+
+        return ResponseEntity.badRequest().body(errorResponseDtoWrapper);
+
+
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponseDtoWrapper> constraintViolationException(ConstraintViolationException e, HttpServletRequest request) {
+
+        List<ErrorResponseDto> errorList = new ArrayList<>();
+        constraintViolationExceptionConvert(e, errorList);
+        ErrorResponseDtoWrapper errorResponseDtoWrapper =
+                getValidErrorResponseDtoWrapper(request.getRequestURI(), "ConstraintViolationException", "", errorList);
+
+        return ResponseEntity.badRequest().body(errorResponseDtoWrapper);
+
+    }
+
+    private void constraintViolationExceptionConvert(ConstraintViolationException e, List<ErrorResponseDto> errorList) {
+        e.getConstraintViolations().forEach(error ->{
+            Stream<Path.Node> stream = StreamSupport.stream(error.getPropertyPath().spliterator(), false);
+            List<Path.Node> list = stream.collect(Collectors.toList());
+
+            String field = list.get(list.size() -1).getName();
+            String message = error.getMessage();
+            String invalidValue = error.getInvalidValue().toString();
+
+            errorList.add(new ErrorResponseDto(field, message, invalidValue));
+
+        });
+    }
+
+
+    private void methodArgumentNotValidExceptionConvert(MethodArgumentNotValidException e, List<ErrorResponseDto> errorList) {
 
         BindingResult bindingResult = e.getBindingResult();
         bindingResult.getAllErrors().forEach(error -> {
@@ -45,25 +87,13 @@ public class AdviceController {
 
             if (rejectedValue != null) value = field.getRejectedValue().toString();
 
-            ValidErrorResponseDto errorResponseDto = new ValidErrorResponseDto();
-            errorResponseDto.setField(fieldName);
-            errorResponseDto.setMessage(message);
-            errorResponseDto.setInvalidValue(value);
-
-            errorList.add(errorResponseDto);
+            errorList.add(new ErrorResponseDto(fieldName, message, value));
 
         });
+    }
 
-        ValidErrorResponseDtoWrapper errorResponseDtoWrapper = new ValidErrorResponseDtoWrapper();
-        errorResponseDtoWrapper.setErrorList(errorList);
-        errorResponseDtoWrapper.setMessage("");
-        errorResponseDtoWrapper.setRequestUrl(request.getRequestURI());
-        errorResponseDtoWrapper.setStatusCode(HttpStatus.BAD_REQUEST.name());
-        errorResponseDtoWrapper.setResultCode("FAIL");
-
-        return ResponseEntity.badRequest().body(errorResponseDtoWrapper);
-
-
+    private ErrorResponseDtoWrapper getValidErrorResponseDtoWrapper(String requestUrl, String type, String message, List<ErrorResponseDto> errorList) {
+        return new ErrorResponseDtoWrapper(HttpStatus.BAD_REQUEST.name(), requestUrl, type, message, "FAIL", errorList);
     }
 
 }

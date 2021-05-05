@@ -107,6 +107,5 @@ public class OrderFactory {
 
     public void comp(Order order) {
         order.setOrderStatus(OrderStatus.COMP);
-        orderRepository.save(order);
     }
 }

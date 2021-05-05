@@ -1,12 +1,16 @@
 package com.rainyheaven.nature.core.exception.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ValidErrorResponseDto {
+@AllArgsConstructor
+@NoArgsConstructor
+public class ErrorResponseDto {
 
     private String field;
     private String message;

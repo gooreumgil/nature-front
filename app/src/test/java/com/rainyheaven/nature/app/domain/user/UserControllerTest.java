@@ -3,13 +3,13 @@ package com.rainyheaven.nature.app.domain.user;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rainyheaven.nature.app.domain.emailverify.EmailVerifyFactory;
 import com.rainyheaven.nature.app.domain.item.ItemFactory;
+import com.rainyheaven.nature.app.domain.itemlike.ItemLikeFactory;
 import com.rainyheaven.nature.app.domain.order.OrderFactory;
+import com.rainyheaven.nature.app.domain.qna.QnaFactory;
 import com.rainyheaven.nature.app.domain.review.ReviewFactory;
 import com.rainyheaven.nature.app.utils.TokenGenerator;
 import com.rainyheaven.nature.core.domain.item.Item;
-import com.rainyheaven.nature.core.domain.item.ItemRepository;
 import com.rainyheaven.nature.core.domain.order.Order;
-import com.rainyheaven.nature.core.domain.review.Review;
 import com.rainyheaven.nature.core.domain.user.User;
 import com.rainyheaven.nature.core.domain.user.dto.app.PasswordChangeRequestDto;
 import com.rainyheaven.nature.core.domain.user.dto.app.UserSaveRequestDto;
@@ -21,17 +21,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
-import org.springframework.test.context.event.annotation.BeforeTestMethod;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 import static org.hamcrest.core.StringContains.containsString;
@@ -67,6 +63,12 @@ class UserControllerTest {
 
     @Autowired
     ReviewFactory reviewFactory;
+
+    @Autowired
+    ItemLikeFactory itemLikeFactory;
+
+    @Autowired
+    QnaFactory qnaFactory;
 
     @Autowired
     TokenGenerator tokenGenerator;
@@ -628,9 +630,9 @@ class UserControllerTest {
     void password_change_by_email() throws Exception {
 
         PasswordChangeRequestDto passwordChangeRequestDto = new PasswordChangeRequestDto("testpassword", "testpassword");
-        String email = "test1@email.com";
 
-        mvc.perform(patch("/v1/users/" + email + "/password/change-by-email")
+
+        mvc.perform(patch("/v1/users/" + user.getEmail() + "/password/change-by-email")
                 .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(passwordChangeRequestDto)))
                 .andExpect(status().isOk());
 
@@ -648,7 +650,10 @@ class UserControllerTest {
         mvc.perform(patch("/v1/users/" + email + "/password/change-by-email")
                 .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(passwordChangeRequestDto)))
                 .andExpect(status().isBadRequest())
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof UserException));
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof ConstraintViolationException))
+                .andExpect(content().string(containsString("errorList")))
+                .andExpect(content().string(containsString("email")))
+                .andDo(print());
 
 
     }
@@ -690,16 +695,101 @@ class UserControllerTest {
 
     }
 
+    @DisplayName("29. 아이템 좋아요 가져오기")
     @Test
-    void getLikeItems() {
+    void get_like_items() throws Exception {
+
+        Item item = itemFactory.save(
+                "한글이름",
+                "englishName",
+                "mainImgPath",
+                10000,
+                500,
+                1000,
+                "제품설명",
+                50);
+
+        itemLikeFactory.save(item, user);
+
+        mvc.perform(get("/v1/users/item-likes").header("Authorization", tokenGenerator.getToken(user)))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(item.getNameKor())))
+                .andExpect(content().string(containsString(item.getNameEng())))
+                .andExpect(content().string(containsString(String.valueOf(item.getPrice()))));
+
+
     }
 
+    @DisplayName("30. 해당 상품을 좋아요 했는지 체크")
     @Test
-    void checkHasItemLike() {
+    void check_has_item_like() throws Exception {
+
+        Item item = itemFactory.save(
+                "한글이름",
+                "englishName",
+                "mainImgPath",
+                10000,
+                500,
+                1000,
+                "제품설명",
+                50);
+
+
+        itemLikeFactory.save(item, user);
+
+        mvc.perform(get("/v1/users/check/item-likes")
+                .param("itemId", String.valueOf(item.getId()))
+                .header("Authorization", tokenGenerator.getToken(user)))
+                .andExpect(status().isOk())
+                .andExpect(content().string("true"));
+
     }
 
+    @DisplayName("31. 해당 상품을 좋아요 했는지 체크 - 좋아요 하지 않은 상품")
     @Test
-    void getQnaPage() {
+    void check_has_item_like_not_exist() throws Exception {
+
+        Item item = itemFactory.save(
+                "한글이름",
+                "englishName",
+                "mainImgPath",
+                10000,
+                500,
+                1000,
+                "제품설명",
+                50);
+
+        mvc.perform(get("/v1/users/check/item-likes")
+                .param("itemId", String.valueOf(item.getId()))
+                .header("Authorization", tokenGenerator.getToken(user)))
+                .andExpect(status().isOk())
+                .andExpect(content().string("false"));
+
+    }
+
+    @DisplayName("32. Qna 불러오기")
+    @Test
+    void get_qna_page() throws Exception {
+
+        Item item = itemFactory.save(
+                "한글이름",
+                "englishName",
+                "mainImgPath",
+                10000,
+                500,
+                1000,
+                "제품설명",
+                50);
+
+        qnaFactory.save(user, item, "문의내용입니다.", true);
+
+        mvc.perform(get("/v1/users/qnas").header("Authorization", tokenGenerator.getToken(user)))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+
+
+        
     }
 
 }

@@ -1,5 +1,6 @@
 package com.rainyheaven.nature.app.domain.user;
 
+import com.rainyheaven.nature.core.annotation.EmailExist;
 import com.rainyheaven.nature.core.common.EmailSender;
 import com.rainyheaven.nature.core.common.dto.PasswordChangeLinkRequestDto;
 import com.rainyheaven.nature.core.domain.itemlike.ItemLike;
@@ -40,11 +41,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 @RestController
 @RequestMapping("/v1/users")
 @RequiredArgsConstructor
+@Validated
 public class UserController {
 
     private final UserService userService;
@@ -112,8 +114,7 @@ public class UserController {
     }
 
     @PostMapping("/{email}/password/change-link-send")
-    public ResponseEntity<Void> passwordChangeLinkSend(@PathVariable @NotNull String email) {
-
+    public ResponseEntity<Void> passwordChangeLinkSend(@PathVariable @Size(min = 8, max = 35) String email) {
         if (!userService.existByEmail(email)) throw new UserException(UserExceptionType.NOT_EXIST_USER);
 
         String encodedEmail = aes256Util.encode(email);
@@ -126,7 +127,7 @@ public class UserController {
 
     @PatchMapping("/{email}/password/change-by-email")
     public ResponseEntity<Void> passwordChangeByEmail(
-            @PathVariable String email,
+            @PathVariable @EmailExist String email,
             @RequestBody @Valid PasswordChangeRequestDto passwordChangeRequestDto) {
         userService.changePassword(email, passwordChangeRequestDto);
         return ResponseEntity.ok().build();

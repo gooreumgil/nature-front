@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.net.URI;
 import java.security.Principal;
 
@@ -40,7 +41,7 @@ public class SessionController {
     }
 
     @PostMapping
-    public ResponseEntity<String> create(@RequestBody LoginRequestDto loginRequestDto) {
+    public ResponseEntity<String> create(@RequestBody @Valid LoginRequestDto loginRequestDto) {
 
         String email = loginRequestDto.getEmail();
         String password = loginRequestDto.getPassword();
