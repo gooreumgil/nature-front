@@ -2,6 +2,8 @@ package com.rainyheaven.nature.core.domain.emailverify;
 
 import com.rainyheaven.nature.core.common.dto.EmailVerifyNumConfirmRequestDto;
 import com.rainyheaven.nature.core.domain.user.UserService;
+import com.rainyheaven.nature.core.exception.EmailVerifyException;
+import com.rainyheaven.nature.core.exception.EmailVerifyExceptionType;
 import com.rainyheaven.nature.core.exception.UserException;
 import com.rainyheaven.nature.core.exception.UserExceptionType;
 import com.rainyheaven.nature.core.utils.AES256Util;
@@ -47,7 +49,7 @@ public class EmailVerifyService {
 
         Optional<EmailVerify> optionalEmailVerify = emailVerifyRepository.findByEmail(aes256Util.encode(dto.getEmail()));
         if (optionalEmailVerify.isEmpty()) {
-            throw new RuntimeException("인증 요청을 한 적이 업습니다. 인증 요청을 다시 해주세요.");
+            throw new EmailVerifyException(EmailVerifyExceptionType.VERIFY_REQUEST_NOT_EXIST);
         }
 
         EmailVerify emailVerify = optionalEmailVerify.get();
@@ -55,9 +57,9 @@ public class EmailVerifyService {
         LocalDateTime expiredTime = emailVerify.getExpiredTime();
 
         if (expiredTime.isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("인증 유효 시간이 초과되었습니다. 인증 요청을 다시 해주세요.");
+            throw new EmailVerifyException(EmailVerifyExceptionType.TIME_OUT);
         } else if (!verifyNumMatch) {
-            throw new RuntimeException("인증번호가 일치하지 않습니다.");
+            throw new EmailVerifyException(EmailVerifyExceptionType.VERIFY_NUM_NOT_MATCHED);
         } else {
             emailVerify.accept();
         }
