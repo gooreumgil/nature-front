@@ -48,9 +48,7 @@ public class EmailVerifyService {
     public void verifyNumConfirm(EmailVerifyNumConfirmRequestDto dto) {
 
         Optional<EmailVerify> optionalEmailVerify = emailVerifyRepository.findByEmail(aes256Util.encode(dto.getEmail()));
-        if (optionalEmailVerify.isEmpty()) {
-            throw new EmailVerifyException(EmailVerifyExceptionType.VERIFY_REQUEST_NOT_EXIST);
-        }
+        if (optionalEmailVerify.isEmpty()) throw new EmailVerifyException(EmailVerifyExceptionType.VERIFY_REQUEST_NOT_EXIST);
 
         EmailVerify emailVerify = optionalEmailVerify.get();
         boolean verifyNumMatch = emailVerify.getVerifyNum().equals(dto.getVerifyNum());
