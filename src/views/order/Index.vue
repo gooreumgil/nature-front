@@ -101,9 +101,10 @@
 
               </div>
               <div class="content-box">
-                <input type="text" v-bind:value="user.phoneNum1">
-                <input type="text" v-bind:value="user.phoneNum2">
-                <input type="text" v-bind:value="user.phoneNum3">
+
+                <input type="text" v-model="phoneNum1">
+                <input type="text" v-model="phoneNum2">
+                <input type="text" v-model="phoneNum3">
               </div>
             </div>
 
@@ -226,6 +227,20 @@ import Footer from "@/components/core/Footer";
 import orderApi from "@/api/OrderApi";
 import AddressListModal from "@/components/core/AddressListModal";
 import SourceCodeLinkModal from "@/components/core/SourceCodeLinkModal";
+
+function errorHandle(err) {
+  const data = err.response.data;
+  const errorList = data.errorList;
+  if (data && errorList.length > 0) {
+    errorList.forEach(error => {
+      alert(error.message);
+    })
+  } else if (data && errorList.length === 0) {
+    alert(data.message);
+  } else {
+    alert('문제가 발생하였습니다.');
+  }
+}
 
 export default {
   name: "Index",
@@ -351,32 +366,32 @@ export default {
       const finalPrice = this.getFinalPrice();
       const deliveryPrice = this.getDeliveryPrice();
 
-      if (!receiver) {
-        alert('수취인을 입력해주세요');
-        return;
-      }
-
-      if (!phoneNum1 || !phoneNum2 || !phoneNum3) {
-        alert('연락처를 입력해주세요');
-        return;
-      }
-
-      if (!zipCode) {
-        alert('우편번호를 입력해주세요');
-        return;
-      }
-
-
-      if (!mainAddress) {
-        alert('메인주소를 입력해주세요');
-        return;
-      }
-
-
-      if (!detailAddress) {
-        alert('상세주소를 입력해주세요');
-        return;
-      }
+      // if (!receiver) {
+      //   alert('수취인을 입력해주세요');
+      //   return;
+      // }
+      //
+      // if (!phoneNum1 || !phoneNum2 || !phoneNum3) {
+      //   alert('연락처를 입력해주세요');
+      //   return;
+      // }
+      //
+      // if (!zipCode) {
+      //   alert('우편번호를 입력해주세요');
+      //   return;
+      // }
+      //
+      //
+      // if (!mainAddress) {
+      //   alert('메인주소를 입력해주세요');
+      //   return;
+      // }
+      //
+      //
+      // if (!detailAddress) {
+      //   alert('상세주소를 입력해주세요');
+      //   return;
+      // }
 
 
       let paymentMethod = this.paymentMethod;
@@ -428,7 +443,6 @@ export default {
         orderItemSaveRequestDtos
       }
 
-
       orderApi.productOrder(token, orderSaveRequestDto)
       .then((res) => {
         const items = this.items;
@@ -459,7 +473,7 @@ export default {
         this.$cookies.remove('order-items');
         this.$router.replace('/orders/' + res.data +  '/complete');
       }).catch((err) => {
-        console.log(err);
+        errorHandle(err);
       })
 
 
