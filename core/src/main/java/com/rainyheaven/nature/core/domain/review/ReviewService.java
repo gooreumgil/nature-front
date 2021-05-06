@@ -61,9 +61,7 @@ public class ReviewService {
             throw new RuntimeException("이미 리뷰를 작성하셨습니다.");
         }
         boolean containsFile = false;
-        if (!reviewSaveRequestDto.getFiles().isEmpty()) {
-            containsFile = true;
-        }
+        if (!reviewSaveRequestDto.getFiles().isEmpty()) containsFile = true;
 
         int bonusPoint = getBonusPoint(orderItem, containsFile);
         user.plusPoints(bonusPoint);

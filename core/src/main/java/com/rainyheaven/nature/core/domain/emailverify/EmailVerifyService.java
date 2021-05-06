@@ -28,9 +28,7 @@ public class EmailVerifyService {
     @Transactional
     public EmailVerify save(String email) {
 
-        if (userService.existByEmail(email)) {
-            throw new UserException(UserExceptionType.ALREADY_EXIST_EMAIL);
-        }
+        if (userService.existByEmail(email)) throw new UserException(UserExceptionType.ALREADY_EXIST_EMAIL);
 
         Optional<EmailVerify> optionalEmailVerify = emailVerifyRepository.findByEmail(aes256Util.encode(email));
         int verifyNum = getVerifyNum();

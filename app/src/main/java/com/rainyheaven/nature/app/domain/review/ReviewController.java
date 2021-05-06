@@ -40,9 +40,9 @@ public class ReviewController {
     }
 
     @DeleteMapping("/{id}/review-likes")
-    public ResponseEntity cancelLike(@PathVariable Long id, @AuthenticationPrincipal TokenUser tokenUser) {
+    public ResponseEntity<Void> cancelLike(@PathVariable Long id, @AuthenticationPrincipal TokenUser tokenUser) {
         reviewService.deleteLike(id, tokenUser.getId());
-        return null;
+        return ResponseEntity.ok().build();
 
     }
 
