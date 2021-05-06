@@ -11,6 +11,8 @@ import com.rainyheaven.nature.core.domain.orderitem.OrderItem;
 import com.rainyheaven.nature.core.domain.orderitem.dto.app.OrderItemSaveRequestDto;
 import com.rainyheaven.nature.core.domain.user.User;
 import com.rainyheaven.nature.core.domain.user.UserService;
+import com.rainyheaven.nature.core.exception.OrderException;
+import com.rainyheaven.nature.core.exception.OrderExceptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,15 +33,15 @@ public class OrderService {
     private final ItemService itemService;
 
     public Order findById(Long id) {
-        return orderRepository.findByIdWithOrderItemsAndDelivery(id).orElseThrow(RuntimeException::new);
+        return orderRepository.findByIdWithOrderItemsAndDelivery(id).orElseThrow(() -> new OrderException(OrderExceptionType.NOT_EXIST_ORDER));
     }
 
     public Order findByIdWithUserAndDelivery(Long id) {
-        return orderRepository.findByIdWithUserAndDelivery(id).orElseThrow(RuntimeException::new);
+        return orderRepository.findByIdWithUserAndDelivery(id).orElseThrow(() -> new OrderException(OrderExceptionType.NOT_EXIST_ORDER));
     }
 
     public Order findByIdWithUserAndDeliveryAndOrderItems(Long id) {
-        return orderRepository.findByIdWithUserAndDeliveryAndOrderItems(id).orElseThrow(RuntimeException::new);
+        return orderRepository.findByIdWithUserAndDeliveryAndOrderItems(id).orElseThrow(() -> new OrderException(OrderExceptionType.NOT_EXIST_ORDER));
     }
 
     public Page<Order> findByUserId(Long userId, Pageable pageable) {
@@ -85,9 +87,7 @@ public class OrderService {
     public void delete(Long id, Long userId) {
         Order order = findByIdWithUserAndDeliveryAndOrderItems(id);
         User user = order.getUser();
-        if (!user.getId().equals(userId)) {
-            throw new RuntimeException();
-        }
+        if (!user.getId().equals(userId)) throw new OrderException(OrderExceptionType.ORDER_USER_REQUEST_USER_NOT_MATCHED);
 
 
         if (order.getOrderStatus().equals(OrderStatus.COMP)) {
@@ -117,9 +117,7 @@ public class OrderService {
         User user = order.getUser();
 
         // order confirm을 하는 유저가 실제 주문을 한 유저와 같은지 체크
-        if (!user.getId().equals(userId)) {
-            throw new RuntimeException();
-        }
+        if (!user.getId().equals(userId)) throw new OrderException(OrderExceptionType.ORDER_USER_REQUEST_USER_NOT_MATCHED);
 
         Delivery delivery = order.getDelivery();
 

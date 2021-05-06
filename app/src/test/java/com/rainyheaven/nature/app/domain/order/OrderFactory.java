@@ -45,8 +45,8 @@ public class OrderFactory {
         OrderSaveRequestDto dto = new OrderSaveRequestDto();
         dto.setReceiver(user.getName());
         dto.setPhoneNum1(user.getPhoneNumber().getPhoneNum1());
-        dto.setPhoneNum1(user.getPhoneNumber().getPhoneNum2());
-        dto.setPhoneNum1(user.getPhoneNumber().getPhoneNum3());
+        dto.setPhoneNum2(user.getPhoneNumber().getPhoneNum2());
+        dto.setPhoneNum3(user.getPhoneNumber().getPhoneNum3());
         dto.setUsedPoints(0);
         dto.setDeliveryPrice(0);
         dto.setFinalDiscountPrice(calcFinalDiscountPrice(items, dto.getUsedPoints()));
