@@ -423,4 +423,8 @@ export default {
     margin-top: 20px;
   }
 
+  div.review-container div.page-container {
+    margin-top: 40px;
+  }
+
 </style>
