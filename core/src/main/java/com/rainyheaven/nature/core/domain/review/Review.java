@@ -52,8 +52,6 @@ public class Review extends BaseTimeEntity {
         review.rating = reviewSaveRequestDto.getRating();
         review.setItem(item);
         review.setUser(user);
-        review.setCreatedDate(LocalDateTime.now());
-        review.setLastModifiedDate(LocalDateTime.now());
         return review;
     }
 

@@ -33,8 +33,6 @@ public class ItemLike extends BaseTimeEntity {
         ItemLike itemLike = new ItemLike();
         itemLike.setItem(item);
         itemLike.setUser(user);
-        itemLike.setCreatedDate(LocalDateTime.now());
-        itemLike.setLastModifiedDate(LocalDateTime.now());
         return itemLike;
     }
 

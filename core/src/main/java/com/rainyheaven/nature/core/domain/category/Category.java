@@ -29,8 +29,6 @@ public class Category extends BaseTimeEntity {
     public static Category create(String name) {
         Category category = new Category();
         category.name = name;
-        category.setCreatedDate(LocalDateTime.now());
-        category.setLastModifiedDate(LocalDateTime.now());
         return category;
     }
 

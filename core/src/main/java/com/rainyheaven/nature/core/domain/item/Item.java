@@ -68,8 +68,6 @@ public class Item extends BaseTimeEntity {
         item.likesCount = 0;
         item.description = dto.getDescription();
         item.capacity = dto.getCapacity();
-        item.setCreatedDate(LocalDateTime.now());
-        item.setLastModifiedDate(LocalDateTime.now());
         return item;
     }
     

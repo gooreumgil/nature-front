@@ -46,14 +46,11 @@ public class Delivery extends BaseTimeEntity {
         delivery.orderAddress = new OrderAddress(addressRequestDto.getMainAddress(), addressRequestDto.getDetailAddress(), addressRequestDto.getZipCode());
         delivery.phoneNumber = new PhoneNumber(dto.getPhoneNum1(), dto.getPhoneNum2(), dto.getPhoneNum3());
         delivery.deliveryStatus = DeliveryStatus.COMP;
-        delivery.setCreatedDate(LocalDateTime.now());
-        delivery.setLastModifiedDate(LocalDateTime.now());
         return delivery;
     }
 
     // 구매 확정시 배송 완료로 수정
     public void deliveryComp() {
         this.deliveryStatus = DeliveryStatus.COMP;
-        setLastModifiedDate(LocalDateTime.now());
     }
 }

@@ -28,8 +28,6 @@ public class ReviewImage extends BaseTimeEntity {
     public static ReviewImage create(String key) {
         ReviewImage reviewImage = new ReviewImage();
         reviewImage.s3Key = key;
-        reviewImage.setCreatedDate(LocalDateTime.now());
-        reviewImage.setLastModifiedDate(LocalDateTime.now());
         return reviewImage;
     }
 

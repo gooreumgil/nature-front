@@ -46,8 +46,6 @@ public class OrderItem extends BaseTimeEntity {
         orderItem.leaveReview = false;
         orderItem.setOrder(order);
         orderItem.setItem(item);
-        orderItem.setCreatedDate(LocalDateTime.now());
-        orderItem.setLastModifiedDate(LocalDateTime.now());
         return orderItem;
     }
 

@@ -29,8 +29,6 @@ public class EmailVerify extends BaseTimeEntity {
         emailVerify.email = email;
         emailVerify.verifyNum = verifyNum;
         emailVerify.expiredTime = LocalDateTime.now().plusMinutes(10);
-        emailVerify.setCreatedDate(LocalDateTime.now());
-        emailVerify.setLastModifiedDate(LocalDateTime.now());
 
         return emailVerify;
     }
@@ -40,11 +38,9 @@ public class EmailVerify extends BaseTimeEntity {
         this.verifyNum = verifyNum;
         this.accepted = false;
         this.expiredTime = LocalDateTime.now().plusMinutes(10);
-        setLastModifiedDate(LocalDateTime.now());
     }
 
     public void accept() {
         this.accepted = true;
-        this.setLastModifiedDate(LocalDateTime.now());
     }
 }

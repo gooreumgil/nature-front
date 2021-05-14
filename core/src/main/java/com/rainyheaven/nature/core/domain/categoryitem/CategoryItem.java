@@ -35,8 +35,6 @@ public class CategoryItem extends BaseTimeEntity {
     public static CategoryItem create(boolean isMain) {
         CategoryItem categoryItem = new CategoryItem();
         categoryItem.isMain = isMain;
-        categoryItem.setCreatedDate(LocalDateTime.now());
-        categoryItem.setLastModifiedDate(LocalDateTime.now());
         return categoryItem;
     }
     

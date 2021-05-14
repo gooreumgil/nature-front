@@ -80,8 +80,6 @@ public class User extends BaseTimeEntity {
         user.phoneNumber = PhoneNumber.create(userSaveRequestDto.getPhoneNumber().trim());
         user.userRole = UserRole.USER;
         user.userStatus = UserStatus.ACTIVE;
-        user.setCreatedDate(LocalDateTime.now());
-        user.setLastModifiedDate(LocalDateTime.now());
         return user;
     }
 
@@ -145,6 +143,5 @@ public class User extends BaseTimeEntity {
 
     public void changePassword(String newPassword) {
         this.password = newPassword;
-        setLastModifiedDate(LocalDateTime.now());
     }
 }

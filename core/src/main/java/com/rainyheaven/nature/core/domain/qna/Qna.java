@@ -47,8 +47,6 @@ public class Qna extends BaseTimeEntity {
         qna.setUser(user);
         qna.setItem(item);
         qna.qnaStatus = QnaStatus.WAIT;
-        qna.setCreatedDate(LocalDateTime.now());
-        qna.setLastModifiedDate(LocalDateTime.now());
         return qna;
 
     }
