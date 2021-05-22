@@ -1,0 +1,33 @@
+:basedir: {docdir}/../../../
+:snippets: {basedir}/build/generated-snippets
+
+= RESTful Notes Api Guide
+:doctype: index
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectnums:
+:sectlinks:
+:sectanchors:
+
+[[api]]
+== get_user Api
+
+include::{snippets}/get_user/curl-request.adoc[]
+include::{snippets}/get_user/http-request.adoc[]
+include::{snippets}/get_user/http-response.adoc[]
+include::{snippets}/get_user/httpie-request.adoc[]
+include::{snippets}/get_user/request-body.adoc[]
+include::{snippets}/get_user/response-body.adoc[]
+include::{snippets}/get_user/response-fields.adoc[]
+
+== register_user Api
+
+include::{snippets}/register_user/curl-request.adoc[]
+include::{snippets}/register_user/http-request.adoc[]
+include::{snippets}/register_user/http-response.adoc[]
+include::{snippets}/register_user/httpie-request.adoc[]
+include::{snippets}/register_user/request-body.adoc[]
+include::{snippets}/register_user/request-fields.adoc[]
+include::{snippets}/register_user/response-body.adoc[]

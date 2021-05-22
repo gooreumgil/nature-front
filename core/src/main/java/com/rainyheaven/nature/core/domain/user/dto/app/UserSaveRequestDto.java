@@ -1,5 +1,6 @@
 package com.rainyheaven.nature.core.domain.user.dto.app;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rainyheaven.nature.core.annotation.BirthDay;
 import com.rainyheaven.nature.core.annotation.EmailUnique;
 import com.rainyheaven.nature.core.annotation.EmailVerified;
@@ -45,6 +46,7 @@ public class UserSaveRequestDto {
     @BirthDay
     private String birthDay;
 
+    @JsonIgnore
     @AssertTrue(message = "패스워드가 서로 다릅니다.")
     public boolean isPasswordMatched() {
         if (password == null || passwordConfirm == null) return false;

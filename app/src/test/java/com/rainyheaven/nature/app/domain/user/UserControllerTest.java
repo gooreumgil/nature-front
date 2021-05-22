@@ -16,6 +16,7 @@ import com.rainyheaven.nature.core.domain.user.dto.app.UserSaveRequestDto;
 import com.rainyheaven.nature.core.exception.UserException;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,9 @@ import java.util.List;
 
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -40,6 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs
 @Transactional
 class UserControllerTest {
 
@@ -102,7 +107,21 @@ class UserControllerTest {
                 .andExpect(content().string(containsString("name")))
                 .andExpect(content().string(containsString("phoneNum1")))
                 .andExpect(content().string(containsString("phoneNum2")))
-                .andExpect(content().string(containsString("phoneNum3")));
+                .andExpect(content().string(containsString("phoneNum3")))
+                .andDo(document("get_user",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("id").description("id"),
+                                fieldWithPath("name").description("닉네임"),
+                                fieldWithPath("phoneNum1").description("핸드폰 번호 앞자리"),
+                                fieldWithPath("phoneNum2").description("핸드폰 번호 중간"),
+                                fieldWithPath("phoneNum3").description("핸드폰 번호 마지막"),
+                                fieldWithPath("email").description("이메일"),
+                                fieldWithPath("ownPoints").description("보유 포인트"),
+                                fieldWithPath("addressResponseDtos").description("주소목록")
+                        )
+                ));
 
     }
 
@@ -131,7 +150,19 @@ class UserControllerTest {
         mvc.perform(post("/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(userSaveRequestDto)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(document("register_user",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("email").description("이메일"),
+                                fieldWithPath("name").description("닉네임"),
+                                fieldWithPath("password").description("비밀번호"),
+                                fieldWithPath("passwordConfirm").description("비밀번호 확인"),
+                                fieldWithPath("phoneNumber").description("핸드폰 번호"),
+                                fieldWithPath("birthDay").description("생년월일")
+                        )
+                ));
 
     }
 
