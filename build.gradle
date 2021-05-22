@@ -9,7 +9,6 @@ buildscript {
     }
     dependencies {
         classpath("$boot:spring-boot-gradle-plugin:$springVersion")
-
     }
 }
 
@@ -60,10 +59,13 @@ subprojects {
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation 'org.springframework.security:spring-security-test'
 
+
     }
 
     test {
         useJUnitPlatform()
     }
+
+
 
 }
