@@ -31,3 +31,14 @@ include::{snippets}/register_user/httpie-request.adoc[]
 include::{snippets}/register_user/request-body.adoc[]
 include::{snippets}/register_user/request-fields.adoc[]
 include::{snippets}/register_user/response-body.adoc[]
+
+== get_user_orders Api
+
+include::{snippets}/get_order_pages/curl-request.adoc[]
+include::{snippets}/get_order_pages/http-request.adoc[]
+include::{snippets}/get_order_pages/http-response.adoc[]
+include::{snippets}/get_order_pages/httpie-request.adoc[]
+include::{snippets}/get_order_pages/request-body.adoc[]
+include::{snippets}/get_order_pages/request-parameters.adoc[]
+include::{snippets}/get_order_pages/response-body.adoc[]
+include::{snippets}/get_order_pages/response-fields.adoc[]
