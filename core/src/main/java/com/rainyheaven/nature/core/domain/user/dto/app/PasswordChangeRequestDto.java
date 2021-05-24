@@ -1,5 +1,6 @@
 package com.rainyheaven.nature.core.domain.user.dto.app;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class PasswordChangeRequestDto {
     @Size(min = 6, max = 14, message = "패스워드는 6~14자로 입력해주세요.")
     private String passwordConfirm;
 
+    @JsonIgnore
     @AssertTrue(message = "패스워드가 서로 다릅니다.")
     public boolean isPasswordMatchedValidator() {
         if (password == null || passwordConfirm == null) return false;

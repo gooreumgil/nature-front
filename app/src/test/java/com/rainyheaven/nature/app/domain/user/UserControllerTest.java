@@ -21,6 +21,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,11 +34,12 @@ import java.util.List;
 
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -111,6 +113,9 @@ class UserControllerTest {
                 .andExpect(content().string(containsString("phoneNum2")))
                 .andExpect(content().string(containsString("phoneNum3")))
                 .andDo(document("get_user",
+                        requestHeaders(
+                                headerWithName("Authorization").description("유저 token")
+                        ),
                         responseFields(
                                 fieldWithPath("id").description("id"),
                                 fieldWithPath("name").description("닉네임"),
@@ -587,8 +592,10 @@ class UserControllerTest {
                 .param("size", "5")
                 .param("sort", "createdDate"))
                 .andExpect(status().isOk())
-                .andDo(print())
                 .andDo(document("get_order_pages",
+                        requestHeaders(
+                          headerWithName("Authorization").description("유저 token")
+                        ),
                         requestParameters(
                                 parameterWithName("page").description("페이지"),
                                 parameterWithName("size").description("사이즈"),
@@ -657,16 +664,25 @@ class UserControllerTest {
 
     }
 
-    @DisplayName("20. deliveryStatus로 order 불러오기")
+    @DisplayName("20. deliveryStatus로 order 개수 불러오기")
     @Test
     void get_total_by_delivery_status() throws Exception {
 
         List<Item> items = itemFactory.listInit();
         orderFactory.save(user, items);
 
-        mvc.perform(get("/v1/users/count/orders/READY").header("Authorization", tokenGenerator.getToken(user)))
+        mvc.perform(RestDocumentationRequestBuilders.get("/v1/users/count/orders/{deliveryStatus}", "READY")
+                .header("Authorization", tokenGenerator.getToken(user)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("0"));
+                .andExpect(content().string("0"))
+                .andDo(document("get_user_order_total_by_delivery_status",
+                        requestHeaders(
+                                headerWithName("Authorization").description("유저 token")
+                        ),
+                        pathParameters(
+                                parameterWithName("deliveryStatus").description("배송 상태")
+                        )
+                ));
 
     }
 
@@ -687,8 +703,63 @@ class UserControllerTest {
 
         reviewFactory.save(5, "써보니까 좋네요", item, user);
 
-        mvc.perform(get("/v1/users/reviews").header("Authorization", tokenGenerator.getToken(user)))
-                .andExpect(status().isOk());
+        mvc.perform(get("/v1/users/reviews")
+                .param("page", String.valueOf(0))
+                .param("size", String.valueOf(5))
+                .param("sort", "createdDate,DESC")
+                .header("Authorization", tokenGenerator.getToken(user)))
+                .andExpect(status().isOk())
+                .andDo(document("get_user_reviews",
+                        requestHeaders(
+                                headerWithName("Authorization").description("유저 token")
+                        ),
+                        requestParameters(
+                                parameterWithName("page").description("페이지"),
+                                parameterWithName("size").description("사이즈"),
+                                parameterWithName("sort").description("정렬")
+                        ),
+                        responseFields(
+                                fieldWithPath("content").description("content"),
+                                fieldWithPath("content.[].id").description("리뷰 id"),
+                                fieldWithPath("content.[].content").description("리뷰 내용"),
+                                fieldWithPath("content.[].likesCount").description("리뷰 좋아요수"),
+                                fieldWithPath("content.[].rating").description("평점"),
+                                fieldWithPath("content.[].wroteAt").description("작성일"),
+                                fieldWithPath("content.[].itemResponseDto").description("리뷰 상품"),
+                                fieldWithPath("content.[].itemResponseDto.id").description("리뷰 상품 id"),
+                                fieldWithPath("content.[].itemResponseDto.nameKor").description("리뷰 상품 한글 이름"),
+                                fieldWithPath("content.[].itemResponseDto.nameEng").description("리뷰 상품 영어 이름"),
+                                fieldWithPath("content.[].itemResponseDto.price").description("리뷰 상품 가격"),
+                                fieldWithPath("content.[].itemResponseDto.discountPrice").description("리뷰 상품 할인금액"),
+                                fieldWithPath("content.[].itemResponseDto.mainImgPath").description("리뷰 상품 메인 이미지 경로"),
+                                fieldWithPath("content.[].itemResponseDto.description").description("리뷰 상품 설명"),
+                                fieldWithPath("content.[].reviewImageResponseDtos").description("리뷰 이미지"),
+                                fieldWithPath("content.[].writer").description("리뷰 작성자 이름"),
+                                fieldWithPath("content.[].userLike").description("좋아요 여부"),
+                                fieldWithPath("pageable").description("페이징"),
+                                fieldWithPath("pageable.sort").description("페이징 정렬"),
+                                fieldWithPath("pageable.sort.unsorted").description("unsorted"),
+                                fieldWithPath("pageable.sort.sorted").description("sorted"),
+                                fieldWithPath("pageable.sort.empty").description("empty"),
+                                fieldWithPath("pageable.offset").description("offset"),
+                                fieldWithPath("pageable.pageSize").description("pageSize"),
+                                fieldWithPath("pageable.pageNumber").description("pageNumber"),
+                                fieldWithPath("pageable.paged").description("paged"),
+                                fieldWithPath("pageable.unpaged").description("unpaged"),
+                                fieldWithPath("totalElements").description("총 order 개수"),
+                                fieldWithPath("totalPages").description("전체 페이지"),
+                                fieldWithPath("number").description("number"),
+                                fieldWithPath("size").description("size"),
+                                fieldWithPath("last").description("last"),
+                                fieldWithPath("sort").description("sort"),
+                                fieldWithPath("sort.unsorted").description("unsorted"),
+                                fieldWithPath("sort.sorted").description("sorted"),
+                                fieldWithPath("sort.empty").description("empty"),
+                                fieldWithPath("first").description("first"),
+                                fieldWithPath("numberOfElements").description("numberOfElements"),
+                                fieldWithPath("empty").description("empty")
+                        )
+                ));
 
 
     }
@@ -697,8 +768,13 @@ class UserControllerTest {
     @Test
     void password_change_link_send() throws Exception {
 
-        mvc.perform(post("/v1/users/" + "test1@email.com" + "/password/change-link-send"))
-                .andExpect(status().isOk());
+        mvc.perform(RestDocumentationRequestBuilders.post("/v1/users/{email}/password/change-link-send", "test1@email.com"))
+                .andExpect(status().isOk())
+                .andDo(document("password_change_link_send",
+                        pathParameters(
+                                parameterWithName("email").description("이메일")
+                        )
+                ));
 
     }
 
@@ -728,9 +804,19 @@ class UserControllerTest {
         PasswordChangeRequestDto passwordChangeRequestDto = new PasswordChangeRequestDto("testpassword", "testpassword");
 
 
-        mvc.perform(patch("/v1/users/" + user.getEmail() + "/password/change-by-email")
-                .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(passwordChangeRequestDto)))
-                .andExpect(status().isOk());
+        mvc.perform(RestDocumentationRequestBuilders.patch("/v1/users/{email}/password/change-by-email", user.getEmail())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(passwordChangeRequestDto)))
+                .andExpect(status().isOk())
+                .andDo(document("password_change_by_email",
+                        pathParameters(
+                                parameterWithName("email").description("이메일")
+                        ),
+                        requestFields(
+                                fieldWithPath("password").description("변경할 비밀번호"),
+                                fieldWithPath("passwordConfirm").description("변경할 비밀번호 확인")
+                        )
+                ));
 
         assertNotEquals(passwordEncoder.encode(passwordChangeRequestDto.getPassword()), user.getPassword());
 
@@ -773,7 +859,13 @@ class UserControllerTest {
 
         mvc.perform(get("/v1/users/count/reviews").header("Authorization", tokenGenerator.getToken(user)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("1"));
+                .andExpect(content().string("1"))
+                .andDo(document("get_user_review_total",
+                        requestHeaders(
+                                headerWithName("Authorization").description("유저 token")
+                        )
+
+                ));
 
 
     }
@@ -786,8 +878,58 @@ class UserControllerTest {
         Order order = orderFactory.save(user, items);
         orderFactory.comp(order);
 
-        mvc.perform(get("/v1/users/order-items").header("Authorization", tokenGenerator.getToken(user)))
-                .andExpect(status().isOk());
+        mvc.perform(get("/v1/users/order-items")
+                .param("page", String.valueOf(0))
+                .param("size", String.valueOf(5))
+                .param("sort", "createdDate,DESC")
+                .header("Authorization", tokenGenerator.getToken(user)))
+                .andExpect(status().isOk())
+                .andDo(document("get_user_order_items_status_comp",
+                        requestHeaders(
+                                headerWithName("Authorization").description("유저 token")
+                        ),
+                        requestParameters(
+                                parameterWithName("page").description("페이지"),
+                                parameterWithName("size").description("사이즈"),
+                                parameterWithName("sort").description("정렬")
+                        ),
+                        responseFields(
+                                fieldWithPath("content").description("content"),
+                                fieldWithPath("content.[].id").description("orderItem id"),
+                                fieldWithPath("content.[].itemId").description("상품 id"),
+                                fieldWithPath("content.[].itemNameKor").description("상품 한글 이름"),
+                                fieldWithPath("content.[].itemNameEng").description("상품 영어 이름"),
+                                fieldWithPath("content.[].itemPrice").description("상품 가격"),
+                                fieldWithPath("content.[].itemDiscountPrice").description("상품 할인 금액"),
+                                fieldWithPath("content.[].itemQuantity").description("상품 주문 개수"),
+                                fieldWithPath("content.[].mainImgPath").description("상품 메인 이미지 경로"),
+                                fieldWithPath("content.[].orderedAt").description("상품 주문 날짜"),
+                                fieldWithPath("content.[].isLeaveReview").description("상품 리뷰 작성 가능한지 여부"),
+                                fieldWithPath("pageable").description("페이징"),
+                                fieldWithPath("pageable.sort").description("페이징 정렬"),
+                                fieldWithPath("pageable.sort.unsorted").description("unsorted"),
+                                fieldWithPath("pageable.sort.sorted").description("sorted"),
+                                fieldWithPath("pageable.sort.empty").description("empty"),
+                                fieldWithPath("pageable.offset").description("offset"),
+                                fieldWithPath("pageable.pageSize").description("pageSize"),
+                                fieldWithPath("pageable.pageNumber").description("pageNumber"),
+                                fieldWithPath("pageable.paged").description("paged"),
+                                fieldWithPath("pageable.unpaged").description("unpaged"),
+                                fieldWithPath("totalElements").description("총 order 개수"),
+                                fieldWithPath("totalPages").description("전체 페이지"),
+                                fieldWithPath("number").description("number"),
+                                fieldWithPath("size").description("size"),
+                                fieldWithPath("last").description("last"),
+                                fieldWithPath("sort").description("sort"),
+                                fieldWithPath("sort.unsorted").description("unsorted"),
+                                fieldWithPath("sort.sorted").description("sorted"),
+                                fieldWithPath("sort.empty").description("empty"),
+                                fieldWithPath("first").description("first"),
+                                fieldWithPath("numberOfElements").description("numberOfElements"),
+                                fieldWithPath("empty").description("empty")
+                        )
+
+                ));
 
     }
 
@@ -807,11 +949,59 @@ class UserControllerTest {
 
         itemLikeFactory.save(item, user);
 
-        mvc.perform(get("/v1/users/item-likes").header("Authorization", tokenGenerator.getToken(user)))
+        mvc.perform(get("/v1/users/item-likes")
+                .param("page", String.valueOf(0))
+                .param("size", String.valueOf(8))
+                .param("sort", "createdDate,DESC")
+                .header("Authorization", tokenGenerator.getToken(user)))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString(item.getNameKor())))
                 .andExpect(content().string(containsString(item.getNameEng())))
-                .andExpect(content().string(containsString(String.valueOf(item.getPrice()))));
+                .andExpect(content().string(containsString(String.valueOf(item.getPrice()))))
+                .andDo(document("get_user_item_likes",
+                        requestHeaders(
+                            headerWithName("Authorization").description("유저 token")
+                        ),
+                        requestParameters(
+                                parameterWithName("page").description("페이지"),
+                                parameterWithName("size").description("사이즈"),
+                                parameterWithName("sort").description("정렬")
+                        ),
+                        responseFields(
+                                fieldWithPath("content").description("content"),
+                                fieldWithPath("content.[].id").description("itemLike id"),
+                                fieldWithPath("content.[].itemResponseDto").description("상품"),
+                                fieldWithPath("content.[].itemResponseDto.id").description("상품 id"),
+                                fieldWithPath("content.[].itemResponseDto.nameKor").description("상품 한글 이름"),
+                                fieldWithPath("content.[].itemResponseDto.nameEng").description("상품 영어 이름"),
+                                fieldWithPath("content.[].itemResponseDto.price").description("상품 가격"),
+                                fieldWithPath("content.[].itemResponseDto.discountPrice").description("상품 할인 금액"),
+                                fieldWithPath("content.[].itemResponseDto.mainImgPath").description("메인 이미지 경로"),
+                                fieldWithPath("content.[].itemResponseDto.description").description("상품 정보"),
+                                fieldWithPath("pageable").description("페이징"),
+                                fieldWithPath("pageable.sort").description("페이징 정렬"),
+                                fieldWithPath("pageable.sort.unsorted").description("unsorted"),
+                                fieldWithPath("pageable.sort.sorted").description("sorted"),
+                                fieldWithPath("pageable.sort.empty").description("empty"),
+                                fieldWithPath("pageable.offset").description("offset"),
+                                fieldWithPath("pageable.pageSize").description("pageSize"),
+                                fieldWithPath("pageable.pageNumber").description("pageNumber"),
+                                fieldWithPath("pageable.paged").description("paged"),
+                                fieldWithPath("pageable.unpaged").description("unpaged"),
+                                fieldWithPath("totalElements").description("총 order 개수"),
+                                fieldWithPath("totalPages").description("전체 페이지"),
+                                fieldWithPath("number").description("number"),
+                                fieldWithPath("size").description("size"),
+                                fieldWithPath("last").description("last"),
+                                fieldWithPath("sort").description("sort"),
+                                fieldWithPath("sort.unsorted").description("unsorted"),
+                                fieldWithPath("sort.sorted").description("sorted"),
+                                fieldWithPath("sort.empty").description("empty"),
+                                fieldWithPath("first").description("first"),
+                                fieldWithPath("numberOfElements").description("numberOfElements"),
+                                fieldWithPath("empty").description("empty")
+                        )
+                ));
 
 
     }
@@ -837,7 +1027,17 @@ class UserControllerTest {
                 .param("itemId", String.valueOf(item.getId()))
                 .header("Authorization", tokenGenerator.getToken(user)))
                 .andExpect(status().isOk())
-                .andExpect(content().string("true"));
+                .andExpect(content().string("true"))
+                .andDo(document("user_item_like_check",
+
+                    requestHeaders(
+                            headerWithName("Authorization").description("유저 token")
+                    ),
+                    requestParameters(
+                            parameterWithName("itemId").description("상품 id")
+                    )
+
+                ));
 
     }
 
@@ -879,12 +1079,63 @@ class UserControllerTest {
 
         qnaFactory.save(user, item, "문의내용입니다.", true);
 
-        mvc.perform(get("/v1/users/qnas").header("Authorization", tokenGenerator.getToken(user)))
+        mvc.perform(get("/v1/users/qnas")
+                .param("page", String.valueOf(0))
+                .param("size", String.valueOf(5))
+                .param("sort", "createdDate,DESC")
+                .header("Authorization", tokenGenerator.getToken(user)))
                 .andExpect(status().isOk())
-                .andDo(print());
-
-
-
+                .andDo(print())
+                .andDo(document("get_user_qna",
+                        requestHeaders(
+                                headerWithName("Authorization").description("유저 token")
+                        ),
+                        requestParameters(
+                                parameterWithName("page").description("페이지"),
+                                parameterWithName("size").description("사이즈"),
+                                parameterWithName("sort").description("정렬")
+                        ),
+                        responseFields(
+                                fieldWithPath("content").description("content"),
+                                fieldWithPath("content.[].id").description("qna id"),
+                                fieldWithPath("content.[].writer").description("작성자"),
+                                fieldWithPath("content.[].content").description("내용"),
+                                fieldWithPath("content.[].isSecret").description("비밀글 여부"),
+                                fieldWithPath("content.[].isOwn").description("본인이 쓴 글인지 여부"),
+                                fieldWithPath("content.[].status").description("답변여부"),
+                                fieldWithPath("content.[].wroteAt").description("작성일"),
+                                fieldWithPath("content.[].itemResponseDto").description("qna를 작성한 상품"),
+                                fieldWithPath("content.[].itemResponseDto.id").description("상품 id"),
+                                fieldWithPath("content.[].itemResponseDto.nameKor").description("상품 한글 이름"),
+                                fieldWithPath("content.[].itemResponseDto.nameEng").description("상품 영어 이름"),
+                                fieldWithPath("content.[].itemResponseDto.price").description("상품 가격"),
+                                fieldWithPath("content.[].itemResponseDto.discountPrice").description("상품 할인 금액"),
+                                fieldWithPath("content.[].itemResponseDto.mainImgPath").description("상품 메인 이미지 경로"),
+                                fieldWithPath("content.[].itemResponseDto.description").description("상품 설명"),
+                                fieldWithPath("pageable").description("페이징"),
+                                fieldWithPath("pageable.sort").description("페이징 정렬"),
+                                fieldWithPath("pageable.sort.unsorted").description("unsorted"),
+                                fieldWithPath("pageable.sort.sorted").description("sorted"),
+                                fieldWithPath("pageable.sort.empty").description("empty"),
+                                fieldWithPath("pageable.offset").description("offset"),
+                                fieldWithPath("pageable.pageSize").description("pageSize"),
+                                fieldWithPath("pageable.pageNumber").description("pageNumber"),
+                                fieldWithPath("pageable.paged").description("paged"),
+                                fieldWithPath("pageable.unpaged").description("unpaged"),
+                                fieldWithPath("totalElements").description("총 order 개수"),
+                                fieldWithPath("totalPages").description("전체 페이지"),
+                                fieldWithPath("number").description("number"),
+                                fieldWithPath("size").description("size"),
+                                fieldWithPath("last").description("last"),
+                                fieldWithPath("sort").description("sort"),
+                                fieldWithPath("sort.unsorted").description("unsorted"),
+                                fieldWithPath("sort.sorted").description("sorted"),
+                                fieldWithPath("sort.empty").description("empty"),
+                                fieldWithPath("first").description("first"),
+                                fieldWithPath("numberOfElements").description("numberOfElements"),
+                                fieldWithPath("empty").description("empty")
+                        )
+                ));
         
     }
 

@@ -1,0 +1,145 @@
+:basedir: {docdir}/../../../
+:snippets: {basedir}/build/generated-snippets
+
+= RESTful Notes Api Guide
+:doctype: index
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectnums:
+:sectlinks:
+:sectanchors:
+
+[[api]]
+== get_user Api
+
+include::{snippets}/get_user/curl-request.adoc[]
+include::{snippets}/get_user/http-request.adoc[]
+include::{snippets}/get_user/http-response.adoc[]
+include::{snippets}/get_user/httpie-request.adoc[]
+include::{snippets}/get_user/request-body.adoc[]
+include::{snippets}/get_user/response-body.adoc[]
+include::{snippets}/get_user/response-fields.adoc[]
+
+== register_user Api
+
+include::{snippets}/register_user/curl-request.adoc[]
+include::{snippets}/register_user/http-request.adoc[]
+include::{snippets}/register_user/http-response.adoc[]
+include::{snippets}/register_user/httpie-request.adoc[]
+include::{snippets}/register_user/request-body.adoc[]
+include::{snippets}/register_user/request-fields.adoc[]
+include::{snippets}/register_user/response-body.adoc[]
+
+== get_user_orders Api
+
+include::{snippets}/get_order_pages/curl-request.adoc[]
+include::{snippets}/get_order_pages/http-request.adoc[]
+include::{snippets}/get_order_pages/http-response.adoc[]
+include::{snippets}/get_order_pages/httpie-request.adoc[]
+include::{snippets}/get_order_pages/request-body.adoc[]
+include::{snippets}/get_order_pages/request-parameters.adoc[]
+include::{snippets}/get_order_pages/response-body.adoc[]
+include::{snippets}/get_order_pages/response-fields.adoc[]
+
+== get_user_order_total_by_delivery_status
+
+include::{snippets}/get_user_order_total_by_delivery_status/curl-request.adoc[]
+include::{snippets}/get_user_order_total_by_delivery_status/http-request.adoc[]
+include::{snippets}/get_user_order_total_by_delivery_status/http-response.adoc[]
+include::{snippets}/get_user_order_total_by_delivery_status/httpie-request.adoc[]
+include::{snippets}/get_user_order_total_by_delivery_status/path-parameters.adoc[]
+include::{snippets}/get_user_order_total_by_delivery_status/request-body.adoc[]
+include::{snippets}/get_user_order_total_by_delivery_status/request-headers.adoc[]
+include::{snippets}/get_user_order_total_by_delivery_status/response-body.adoc[]
+
+== get_user_reviews
+
+include::{snippets}/get_user_reviews/curl-request.adoc[]
+include::{snippets}/get_user_reviews/http-request.adoc[]
+include::{snippets}/get_user_reviews/http-response.adoc[]
+include::{snippets}/get_user_reviews/httpie-request.adoc[]
+include::{snippets}/get_user_reviews/request-body.adoc[]
+include::{snippets}/get_user_reviews/request-headers.adoc[]
+include::{snippets}/get_user_reviews/request-parameters.adoc[]
+include::{snippets}/get_user_reviews/response-body.adoc[]
+include::{snippets}/get_user_reviews/response-fields.adoc[]
+
+== password_change_link_send
+
+include::{snippets}/password_change_link_send/curl-request.adoc[]
+include::{snippets}/password_change_link_send/http-request.adoc[]
+include::{snippets}/password_change_link_send/http-response.adoc[]
+include::{snippets}/password_change_link_send/httpie-request.adoc[]
+include::{snippets}/password_change_link_send/path-parameters.adoc[]
+include::{snippets}/password_change_link_send/request-body.adoc[]
+include::{snippets}/password_change_link_send/response-body.adoc[]
+
+== password_change_by_email
+
+include::{snippets}/password_change_by_email/curl-request.adoc[]
+include::{snippets}/password_change_by_email/http-request.adoc[]
+include::{snippets}/password_change_by_email/http-response.adoc[]
+include::{snippets}/password_change_by_email/httpie-request.adoc[]
+include::{snippets}/password_change_by_email/path-parameters.adoc[]
+include::{snippets}/password_change_by_email/request-body.adoc[]
+include::{snippets}/password_change_by_email/request-fields.adoc[]
+include::{snippets}/password_change_by_email/response-body.adoc[]
+
+== get_user_review_total
+
+include::{snippets}/get_user_review_total/curl-request.adoc[]
+include::{snippets}/get_user_review_total/http-request.adoc[]
+include::{snippets}/get_user_review_total/http-response.adoc[]
+include::{snippets}/get_user_review_total/httpie-request.adoc[]
+include::{snippets}/get_user_review_total/request-body.adoc[]
+include::{snippets}/get_user_review_total/request-headers.adoc[]
+include::{snippets}/get_user_review_total/response-body.adoc[]
+
+== get_user_order_items_status_comp
+
+include::{snippets}/get_user_order_items_status_comp/curl-request.adoc[]
+include::{snippets}/get_user_order_items_status_comp/http-request.adoc[]
+include::{snippets}/get_user_order_items_status_comp/http-response.adoc[]
+include::{snippets}/get_user_order_items_status_comp/httpie-request.adoc[]
+include::{snippets}/get_user_order_items_status_comp/request-body.adoc[]
+include::{snippets}/get_user_order_items_status_comp/request-headers.adoc[]
+include::{snippets}/get_user_order_items_status_comp/request-parameters.adoc[]
+include::{snippets}/get_user_order_items_status_comp/response-body.adoc[]
+include::{snippets}/get_user_order_items_status_comp/response-fields.adoc[]
+
+== get_user_item_likes
+
+include::{snippets}/get_user_item_likes/curl-request.adoc[]
+include::{snippets}/get_user_item_likes/http-request.adoc[]
+include::{snippets}/get_user_item_likes/http-response.adoc[]
+include::{snippets}/get_user_item_likes/httpie-request.adoc[]
+include::{snippets}/get_user_item_likes/request-body.adoc[]
+include::{snippets}/get_user_item_likes/request-headers.adoc[]
+include::{snippets}/get_user_item_likes/request-parameters.adoc[]
+include::{snippets}/get_user_item_likes/response-body.adoc[]
+include::{snippets}/get_user_item_likes/response-fields.adoc[]
+
+== user_item_like_check
+
+include::{snippets}/user_item_like_check/curl-request.adoc[]
+include::{snippets}/user_item_like_check/http-request.adoc[]
+include::{snippets}/user_item_like_check/http-response.adoc[]
+include::{snippets}/user_item_like_check/httpie-request.adoc[]
+include::{snippets}/user_item_like_check/request-body.adoc[]
+include::{snippets}/user_item_like_check/request-headers.adoc[]
+include::{snippets}/user_item_like_check/request-parameters.adoc[]
+include::{snippets}/user_item_like_check/response-body.adoc[]
+
+== get_user_qna
+
+include::{snippets}/get_user_qna/curl-request.adoc[]
+include::{snippets}/get_user_qna/http-request.adoc[]
+include::{snippets}/get_user_qna/http-response.adoc[]
+include::{snippets}/get_user_qna/httpie-request.adoc[]
+include::{snippets}/get_user_qna/request-body.adoc[]
+include::{snippets}/get_user_qna/request-headers.adoc[]
+include::{snippets}/get_user_qna/request-parameters.adoc[]
+include::{snippets}/get_user_qna/response-body.adoc[]
+include::{snippets}/get_user_qna/response-fields.adoc[]
