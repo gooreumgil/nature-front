@@ -1,0 +1,125 @@
+:basedir: {docdir}/../../../
+:snippets: {basedir}/build/generated-snippets
+
+= RESTful Notes Api Guide
+:doctype: item
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectnums:
+:sectlinks:
+:sectanchors:
+
+[[api]]
+== get_item
+
+include::{snippets}/get_item/curl-request.adoc[]
+include::{snippets}/get_item/http-request.adoc[]
+include::{snippets}/get_item/http-response.adoc[]
+include::{snippets}/get_item/httpie-request.adoc[]
+include::{snippets}/get_item/path-parameters.adoc[]
+include::{snippets}/get_item/request-body.adoc[]
+include::{snippets}/get_item/response-body.adoc[]
+include::{snippets}/get_item/response-fields.adoc[]
+
+== get_item_pages
+
+include::{snippets}/get_item_pages/curl-request.adoc[]
+include::{snippets}/get_item_pages/http-request.adoc[]
+include::{snippets}/get_item_pages/http-response.adoc[]
+include::{snippets}/get_item_pages/httpie-request.adoc[]
+include::{snippets}/get_item_pages/request-body.adoc[]
+include::{snippets}/get_item_pages/request-parameters.adoc[]
+include::{snippets}/get_item_pages/response-body.adoc[]
+include::{snippets}/get_item_pages/response-fields.adoc[]
+
+== item_search
+
+include::{snippets}/item_search/curl-request.adoc[]
+include::{snippets}/item_search/http-request.adoc[]
+include::{snippets}/item_search/http-response.adoc[]
+include::{snippets}/item_search/httpie-request.adoc[]
+include::{snippets}/item_search/request-body.adoc[]
+include::{snippets}/item_search/request-parameters.adoc[]
+include::{snippets}/item_search/response-body.adoc[]
+include::{snippets}/item_search/response-fields.adoc[]
+
+== item_like
+
+include::{snippets}/item_like/curl-request.adoc[]
+include::{snippets}/item_like/http-request.adoc[]
+include::{snippets}/item_like/http-response.adoc[]
+include::{snippets}/item_like/httpie-request.adoc[]
+include::{snippets}/item_like/path-parameters.adoc[]
+include::{snippets}/item_like/request-body.adoc[]
+include::{snippets}/item_like/request-headers.adoc[]
+include::{snippets}/item_like/response-body.adoc[]
+
+== item_like_cancel
+
+include::{snippets}/item_like_cancel/curl-request.adoc[]
+include::{snippets}/item_like_cancel/http-request.adoc[]
+include::{snippets}/item_like_cancel/http-response.adoc[]
+include::{snippets}/item_like_cancel/httpie-request.adoc[]
+include::{snippets}/item_like_cancel/path-parameters.adoc[]
+include::{snippets}/item_like_cancel/request-body.adoc[]
+include::{snippets}/item_like_cancel/request-headers.adoc[]
+include::{snippets}/item_like_cancel/response-body.adoc[]
+
+== get_item_qna
+
+include::{snippets}/get_item_qna/curl-request.adoc[]
+include::{snippets}/get_item_qna/http-request.adoc[]
+include::{snippets}/get_item_qna/http-response.adoc[]
+include::{snippets}/get_item_qna/httpie-request.adoc[]
+include::{snippets}/get_item_qna/path-parameters.adoc[]
+include::{snippets}/get_item_qna/request-body.adoc[]
+include::{snippets}/get_item_qna/request-headers.adoc[]
+include::{snippets}/get_item_qna/request-parameters.adoc[]
+include::{snippets}/get_item_qna/response-body.adoc[]
+include::{snippets}/get_item_qna/response-fields.adoc[]
+
+== item_qna_create
+
+include::{snippets}/item_qna_create/curl-request.adoc[]
+include::{snippets}/item_qna_create/http-request.adoc[]
+include::{snippets}/item_qna_create/http-response.adoc[]
+include::{snippets}/item_qna_create/httpie-request.adoc[]
+include::{snippets}/item_qna_create/path-parameters.adoc[]
+include::{snippets}/item_qna_create/request-body.adoc[]
+include::{snippets}/item_qna_create/request-fields.adoc[]
+include::{snippets}/item_qna_create/request-headers.adoc[]
+include::{snippets}/item_qna_create/response-body.adoc[]
+
+== get_item_reviews
+
+include::{snippets}/get_item_reviews/curl-request.adoc[]
+include::{snippets}/get_item_reviews/http-request.adoc[]
+include::{snippets}/get_item_reviews/http-response.adoc[]
+include::{snippets}/get_item_reviews/httpie-request.adoc[]
+include::{snippets}/get_item_reviews/path-parameters.adoc[]
+include::{snippets}/get_item_reviews/request-body.adoc[]
+include::{snippets}/get_item_reviews/request-parameters.adoc[]
+include::{snippets}/get_item_reviews/response-body.adoc[]
+include::{snippets}/get_item_reviews/response-fields.adoc[]
+
+== get_item_qna_total
+
+include::{snippets}/get_item_qna_total/curl-request.adoc[]
+include::{snippets}/get_item_qna_total/http-request.adoc[]
+include::{snippets}/get_item_qna_total/http-response.adoc[]
+include::{snippets}/get_item_qna_total/httpie-request.adoc[]
+include::{snippets}/get_item_qna_total/path-parameters.adoc[]
+include::{snippets}/get_item_qna_total/request-body.adoc[]
+include::{snippets}/get_item_qna_total/response-body.adoc[]
+
+== get_item_reviews_total
+
+include::{snippets}/get_item_reviews_total/curl-request.adoc[]
+include::{snippets}/get_item_reviews_total/http-request.adoc[]
+include::{snippets}/get_item_reviews_total/http-response.adoc[]
+include::{snippets}/get_item_reviews_total/httpie-request.adoc[]
+include::{snippets}/get_item_reviews_total/path-parameters.adoc[]
+include::{snippets}/get_item_reviews_total/request-body.adoc[]
+include::{snippets}/get_item_reviews_total/response-body.adoc[]

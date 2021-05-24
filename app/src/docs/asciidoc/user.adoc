@@ -2,7 +2,7 @@
 :snippets: {basedir}/build/generated-snippets
 
 = RESTful Notes Api Guide
-:doctype: index
+:doctype: user
 :icons: font
 :source-highlighter: highlightjs
 :toc: left

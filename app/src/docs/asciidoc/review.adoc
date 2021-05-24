@@ -1,0 +1,47 @@
+:basedir: {docdir}/../../../
+:snippets: {basedir}/build/generated-snippets
+
+= RESTful Notes Api Guide
+:doctype: review
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectnums:
+:sectlinks:
+:sectanchors:
+
+[[api]]
+== review_create
+
+include::{snippets}/review_create/curl-request.adoc[]
+include::{snippets}/review_create/http-request.adoc[]
+include::{snippets}/review_create/http-response.adoc[]
+include::{snippets}/review_create/httpie-request.adoc[]
+include::{snippets}/review_create/request-body.adoc[]
+include::{snippets}/review_create/request-headers.adoc[]
+include::{snippets}/review_create/request-parameters.adoc[]
+include::{snippets}/review_create/request-parts.adoc[]
+include::{snippets}/review_create/response-body.adoc[]
+
+== review_like_create
+
+include::{snippets}/review_like_create/curl-request.adoc[]
+include::{snippets}/review_like_create/http-request.adoc[]
+include::{snippets}/review_like_create/http-response.adoc[]
+include::{snippets}/review_like_create/httpie-request.adoc[]
+include::{snippets}/review_like_create/path-parameters.adoc[]
+include::{snippets}/review_like_create/request-body.adoc[]
+include::{snippets}/review_like_create/request-headers.adoc[]
+include::{snippets}/review_like_create/response-body.adoc[]
+
+== review_like_cancel
+
+include::{snippets}/review_like_cancel/curl-request.adoc[]
+include::{snippets}/review_like_cancel/http-request.adoc[]
+include::{snippets}/review_like_cancel/http-response.adoc[]
+include::{snippets}/review_like_cancel/httpie-request.adoc[]
+include::{snippets}/review_like_cancel/path-parameters.adoc[]
+include::{snippets}/review_like_cancel/request-body.adoc[]
+include::{snippets}/review_like_cancel/request-headers.adoc[]
+include::{snippets}/review_like_cancel/response-body.adoc[]

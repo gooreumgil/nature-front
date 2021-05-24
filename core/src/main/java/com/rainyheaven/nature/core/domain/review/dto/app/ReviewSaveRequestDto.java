@@ -1,5 +1,6 @@
 package com.rainyheaven.nature.core.domain.review.dto.app;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class ReviewSaveRequestDto {
 
     private List<MultipartFile> files = new ArrayList<>();
 
+    @JsonIgnore
     @AssertTrue(message = "이미지는 3장까지만 가능합니다.")
     public boolean isFilesLengthValid() {
         return files.size() <= 3;

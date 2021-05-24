@@ -1,5 +1,6 @@
 package com.rainyheaven.nature.core.domain.order.dto.app;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rainyheaven.nature.core.domain.address.dto.app.AddressRequestDto;
 import com.rainyheaven.nature.core.domain.orderitem.dto.app.OrderItemSaveRequestDto;
 import lombok.AllArgsConstructor;
@@ -41,6 +42,7 @@ public class OrderSaveRequestDto {
     @Valid
     private List<OrderItemSaveRequestDto> orderItemSaveRequestDtos = new ArrayList<>();
 
+    @JsonIgnore
     @AssertTrue(message = "핸드폰 번호를 정확하게 입력해주세요.")
     public boolean isPhoneNumberValid() {
 

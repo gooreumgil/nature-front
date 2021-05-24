@@ -16,9 +16,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,10 @@ import java.util.List;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -38,6 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs
 @Transactional
 public class ReviewControllerTest {
 
@@ -89,7 +96,20 @@ public class ReviewControllerTest {
                 .param("rating", String.valueOf(reviewSaveRequestDto.getRating()))
                 .param("itemId", String.valueOf(orderItem.getItem().getId()))
                 .param("orderItemId", String.valueOf(orderItem.getId())))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(document("review_create",
+                        requestHeaders(
+                                headerWithName("Authorization").description("유저 token")
+                        ),
+                        requestParameters(
+                                parameterWithName("rating").description("평점"),
+                                parameterWithName("content").description("리뷰 내용"),
+                                parameterWithName("itemId").description("리뷰할 상품 id"),
+                                parameterWithName("orderItemId").description("orderItem id")
+                        )
+
+
+                ));
 
     }
 
@@ -230,9 +250,17 @@ public class ReviewControllerTest {
 
         Review review = reviewFactory.save(5, "정말 좋은 제품이네요. 재구매할 의향이 있습니다.", item, user);
 
-        mvc.perform(post("/v1/reviews/" + review.getId() + "/review-likes")
+        mvc.perform(RestDocumentationRequestBuilders.post("/v1/reviews/{id}/review-likes", review.getId())
                 .header("Authorization", tokenGenerator.getToken(user)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(document("review_like_create",
+                        requestHeaders(
+                                headerWithName("Authorization").description("유저 token")
+                        ),
+                        pathParameters(
+                                parameterWithName("id").description("리뷰 id")
+                        )
+                ));
 
         assertEquals(1, review.getReviewLikes().size());
 
@@ -257,9 +285,17 @@ public class ReviewControllerTest {
         reviewFactory.saveReviewLike(review, user);
 
 
-        mvc.perform(delete("/v1/reviews/" + review.getId() + "/review-likes")
+        mvc.perform(RestDocumentationRequestBuilders.delete("/v1/reviews/{id}/review-likes", review.getId())
                 .header("Authorization", tokenGenerator.getToken(user)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(document("review_like_cancel",
+                        requestHeaders(
+                                headerWithName("Authorization").description("유저 token")
+                        ),
+                        pathParameters(
+                                parameterWithName("id").description("리뷰 id")
+                        )
+                ));
 
 
     }

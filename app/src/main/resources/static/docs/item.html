@@ -426,41 +426,37 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 </head>
-<body class="user toc2 toc-left">
+<body class="item toc2 toc-left">
 <div id="header">
 <h1>RESTful Notes Api Guide</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#api">1. get_user Api</a></li>
-<li><a href="#_register_user_api">2. register_user Api</a></li>
-<li><a href="#_get_user_orders_api">3. get_user_orders Api</a></li>
-<li><a href="#_get_user_order_total_by_delivery_status">4. get_user_order_total_by_delivery_status</a></li>
-<li><a href="#_get_user_reviews">5. get_user_reviews</a></li>
-<li><a href="#_password_change_link_send">6. password_change_link_send</a></li>
-<li><a href="#_password_change_by_email">7. password_change_by_email</a></li>
-<li><a href="#_get_user_review_total">8. get_user_review_total</a></li>
-<li><a href="#_get_user_order_items_status_comp">9. get_user_order_items_status_comp</a></li>
-<li><a href="#_get_user_item_likes">10. get_user_item_likes</a></li>
-<li><a href="#_user_item_like_check">11. user_item_like_check</a></li>
-<li><a href="#_get_user_qna">12. get_user_qna</a></li>
+<li><a href="#api">1. get_item</a></li>
+<li><a href="#_get_item_pages">2. get_item_pages</a></li>
+<li><a href="#_item_search">3. item_search</a></li>
+<li><a href="#_item_like">4. item_like</a></li>
+<li><a href="#_item_like_cancel">5. item_like_cancel</a></li>
+<li><a href="#_get_item_qna">6. get_item_qna</a></li>
+<li><a href="#_item_qna_create">7. item_qna_create</a></li>
+<li><a href="#_get_item_reviews">8. get_item_reviews</a></li>
+<li><a href="#_get_item_qna_total">9. get_item_qna_total</a></li>
+<li><a href="#_get_item_reviews_total">10. get_item_reviews_total</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="api"><a class="anchor" href="#api"></a><a class="link" href="#api">1. get_user Api</a></h2>
+<h2 id="api"><a class="anchor" href="#api"></a><a class="link" href="#api">1. get_item</a></h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/users' -i -X GET \
-    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjgyLCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5N30.xkn2TFYfBsCE-aHO4H6PLkKqFYsFcKlyggzl4FOyJG4'</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/items/22' -i -X GET</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/users HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjgyLCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5N30.xkn2TFYfBsCE-aHO4H6PLkKqFYsFcKlyggzl4FOyJG4
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/items/22 HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -476,26 +472,47 @@ X-XSS-Protection: 1; mode=block
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
-Content-Length: 199
+Content-Length: 300
 
 {
-  "id" : 82,
-  "name" : "testname",
-  "phoneNum1" : "010",
-  "phoneNum2" : "1111",
-  "phoneNum3" : "2222",
-  "email" : "test1@email.com",
-  "ownPoints" : 0,
-  "addressResponseDtos" : [ ]
+  "id" : 22,
+  "category" : "testCategory",
+  "nameKor" : "한글이름",
+  "nameEng" : "englishName",
+  "description" : "좋은 제품입니다.",
+  "price" : 10000,
+  "discountPrice" : 1000,
+  "capacity" : 100,
+  "savePoints" : null,
+  "mainImgPath" : null,
+  "detailImgPath" : null
 }</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http GET 'http://localhost:8080/v1/users' \
-    'Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjgyLCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5N30.xkn2TFYfBsCE-aHO4H6PLkKqFYsFcKlyggzl4FOyJG4'</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http GET 'http://localhost:8080/v1/items/22'</code></pre>
 </div>
 </div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. /v1/items/{id}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 id</p></td>
+</tr>
+</tbody>
+</table>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code></code></pre>
@@ -504,14 +521,17 @@ Content-Length: 199
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code>{
-  "id" : 82,
-  "name" : "testname",
-  "phoneNum1" : "010",
-  "phoneNum2" : "1111",
-  "phoneNum3" : "2222",
-  "email" : "test1@email.com",
-  "ownPoints" : 0,
-  "addressResponseDtos" : [ ]
+  "id" : 22,
+  "category" : "testCategory",
+  "nameKor" : "한글이름",
+  "nameEng" : "englishName",
+  "description" : "좋은 제품입니다.",
+  "price" : 10000,
+  "discountPrice" : 1000,
+  "capacity" : 100,
+  "savePoints" : null,
+  "mainImgPath" : null,
+  "detailImgPath" : null
 }</code></pre>
 </div>
 </div>
@@ -532,185 +552,73 @@ Content-Length: 199
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">id</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 id</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>category</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">닉네임</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>phoneNum1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>nameKor</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">핸드폰 번호 앞자리</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 한글이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>phoneNum2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>nameEng</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">핸드폰 번호 중간</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 영어이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>phoneNum3</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">핸드폰 번호 마지막</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 설명</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이메일</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ownPoints</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>price</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">보유 포인트</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 가격</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>addressResponseDtos</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주소목록</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>discountPrice</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 할인금액</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>capacity</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 용량</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>savePoints</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">적립될 포인트</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mainImgPath</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 메인 이미지 경로</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>detailImgPath</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 상세 이미지 경로</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_register_user_api"><a class="anchor" href="#_register_user_api"></a><a class="link" href="#_register_user_api">2. register_user Api</a></h2>
+<h2 id="_get_item_pages"><a class="anchor" href="#_get_item_pages"></a><a class="link" href="#_get_item_pages">2. get_item_pages</a></h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/users' -i -X POST \
-    -H 'Content-Type: application/json;charset=UTF-8' \
-    -d '{
-  "email" : "success@email.com",
-  "name" : "success",
-  "password" : "password12",
-  "passwordConfirm" : "password12",
-  "phoneNumber" : "01011112222",
-  "birthDay" : "20200220"
-}'</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/items/?page=0&amp;size=12&amp;sort=createdDate%2CDESC' -i -X GET</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/users HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Content-Length: 189
-Host: localhost:8080
-
-{
-  "email" : "success@email.com",
-  "name" : "success",
-  "password" : "password12",
-  "passwordConfirm" : "password12",
-  "phoneNumber" : "01011112222",
-  "birthDay" : "20200220"
-}</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 1; mode=block
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-Pragma: no-cache
-Expires: 0</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ echo '{
-  "email" : "success@email.com",
-  "name" : "success",
-  "password" : "password12",
-  "passwordConfirm" : "password12",
-  "phoneNumber" : "01011112222",
-  "birthDay" : "20200220"
-}' | http POST 'http://localhost:8080/v1/users' \
-    'Content-Type:application/json;charset=UTF-8'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code>{
-  "email" : "success@email.com",
-  "name" : "success",
-  "password" : "password12",
-  "passwordConfirm" : "password12",
-  "phoneNumber" : "01011112222",
-  "birthDay" : "20200220"
-}</code></pre>
-</div>
-</div>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이메일</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">닉네임</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>password</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">비밀번호</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>passwordConfirm</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">비밀번호 확인</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>phoneNumber</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">핸드폰 번호</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>birthDay</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">생년월일</p></td>
-</tr>
-</tbody>
-</table>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code></code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_get_user_orders_api"><a class="anchor" href="#_get_user_orders_api"></a><a class="link" href="#_get_user_orders_api">3. get_user_orders Api</a></h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/users/orders?page=0&amp;size=5&amp;sort=createdDate' -i -X GET \
-    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjU3LCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5NX0.m93aXhnqc3DTjvFcQtGKfYEBNCDPViBIRx4GdpUFRsM'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/users/orders?page=0&amp;size=5&amp;sort=createdDate HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjU3LCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5NX0.m93aXhnqc3DTjvFcQtGKfYEBNCDPViBIRx4GdpUFRsM
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/items/?page=0&amp;size=12&amp;sort=createdDate%2CDESC HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -726,141 +634,89 @@ X-XSS-Protection: 1; mode=block
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
-Content-Length: 4567
+Content-Length: 2938
 
 {
   "content" : [ {
-    "id" : 14,
-    "finalDiscountPrice" : 5045,
-    "finalPrice" : 95000,
-    "usedPoints" : 0,
-    "savedPoints" : 0,
-    "status" : "ORDER",
-    "orderAt" : "2021-05-24T21:28:15.5996074",
-    "deliveryResponseDto" : {
-      "id" : 14,
-      "receiver" : "testname",
-      "deliveryPrice" : 0,
-      "memo" : null,
-      "phoneNum1" : "010",
-      "phoneNum2" : "1111",
-      "phoneNum3" : "2222",
-      "mainAddress" : "mainAddress",
-      "detailAddress" : "detailAddress",
-      "zipCode" : "12345",
-      "status" : "COMP"
-    },
-    "orderItemResponseDtos" : [ {
-      "id" : 131,
-      "itemId" : 326,
-      "itemNameKor" : "0한글이름",
-      "itemNameEng" : "0english name",
-      "itemPrice" : 10000,
-      "itemDiscountPrice" : 500,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/0mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    }, {
-      "id" : 132,
-      "itemId" : 327,
-      "itemNameKor" : "1한글이름",
-      "itemNameEng" : "1english name",
-      "itemPrice" : 10001,
-      "itemDiscountPrice" : 501,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/1mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    }, {
-      "id" : 133,
-      "itemId" : 328,
-      "itemNameKor" : "2한글이름",
-      "itemNameEng" : "2english name",
-      "itemPrice" : 10002,
-      "itemDiscountPrice" : 502,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/2mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    }, {
-      "id" : 134,
-      "itemId" : 329,
-      "itemNameKor" : "3한글이름",
-      "itemNameEng" : "3english name",
-      "itemPrice" : 10003,
-      "itemDiscountPrice" : 503,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/3mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    }, {
-      "id" : 135,
-      "itemId" : 330,
-      "itemNameKor" : "4한글이름",
-      "itemNameEng" : "4english name",
-      "itemPrice" : 10004,
-      "itemDiscountPrice" : 504,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/4mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    }, {
-      "id" : 136,
-      "itemId" : 331,
-      "itemNameKor" : "5한글이름",
-      "itemNameEng" : "5english name",
-      "itemPrice" : 10005,
-      "itemDiscountPrice" : 505,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/5mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    }, {
-      "id" : 137,
-      "itemId" : 332,
-      "itemNameKor" : "6한글이름",
-      "itemNameEng" : "6english name",
-      "itemPrice" : 10006,
-      "itemDiscountPrice" : 506,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/6mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    }, {
-      "id" : 138,
-      "itemId" : 333,
-      "itemNameKor" : "7한글이름",
-      "itemNameEng" : "7english name",
-      "itemPrice" : 10007,
-      "itemDiscountPrice" : 507,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/7mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    }, {
-      "id" : 139,
-      "itemId" : 334,
-      "itemNameKor" : "8한글이름",
-      "itemNameEng" : "8english name",
-      "itemPrice" : 10008,
-      "itemDiscountPrice" : 508,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/8mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    }, {
-      "id" : 140,
-      "itemId" : 335,
-      "itemNameKor" : "9한글이름",
-      "itemNameEng" : "9english name",
-      "itemPrice" : 10009,
-      "itemDiscountPrice" : 509,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/9mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    } ]
+    "id" : 13,
+    "nameKor" : "9한글이름",
+    "nameEng" : "9english name",
+    "price" : 10009,
+    "discountPrice" : 509,
+    "mainImgPath" : "http://localhost:8060/upload/9mainImgPath",
+    "description" : "9description"
+  }, {
+    "id" : 12,
+    "nameKor" : "8한글이름",
+    "nameEng" : "8english name",
+    "price" : 10008,
+    "discountPrice" : 508,
+    "mainImgPath" : "http://localhost:8060/upload/8mainImgPath",
+    "description" : "8description"
+  }, {
+    "id" : 11,
+    "nameKor" : "7한글이름",
+    "nameEng" : "7english name",
+    "price" : 10007,
+    "discountPrice" : 507,
+    "mainImgPath" : "http://localhost:8060/upload/7mainImgPath",
+    "description" : "7description"
+  }, {
+    "id" : 10,
+    "nameKor" : "6한글이름",
+    "nameEng" : "6english name",
+    "price" : 10006,
+    "discountPrice" : 506,
+    "mainImgPath" : "http://localhost:8060/upload/6mainImgPath",
+    "description" : "6description"
+  }, {
+    "id" : 8,
+    "nameKor" : "4한글이름",
+    "nameEng" : "4english name",
+    "price" : 10004,
+    "discountPrice" : 504,
+    "mainImgPath" : "http://localhost:8060/upload/4mainImgPath",
+    "description" : "4description"
+  }, {
+    "id" : 9,
+    "nameKor" : "5한글이름",
+    "nameEng" : "5english name",
+    "price" : 10005,
+    "discountPrice" : 505,
+    "mainImgPath" : "http://localhost:8060/upload/5mainImgPath",
+    "description" : "5description"
+  }, {
+    "id" : 7,
+    "nameKor" : "3한글이름",
+    "nameEng" : "3english name",
+    "price" : 10003,
+    "discountPrice" : 503,
+    "mainImgPath" : "http://localhost:8060/upload/3mainImgPath",
+    "description" : "3description"
+  }, {
+    "id" : 6,
+    "nameKor" : "2한글이름",
+    "nameEng" : "2english name",
+    "price" : 10002,
+    "discountPrice" : 502,
+    "mainImgPath" : "http://localhost:8060/upload/2mainImgPath",
+    "description" : "2description"
+  }, {
+    "id" : 5,
+    "nameKor" : "1한글이름",
+    "nameEng" : "1english name",
+    "price" : 10001,
+    "discountPrice" : 501,
+    "mainImgPath" : "http://localhost:8060/upload/1mainImgPath",
+    "description" : "1description"
+  }, {
+    "id" : 4,
+    "nameKor" : "0한글이름",
+    "nameEng" : "0english name",
+    "price" : 10000,
+    "discountPrice" : 500,
+    "mainImgPath" : "http://localhost:8060/upload/0mainImgPath",
+    "description" : "0description"
   } ],
   "pageable" : {
     "sort" : {
@@ -870,21 +726,21 @@ Content-Length: 4567
     },
     "offset" : 0,
     "pageNumber" : 0,
-    "pageSize" : 5,
+    "pageSize" : 12,
     "unpaged" : false,
     "paged" : true
   },
-  "totalElements" : 1,
+  "totalElements" : 10,
   "last" : true,
   "totalPages" : 1,
   "number" : 0,
-  "size" : 5,
+  "size" : 12,
   "sort" : {
     "sorted" : true,
     "unsorted" : false,
     "empty" : false
   },
-  "numberOfElements" : 1,
+  "numberOfElements" : 10,
   "first" : true,
   "empty" : false
 }</code></pre>
@@ -892,8 +748,7 @@ Content-Length: 4567
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http GET 'http://localhost:8080/v1/users/orders?page=0&amp;size=5&amp;sort=createdDate' \
-    'Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjU3LCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5NX0.m93aXhnqc3DTjvFcQtGKfYEBNCDPViBIRx4GdpUFRsM'</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http GET 'http://localhost:8080/v1/items/?page=0&amp;size=12&amp;sort=createdDate%2CDESC'</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -931,137 +786,85 @@ Content-Length: 4567
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code>{
   "content" : [ {
-    "id" : 14,
-    "finalDiscountPrice" : 5045,
-    "finalPrice" : 95000,
-    "usedPoints" : 0,
-    "savedPoints" : 0,
-    "status" : "ORDER",
-    "orderAt" : "2021-05-24T21:28:15.5996074",
-    "deliveryResponseDto" : {
-      "id" : 14,
-      "receiver" : "testname",
-      "deliveryPrice" : 0,
-      "memo" : null,
-      "phoneNum1" : "010",
-      "phoneNum2" : "1111",
-      "phoneNum3" : "2222",
-      "mainAddress" : "mainAddress",
-      "detailAddress" : "detailAddress",
-      "zipCode" : "12345",
-      "status" : "COMP"
-    },
-    "orderItemResponseDtos" : [ {
-      "id" : 131,
-      "itemId" : 326,
-      "itemNameKor" : "0한글이름",
-      "itemNameEng" : "0english name",
-      "itemPrice" : 10000,
-      "itemDiscountPrice" : 500,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/0mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    }, {
-      "id" : 132,
-      "itemId" : 327,
-      "itemNameKor" : "1한글이름",
-      "itemNameEng" : "1english name",
-      "itemPrice" : 10001,
-      "itemDiscountPrice" : 501,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/1mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    }, {
-      "id" : 133,
-      "itemId" : 328,
-      "itemNameKor" : "2한글이름",
-      "itemNameEng" : "2english name",
-      "itemPrice" : 10002,
-      "itemDiscountPrice" : 502,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/2mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    }, {
-      "id" : 134,
-      "itemId" : 329,
-      "itemNameKor" : "3한글이름",
-      "itemNameEng" : "3english name",
-      "itemPrice" : 10003,
-      "itemDiscountPrice" : 503,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/3mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    }, {
-      "id" : 135,
-      "itemId" : 330,
-      "itemNameKor" : "4한글이름",
-      "itemNameEng" : "4english name",
-      "itemPrice" : 10004,
-      "itemDiscountPrice" : 504,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/4mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    }, {
-      "id" : 136,
-      "itemId" : 331,
-      "itemNameKor" : "5한글이름",
-      "itemNameEng" : "5english name",
-      "itemPrice" : 10005,
-      "itemDiscountPrice" : 505,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/5mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    }, {
-      "id" : 137,
-      "itemId" : 332,
-      "itemNameKor" : "6한글이름",
-      "itemNameEng" : "6english name",
-      "itemPrice" : 10006,
-      "itemDiscountPrice" : 506,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/6mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    }, {
-      "id" : 138,
-      "itemId" : 333,
-      "itemNameKor" : "7한글이름",
-      "itemNameEng" : "7english name",
-      "itemPrice" : 10007,
-      "itemDiscountPrice" : 507,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/7mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    }, {
-      "id" : 139,
-      "itemId" : 334,
-      "itemNameKor" : "8한글이름",
-      "itemNameEng" : "8english name",
-      "itemPrice" : 10008,
-      "itemDiscountPrice" : 508,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/8mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    }, {
-      "id" : 140,
-      "itemId" : 335,
-      "itemNameKor" : "9한글이름",
-      "itemNameEng" : "9english name",
-      "itemPrice" : 10009,
-      "itemDiscountPrice" : 509,
-      "itemQuantity" : 1,
-      "mainImgPath" : "http://localhost:8060/upload/9mainImgPath",
-      "orderedAt" : null,
-      "isLeaveReview" : false
-    } ]
+    "id" : 13,
+    "nameKor" : "9한글이름",
+    "nameEng" : "9english name",
+    "price" : 10009,
+    "discountPrice" : 509,
+    "mainImgPath" : "http://localhost:8060/upload/9mainImgPath",
+    "description" : "9description"
+  }, {
+    "id" : 12,
+    "nameKor" : "8한글이름",
+    "nameEng" : "8english name",
+    "price" : 10008,
+    "discountPrice" : 508,
+    "mainImgPath" : "http://localhost:8060/upload/8mainImgPath",
+    "description" : "8description"
+  }, {
+    "id" : 11,
+    "nameKor" : "7한글이름",
+    "nameEng" : "7english name",
+    "price" : 10007,
+    "discountPrice" : 507,
+    "mainImgPath" : "http://localhost:8060/upload/7mainImgPath",
+    "description" : "7description"
+  }, {
+    "id" : 10,
+    "nameKor" : "6한글이름",
+    "nameEng" : "6english name",
+    "price" : 10006,
+    "discountPrice" : 506,
+    "mainImgPath" : "http://localhost:8060/upload/6mainImgPath",
+    "description" : "6description"
+  }, {
+    "id" : 8,
+    "nameKor" : "4한글이름",
+    "nameEng" : "4english name",
+    "price" : 10004,
+    "discountPrice" : 504,
+    "mainImgPath" : "http://localhost:8060/upload/4mainImgPath",
+    "description" : "4description"
+  }, {
+    "id" : 9,
+    "nameKor" : "5한글이름",
+    "nameEng" : "5english name",
+    "price" : 10005,
+    "discountPrice" : 505,
+    "mainImgPath" : "http://localhost:8060/upload/5mainImgPath",
+    "description" : "5description"
+  }, {
+    "id" : 7,
+    "nameKor" : "3한글이름",
+    "nameEng" : "3english name",
+    "price" : 10003,
+    "discountPrice" : 503,
+    "mainImgPath" : "http://localhost:8060/upload/3mainImgPath",
+    "description" : "3description"
+  }, {
+    "id" : 6,
+    "nameKor" : "2한글이름",
+    "nameEng" : "2english name",
+    "price" : 10002,
+    "discountPrice" : 502,
+    "mainImgPath" : "http://localhost:8060/upload/2mainImgPath",
+    "description" : "2description"
+  }, {
+    "id" : 5,
+    "nameKor" : "1한글이름",
+    "nameEng" : "1english name",
+    "price" : 10001,
+    "discountPrice" : 501,
+    "mainImgPath" : "http://localhost:8060/upload/1mainImgPath",
+    "description" : "1description"
+  }, {
+    "id" : 4,
+    "nameKor" : "0한글이름",
+    "nameEng" : "0english name",
+    "price" : 10000,
+    "discountPrice" : 500,
+    "mainImgPath" : "http://localhost:8060/upload/0mainImgPath",
+    "description" : "0description"
   } ],
   "pageable" : {
     "sort" : {
@@ -1071,21 +874,21 @@ Content-Length: 4567
     },
     "offset" : 0,
     "pageNumber" : 0,
-    "pageSize" : 5,
+    "pageSize" : 12,
     "unpaged" : false,
     "paged" : true
   },
-  "totalElements" : 1,
+  "totalElements" : 10,
   "last" : true,
   "totalPages" : 1,
   "number" : 0,
-  "size" : 5,
+  "size" : 12,
   "sort" : {
     "sorted" : true,
     "unsorted" : false,
     "empty" : false
   },
-  "numberOfElements" : 1,
+  "numberOfElements" : 10,
   "first" : true,
   "empty" : false
 }</code></pre>
@@ -1113,142 +916,37 @@ Content-Length: 4567
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].id</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].finalDiscountPrice</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">할인 금액 합산</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].finalPrice</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">최종 가격</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].usedPoints</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">사용한 포인트</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].savedPoints</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">적립된 포인트</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].status</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 상태</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].orderAt</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 날짜</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].deliveryResponseDto.id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">배송 id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].deliveryResponseDto.receiver</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">배송 받는 사람 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].deliveryResponseDto.deliveryPrice</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">배송비</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].deliveryResponseDto.memo</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">배송 메모</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].deliveryResponseDto.phoneNum1</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">핸드폰 번호 앞자리</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].deliveryResponseDto.phoneNum2</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">핸드폰 번호 중간</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].deliveryResponseDto.phoneNum3</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">핸드폰 번호 마지막자리</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].deliveryResponseDto.mainAddress</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">메인 주소</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].deliveryResponseDto.detailAddress</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상세 주소</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].deliveryResponseDto.zipCode</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">우편번호</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].deliveryResponseDto.status</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">배송 상태</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].orderItemResponseDtos.[].id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 상품 id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].orderItemResponseDtos.[].itemId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">상품 id</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].orderItemResponseDtos.[].itemNameKor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].nameKor</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">상품 한글 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].orderItemResponseDtos.[].itemNameEng</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].nameEng</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">상품 영어 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].orderItemResponseDtos.[].itemPrice</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].price</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">상품 가격</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].orderItemResponseDtos.[].itemDiscountPrice</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].discountPrice</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">상품 할인 금액</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].orderItemResponseDtos.[].itemQuantity</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">구매한 상품 수량</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].orderItemResponseDtos.[].mainImgPath</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].mainImgPath</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 이미지 path</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 메인 이미지 경로</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].orderItemResponseDtos.[].orderedAt</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 날짜</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].orderItemResponseDtos.[].isLeaveReview</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">리뷰를 남겼는지 여부</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].description</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 상세 이미지 경로</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable</code></p></td>
@@ -1365,18 +1063,16 @@ Content-Length: 4567
 </div>
 </div>
 <div class="sect1">
-<h2 id="_get_user_order_total_by_delivery_status"><a class="anchor" href="#_get_user_order_total_by_delivery_status"></a><a class="link" href="#_get_user_order_total_by_delivery_status">4. get_user_order_total_by_delivery_status</a></h2>
+<h2 id="_item_search"><a class="anchor" href="#_item_search"></a><a class="link" href="#_item_search">3. item_search</a></h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/users/count/orders/READY' -i -X GET \
-    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjczLCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5Nn0.RoK0jgICmhaQzBApO0n5XT3YB7ha-a7AEcPB_hS2d8g'</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/items/?keyword=%ED%95%9C%EA%B8%80%EC%9D%B4%EB%A6%84&amp;page=0&amp;size=12&amp;sort=sellTotal%2CDESC' -i -X GET</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/users/count/orders/READY HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjczLCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5Nn0.RoK0jgICmhaQzBApO0n5XT3YB7ha-a7AEcPB_hS2d8g
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/items/?keyword=%ED%95%9C%EA%B8%80%EC%9D%B4%EB%A6%84&amp;page=0&amp;size=12&amp;sort=sellTotal%2CDESC HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1392,19 +1088,57 @@ X-XSS-Protection: 1; mode=block
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
-Content-Length: 1
+Content-Length: 754
 
-0</code></pre>
+{
+  "content" : [ {
+    "id" : 17,
+    "nameKor" : "한글이름",
+    "nameEng" : "englishName",
+    "price" : 10000,
+    "discountPrice" : 1000,
+    "mainImgPath" : "http://localhost:8060/upload/mainImgPath",
+    "description" : "좋은 제품입니다."
+  } ],
+  "pageable" : {
+    "sort" : {
+      "sorted" : true,
+      "unsorted" : false,
+      "empty" : false
+    },
+    "offset" : 0,
+    "pageNumber" : 0,
+    "pageSize" : 12,
+    "unpaged" : false,
+    "paged" : true
+  },
+  "totalElements" : 1,
+  "last" : true,
+  "totalPages" : 1,
+  "number" : 0,
+  "size" : 12,
+  "sort" : {
+    "sorted" : true,
+    "unsorted" : false,
+    "empty" : false
+  },
+  "numberOfElements" : 1,
+  "first" : true,
+  "empty" : false
+}</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http GET 'http://localhost:8080/v1/users/count/orders/READY' \
-    'Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjczLCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5Nn0.RoK0jgICmhaQzBApO0n5XT3YB7ha-a7AEcPB_hS2d8g'</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http GET 'http://localhost:8080/v1/items/?keyword=%ED%95%9C%EA%B8%80%EC%9D%B4%EB%A6%84&amp;page=0&amp;size=12&amp;sort=sellTotal%2CDESC'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code></code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 1. /v1/users/count/orders/{deliveryStatus}</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -1417,8 +1151,282 @@ Content-Length: 1
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>deliveryStatus</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">배송 상태</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>keyword</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">검색어</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">페이지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">사이즈</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">정렬</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code>{
+  "content" : [ {
+    "id" : 17,
+    "nameKor" : "한글이름",
+    "nameEng" : "englishName",
+    "price" : 10000,
+    "discountPrice" : 1000,
+    "mainImgPath" : "http://localhost:8060/upload/mainImgPath",
+    "description" : "좋은 제품입니다."
+  } ],
+  "pageable" : {
+    "sort" : {
+      "sorted" : true,
+      "unsorted" : false,
+      "empty" : false
+    },
+    "offset" : 0,
+    "pageNumber" : 0,
+    "pageSize" : 12,
+    "unpaged" : false,
+    "paged" : true
+  },
+  "totalElements" : 1,
+  "last" : true,
+  "totalPages" : 1,
+  "number" : 0,
+  "size" : 12,
+  "sort" : {
+    "sorted" : true,
+    "unsorted" : false,
+    "empty" : false
+  },
+  "numberOfElements" : 1,
+  "first" : true,
+  "empty" : false
+}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">content</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 id</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].nameKor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 한글 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].nameEng</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 영어 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].price</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 가격</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].discountPrice</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 할인 금액</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].mainImgPath</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 메인 이미지 경로</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].description</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 상세 이미지 경로</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">페이징</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 정렬</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.unsorted</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">unsorted</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.sorted</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sorted</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.empty</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">empty</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.offset</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">offset</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.pageSize</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pageSize</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.pageNumber</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pageNumber</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.paged</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">paged</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.unpaged</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">unpaged</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>totalElements</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">총 order 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>totalPages</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">전체 페이지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">size</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>last</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">last</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sort</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort.unsorted</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">unsorted</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort.sorted</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sorted</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort.empty</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">empty</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>first</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">first</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>numberOfElements</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">numberOfElements</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>empty</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">empty</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_item_like"><a class="anchor" href="#_item_like"></a><a class="link" href="#_item_like">4. item_like</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/items/2/item-likes' -i -X POST \
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsIm5hbWUiOiJ0ZXN0bmFtZSIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNjIyNDY0MDkwfQ.K7aHSu62JZ5ljt7VzWN-InEhL8CWoU7vnX-S9uPLT5E'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/items/2/item-likes HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsIm5hbWUiOiJ0ZXN0bmFtZSIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNjIyNDY0MDkwfQ.K7aHSu62JZ5ljt7VzWN-InEhL8CWoU7vnX-S9uPLT5E
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http POST 'http://localhost:8080/v1/items/2/item-likes' \
+    'Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsIm5hbWUiOiJ0ZXN0bmFtZSIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNjIyNDY0MDkwfQ.K7aHSu62JZ5ljt7VzWN-InEhL8CWoU7vnX-S9uPLT5E'</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. /v1/items/{id}/item-likes</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 id</p></td>
 </tr>
 </tbody>
 </table>
@@ -1447,24 +1455,108 @@ Content-Length: 1
 </table>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code>0</code></pre>
+<pre class="highlightjs highlight nowrap"><code></code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_get_user_reviews"><a class="anchor" href="#_get_user_reviews"></a><a class="link" href="#_get_user_reviews">5. get_user_reviews</a></h2>
+<h2 id="_item_like_cancel"><a class="anchor" href="#_item_like_cancel"></a><a class="link" href="#_item_like_cancel">5. item_like_cancel</a></h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/users/reviews?page=0&amp;size=5&amp;sort=createdDate%2CDESC' -i -X GET \
-    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc4LCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5N30.wPC2GuZHtrWWY9vCl2Fz-GDUkzTHyyeTiE0JWG5tNv8'</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/items/18/item-likes' -i -X DELETE \
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwLCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5MX0.VTwVBSupUCY2J8qSIcGRpH0XukcKSpBw51LUZrEdFBk'</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/users/reviews?page=0&amp;size=5&amp;sort=createdDate%2CDESC HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc4LCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5N30.wPC2GuZHtrWWY9vCl2Fz-GDUkzTHyyeTiE0JWG5tNv8
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /v1/items/18/item-likes HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwLCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5MX0.VTwVBSupUCY2J8qSIcGRpH0XukcKSpBw51LUZrEdFBk
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http DELETE 'http://localhost:8080/v1/items/18/item-likes' \
+    'Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwLCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5MX0.VTwVBSupUCY2J8qSIcGRpH0XukcKSpBw51LUZrEdFBk'</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 3. /v1/items/{id}/item-likes</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 id</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code></code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 token</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_get_item_qna"><a class="anchor" href="#_get_item_qna"></a><a class="link" href="#_get_item_qna">6. get_item_qna</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/items/16/qnas?page=0&amp;size=5&amp;sort=createdDate%2CDESC' -i -X GET \
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjgsIm5hbWUiOiJ0ZXN0bmFtZSIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNjIyNDY0MDkxfQ.LqBcimwUI88GFczT9CeLoVPamjHFNz1VcW6UJ-x_sQc'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/items/16/qnas?page=0&amp;size=5&amp;sort=createdDate%2CDESC HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjgsIm5hbWUiOiJ0ZXN0bmFtZSIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNjIyNDY0MDkxfQ.LqBcimwUI88GFczT9CeLoVPamjHFNz1VcW6UJ-x_sQc
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1480,27 +1572,27 @@ X-XSS-Protection: 1; mode=block
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
-Content-Length: 1028
+Content-Length: 1064
 
 {
   "content" : [ {
-    "id" : 8,
-    "content" : "써보니까 좋네요",
-    "likesCount" : 0,
-    "rating" : 5,
-    "wroteAt" : "2021-05-24T21:28:17.2043704",
-    "itemResponseDto" : {
-      "id" : 349,
-      "nameKor" : "한글이름",
-      "nameEng" : "englishName",
-      "price" : 15000,
-      "discountPrice" : 1000,
-      "mainImgPath" : "http://localhost:8060/upload/mainImgPath",
-      "description" : "좋은상품이다"
-    },
-    "reviewImageResponseDtos" : [ ],
-    "writer" : null,
-    "userLike" : null
+    "id" : 5,
+    "writer" : "testname",
+    "content" : "좋은 제품인가요? 구매하고 싶은데 고민되네요2",
+    "status" : "WAIT",
+    "wroteAt" : "2021-05-24T21:28:11.5444793",
+    "itemResponseDto" : null,
+    "isSecret" : true,
+    "isOwn" : true
+  }, {
+    "id" : 4,
+    "writer" : "testname",
+    "content" : "좋은 제품인가요? 구매하고 싶은데 고민되네요1",
+    "status" : "WAIT",
+    "wroteAt" : "2021-05-24T21:28:11.5434826",
+    "itemResponseDto" : null,
+    "isSecret" : true,
+    "isOwn" : true
   } ],
   "pageable" : {
     "sort" : {
@@ -1514,7 +1606,7 @@ Content-Length: 1028
     "unpaged" : false,
     "paged" : true
   },
-  "totalElements" : 1,
+  "totalElements" : 2,
   "last" : true,
   "totalPages" : 1,
   "number" : 0,
@@ -1524,7 +1616,7 @@ Content-Length: 1028
     "unsorted" : false,
     "empty" : false
   },
-  "numberOfElements" : 1,
+  "numberOfElements" : 2,
   "first" : true,
   "empty" : false
 }</code></pre>
@@ -1532,10 +1624,29 @@ Content-Length: 1028
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http GET 'http://localhost:8080/v1/users/reviews?page=0&amp;size=5&amp;sort=createdDate%2CDESC' \
-    'Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc4LCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5N30.wPC2GuZHtrWWY9vCl2Fz-GDUkzTHyyeTiE0JWG5tNv8'</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http GET 'http://localhost:8080/v1/items/16/qnas?page=0&amp;size=5&amp;sort=createdDate%2CDESC' \
+    'Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjgsIm5hbWUiOiJ0ZXN0bmFtZSIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNjIyNDY0MDkxfQ.LqBcimwUI88GFczT9CeLoVPamjHFNz1VcW6UJ-x_sQc'</code></pre>
 </div>
 </div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 4. /v1/items/{id}/qnas</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 id</p></td>
+</tr>
+</tbody>
+</table>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code></code></pre>
@@ -1589,22 +1700,505 @@ Content-Length: 1028
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code>{
   "content" : [ {
-    "id" : 8,
-    "content" : "써보니까 좋네요",
+    "id" : 5,
+    "writer" : "testname",
+    "content" : "좋은 제품인가요? 구매하고 싶은데 고민되네요2",
+    "status" : "WAIT",
+    "wroteAt" : "2021-05-24T21:28:11.5444793",
+    "itemResponseDto" : null,
+    "isSecret" : true,
+    "isOwn" : true
+  }, {
+    "id" : 4,
+    "writer" : "testname",
+    "content" : "좋은 제품인가요? 구매하고 싶은데 고민되네요1",
+    "status" : "WAIT",
+    "wroteAt" : "2021-05-24T21:28:11.5434826",
+    "itemResponseDto" : null,
+    "isSecret" : true,
+    "isOwn" : true
+  } ],
+  "pageable" : {
+    "sort" : {
+      "sorted" : true,
+      "unsorted" : false,
+      "empty" : false
+    },
+    "offset" : 0,
+    "pageNumber" : 0,
+    "pageSize" : 5,
+    "unpaged" : false,
+    "paged" : true
+  },
+  "totalElements" : 2,
+  "last" : true,
+  "totalPages" : 1,
+  "number" : 0,
+  "size" : 5,
+  "sort" : {
+    "sorted" : true,
+    "unsorted" : false,
+    "empty" : false
+  },
+  "numberOfElements" : 2,
+  "first" : true,
+  "empty" : false
+}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">content</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">qna id</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].writer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].isSecret</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">비밀글 여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].isOwn</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">토큰 유저의 게시글인지 여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">답변 여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].wroteAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemResponseDto</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 dto</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">페이징</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 정렬</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.unsorted</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">unsorted</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.sorted</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sorted</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.empty</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">empty</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.offset</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">offset</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.pageSize</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pageSize</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.pageNumber</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pageNumber</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.paged</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">paged</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.unpaged</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">unpaged</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>totalElements</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">총 order 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>totalPages</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">전체 페이지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">size</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>last</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">last</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sort</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort.unsorted</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">unsorted</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort.sorted</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sorted</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort.empty</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">empty</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>first</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">first</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>numberOfElements</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">numberOfElements</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>empty</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">empty</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_item_qna_create"><a class="anchor" href="#_item_qna_create"></a><a class="link" href="#_item_qna_create">7. item_qna_create</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/items/3/qnas' -i -X POST \
+    -H 'Content-Type: application/json;charset=UTF-8' \
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjMsIm5hbWUiOiJ0ZXN0bmFtZSIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNjIyNDY0MDkxfQ.HM-Rro0BXe0fX-_QkUalW7T55CUT3f5ZN_sBKbta7OM' \
+    -d '{
+  "content" : "좋은 제품인가요? 구매하고 싶은데 고민되네요.",
+  "secret" : true
+}'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/items/3/qnas HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjMsIm5hbWUiOiJ0ZXN0bmFtZSIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNjIyNDY0MDkxfQ.HM-Rro0BXe0fX-_QkUalW7T55CUT3f5ZN_sBKbta7OM
+Content-Length: 105
+Host: localhost:8080
+
+{
+  "content" : "좋은 제품인가요? 구매하고 싶은데 고민되네요.",
+  "secret" : true
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ echo '{
+  "content" : "좋은 제품인가요? 구매하고 싶은데 고민되네요.",
+  "secret" : true
+}' | http POST 'http://localhost:8080/v1/items/3/qnas' \
+    'Content-Type:application/json;charset=UTF-8' \
+    'Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjMsIm5hbWUiOiJ0ZXN0bmFtZSIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNjIyNDY0MDkxfQ.HM-Rro0BXe0fX-_QkUalW7T55CUT3f5ZN_sBKbta7OM'</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 5. /v1/items/{id}/qnas</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 id</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code>{
+  "content" : "좋은 제품인가요? 구매하고 싶은데 고민되네요.",
+  "secret" : true
+}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">문의 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>secret</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">비밀글 여부</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 token</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_get_item_reviews"><a class="anchor" href="#_get_item_reviews"></a><a class="link" href="#_get_item_reviews">8. get_item_reviews</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/items/19/reviews?page=0&amp;size=5&amp;sort=createdDate%2CDESC' -i -X GET</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/items/19/reviews?page=0&amp;size=5&amp;sort=createdDate%2CDESC HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Content-Length: 1073
+
+{
+  "content" : [ {
+    "id" : 3,
+    "content" : "정말 좋은 제품이네요. 재구매 하겠습니다.",
     "likesCount" : 0,
     "rating" : 5,
-    "wroteAt" : "2021-05-24T21:28:17.2043704",
+    "wroteAt" : "2021-05-24T21:28:11.8446765",
     "itemResponseDto" : {
-      "id" : 349,
+      "id" : 19,
       "nameKor" : "한글이름",
       "nameEng" : "englishName",
-      "price" : 15000,
+      "price" : 10000,
       "discountPrice" : 1000,
       "mainImgPath" : "http://localhost:8060/upload/mainImgPath",
-      "description" : "좋은상품이다"
+      "description" : "좋은 제품입니다."
     },
     "reviewImageResponseDtos" : [ ],
-    "writer" : null,
+    "writer" : "testname",
+    "userLike" : null
+  } ],
+  "pageable" : {
+    "sort" : {
+      "sorted" : true,
+      "unsorted" : false,
+      "empty" : false
+    },
+    "offset" : 0,
+    "pageNumber" : 0,
+    "pageSize" : 5,
+    "unpaged" : false,
+    "paged" : true
+  },
+  "totalElements" : 1,
+  "last" : true,
+  "totalPages" : 1,
+  "number" : 0,
+  "size" : 5,
+  "sort" : {
+    "sorted" : true,
+    "unsorted" : false,
+    "empty" : false
+  },
+  "numberOfElements" : 1,
+  "first" : true,
+  "empty" : false
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http GET 'http://localhost:8080/v1/items/19/reviews?page=0&amp;size=5&amp;sort=createdDate%2CDESC'</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 6. /v1/items/{id}/reviews</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 id</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code></code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">페이지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">사이즈</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">정렬</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code>{
+  "content" : [ {
+    "id" : 3,
+    "content" : "정말 좋은 제품이네요. 재구매 하겠습니다.",
+    "likesCount" : 0,
+    "rating" : 5,
+    "wroteAt" : "2021-05-24T21:28:11.8446765",
+    "itemResponseDto" : {
+      "id" : 19,
+      "nameKor" : "한글이름",
+      "nameEng" : "englishName",
+      "price" : 10000,
+      "discountPrice" : 1000,
+      "mainImgPath" : "http://localhost:8060/upload/mainImgPath",
+      "description" : "좋은 제품입니다."
+    },
+    "reviewImageResponseDtos" : [ ],
+    "writer" : "testname",
     "userLike" : null
   } ],
   "pageable" : {
@@ -1667,7 +2261,7 @@ Content-Length: 1028
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].likesCount</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">리뷰 좋아요수</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">리뷰 좋아요 개수</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].rating</code></p></td>
@@ -1682,1525 +2276,7 @@ Content-Length: 1028
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemResponseDto</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">리뷰 상품</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemResponseDto.id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">리뷰 상품 id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemResponseDto.nameKor</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">리뷰 상품 한글 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemResponseDto.nameEng</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">리뷰 상품 영어 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemResponseDto.price</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">리뷰 상품 가격</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemResponseDto.discountPrice</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">리뷰 상품 할인금액</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemResponseDto.mainImgPath</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">리뷰 상품 메인 이미지 경로</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemResponseDto.description</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">리뷰 상품 설명</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].reviewImageResponseDtos</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">리뷰 이미지</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].writer</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">리뷰 작성자 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].userLike</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 여부</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 정렬</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.unsorted</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">unsorted</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.sorted</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sorted</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.empty</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">empty</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.offset</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">offset</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.pageSize</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pageSize</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.pageNumber</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pageNumber</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.paged</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">paged</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.unpaged</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">unpaged</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>totalElements</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">총 order 개수</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>totalPages</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">전체 페이지</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">size</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>last</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">last</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sort</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort.unsorted</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">unsorted</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort.sorted</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sorted</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort.empty</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">empty</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>first</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">first</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>numberOfElements</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">numberOfElements</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>empty</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">empty</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_password_change_link_send"><a class="anchor" href="#_password_change_link_send"></a><a class="link" href="#_password_change_link_send">6. password_change_link_send</a></h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/users/test1@email.com/password/change-link-send' -i -X POST</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/users/test1@email.com/password/change-link-send HTTP/1.1
-Host: localhost:8080</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 1; mode=block
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-Pragma: no-cache
-Expires: 0</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http POST 'http://localhost:8080/v1/users/test1@email.com/password/change-link-send'</code></pre>
-</div>
-</div>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 2. /v1/users/{email}/password/change-link-send</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이메일</p></td>
-</tr>
-</tbody>
-</table>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code></code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code></code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_password_change_by_email"><a class="anchor" href="#_password_change_by_email"></a><a class="link" href="#_password_change_by_email">7. password_change_by_email</a></h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/users/8hfZ6SdqhVMnq45m3av+VA==/password/change-by-email' -i -X PATCH \
-    -H 'Content-Type: application/json;charset=UTF-8' \
-    -d '{
-  "password" : "testpassword",
-  "passwordConfirm" : "testpassword"
-}'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /v1/users/8hfZ6SdqhVMnq45m3av+VA==/password/change-by-email HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Content-Length: 74
-Host: localhost:8080
-
-{
-  "password" : "testpassword",
-  "passwordConfirm" : "testpassword"
-}</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 1; mode=block
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-Pragma: no-cache
-Expires: 0</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ echo '{
-  "password" : "testpassword",
-  "passwordConfirm" : "testpassword"
-}' | http PATCH 'http://localhost:8080/v1/users/8hfZ6SdqhVMnq45m3av+VA==/password/change-by-email' \
-    'Content-Type:application/json;charset=UTF-8'</code></pre>
-</div>
-</div>
-<table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 3. /v1/users/{email}/password/change-by-email</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이메일</p></td>
-</tr>
-</tbody>
-</table>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code>{
-  "password" : "testpassword",
-  "passwordConfirm" : "testpassword"
-}</code></pre>
-</div>
-</div>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>password</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">변경할 비밀번호</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>passwordConfirm</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">변경할 비밀번호 확인</p></td>
-</tr>
-</tbody>
-</table>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code></code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_get_user_review_total"><a class="anchor" href="#_get_user_review_total"></a><a class="link" href="#_get_user_review_total">8. get_user_review_total</a></h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/users/count/reviews' -i -X GET \
-    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjYyLCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5NX0.G9zlTASSTTy_OIZxthePC5mEwEjekMA-XznMTIWUnWo'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/users/count/reviews HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjYyLCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5NX0.G9zlTASSTTy_OIZxthePC5mEwEjekMA-XznMTIWUnWo
-Host: localhost:8080</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json;charset=UTF-8
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 1; mode=block
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-Pragma: no-cache
-Expires: 0
-Content-Length: 1
-
-1</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http GET 'http://localhost:8080/v1/users/count/reviews' \
-    'Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjYyLCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5NX0.G9zlTASSTTy_OIZxthePC5mEwEjekMA-XznMTIWUnWo'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code></code></pre>
-</div>
-</div>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">유저 token</p></td>
-</tr>
-</tbody>
-</table>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code>1</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_get_user_order_items_status_comp"><a class="anchor" href="#_get_user_order_items_status_comp"></a><a class="link" href="#_get_user_order_items_status_comp">9. get_user_order_items_status_comp</a></h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/users/order-items?page=0&amp;size=5&amp;sort=createdDate%2CDESC' -i -X GET \
-    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjU2LCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5NX0.sfThnVlILirv4U5fSa1dlOsVF745MM2Kmq4wN8u56Kk'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/users/order-items?page=0&amp;size=5&amp;sort=createdDate%2CDESC HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjU2LCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5NX0.sfThnVlILirv4U5fSa1dlOsVF745MM2Kmq4wN8u56Kk
-Host: localhost:8080</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json;charset=UTF-8
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 1; mode=block
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-Pragma: no-cache
-Expires: 0
-Content-Length: 2252
-
-{
-  "content" : [ {
-    "id" : 130,
-    "itemId" : 325,
-    "itemNameKor" : "9한글이름",
-    "itemNameEng" : "9english name",
-    "itemPrice" : 10009,
-    "itemDiscountPrice" : 509,
-    "itemQuantity" : 1,
-    "mainImgPath" : "http://localhost:8060/upload/9mainImgPath",
-    "orderedAt" : "2021-05-24T21:28:15.5018681",
-    "isLeaveReview" : false
-  }, {
-    "id" : 127,
-    "itemId" : 322,
-    "itemNameKor" : "6한글이름",
-    "itemNameEng" : "6english name",
-    "itemPrice" : 10006,
-    "itemDiscountPrice" : 506,
-    "itemQuantity" : 1,
-    "mainImgPath" : "http://localhost:8060/upload/6mainImgPath",
-    "orderedAt" : "2021-05-24T21:28:15.5018681",
-    "isLeaveReview" : false
-  }, {
-    "id" : 129,
-    "itemId" : 324,
-    "itemNameKor" : "8한글이름",
-    "itemNameEng" : "8english name",
-    "itemPrice" : 10008,
-    "itemDiscountPrice" : 508,
-    "itemQuantity" : 1,
-    "mainImgPath" : "http://localhost:8060/upload/8mainImgPath",
-    "orderedAt" : "2021-05-24T21:28:15.5018681",
-    "isLeaveReview" : false
-  }, {
-    "id" : 128,
-    "itemId" : 323,
-    "itemNameKor" : "7한글이름",
-    "itemNameEng" : "7english name",
-    "itemPrice" : 10007,
-    "itemDiscountPrice" : 507,
-    "itemQuantity" : 1,
-    "mainImgPath" : "http://localhost:8060/upload/7mainImgPath",
-    "orderedAt" : "2021-05-24T21:28:15.5018681",
-    "isLeaveReview" : false
-  }, {
-    "id" : 123,
-    "itemId" : 318,
-    "itemNameKor" : "2한글이름",
-    "itemNameEng" : "2english name",
-    "itemPrice" : 10002,
-    "itemDiscountPrice" : 502,
-    "itemQuantity" : 1,
-    "mainImgPath" : "http://localhost:8060/upload/2mainImgPath",
-    "orderedAt" : "2021-05-24T21:28:15.5018681",
-    "isLeaveReview" : false
-  } ],
-  "pageable" : {
-    "sort" : {
-      "sorted" : true,
-      "unsorted" : false,
-      "empty" : false
-    },
-    "offset" : 0,
-    "pageNumber" : 0,
-    "pageSize" : 5,
-    "unpaged" : false,
-    "paged" : true
-  },
-  "totalElements" : 10,
-  "last" : false,
-  "totalPages" : 2,
-  "number" : 0,
-  "size" : 5,
-  "sort" : {
-    "sorted" : true,
-    "unsorted" : false,
-    "empty" : false
-  },
-  "numberOfElements" : 5,
-  "first" : true,
-  "empty" : false
-}</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http GET 'http://localhost:8080/v1/users/order-items?page=0&amp;size=5&amp;sort=createdDate%2CDESC' \
-    'Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjU2LCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5NX0.sfThnVlILirv4U5fSa1dlOsVF745MM2Kmq4wN8u56Kk'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code></code></pre>
-</div>
-</div>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">유저 token</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이지</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">사이즈</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">정렬</p></td>
-</tr>
-</tbody>
-</table>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code>{
-  "content" : [ {
-    "id" : 130,
-    "itemId" : 325,
-    "itemNameKor" : "9한글이름",
-    "itemNameEng" : "9english name",
-    "itemPrice" : 10009,
-    "itemDiscountPrice" : 509,
-    "itemQuantity" : 1,
-    "mainImgPath" : "http://localhost:8060/upload/9mainImgPath",
-    "orderedAt" : "2021-05-24T21:28:15.5018681",
-    "isLeaveReview" : false
-  }, {
-    "id" : 127,
-    "itemId" : 322,
-    "itemNameKor" : "6한글이름",
-    "itemNameEng" : "6english name",
-    "itemPrice" : 10006,
-    "itemDiscountPrice" : 506,
-    "itemQuantity" : 1,
-    "mainImgPath" : "http://localhost:8060/upload/6mainImgPath",
-    "orderedAt" : "2021-05-24T21:28:15.5018681",
-    "isLeaveReview" : false
-  }, {
-    "id" : 129,
-    "itemId" : 324,
-    "itemNameKor" : "8한글이름",
-    "itemNameEng" : "8english name",
-    "itemPrice" : 10008,
-    "itemDiscountPrice" : 508,
-    "itemQuantity" : 1,
-    "mainImgPath" : "http://localhost:8060/upload/8mainImgPath",
-    "orderedAt" : "2021-05-24T21:28:15.5018681",
-    "isLeaveReview" : false
-  }, {
-    "id" : 128,
-    "itemId" : 323,
-    "itemNameKor" : "7한글이름",
-    "itemNameEng" : "7english name",
-    "itemPrice" : 10007,
-    "itemDiscountPrice" : 507,
-    "itemQuantity" : 1,
-    "mainImgPath" : "http://localhost:8060/upload/7mainImgPath",
-    "orderedAt" : "2021-05-24T21:28:15.5018681",
-    "isLeaveReview" : false
-  }, {
-    "id" : 123,
-    "itemId" : 318,
-    "itemNameKor" : "2한글이름",
-    "itemNameEng" : "2english name",
-    "itemPrice" : 10002,
-    "itemDiscountPrice" : 502,
-    "itemQuantity" : 1,
-    "mainImgPath" : "http://localhost:8060/upload/2mainImgPath",
-    "orderedAt" : "2021-05-24T21:28:15.5018681",
-    "isLeaveReview" : false
-  } ],
-  "pageable" : {
-    "sort" : {
-      "sorted" : true,
-      "unsorted" : false,
-      "empty" : false
-    },
-    "offset" : 0,
-    "pageNumber" : 0,
-    "pageSize" : 5,
-    "unpaged" : false,
-    "paged" : true
-  },
-  "totalElements" : 10,
-  "last" : false,
-  "totalPages" : 2,
-  "number" : 0,
-  "size" : 5,
-  "sort" : {
-    "sorted" : true,
-    "unsorted" : false,
-    "empty" : false
-  },
-  "numberOfElements" : 5,
-  "first" : true,
-  "empty" : false
-}</code></pre>
-</div>
-</div>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">orderItem id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemNameKor</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 한글 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemNameEng</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 영어 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemPrice</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 가격</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemDiscountPrice</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 할인 금액</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemQuantity</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 주문 개수</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].mainImgPath</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 메인 이미지 경로</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].orderedAt</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 주문 날짜</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].isLeaveReview</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 리뷰 작성 가능한지 여부</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 정렬</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.unsorted</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">unsorted</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.sorted</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sorted</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.empty</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">empty</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.offset</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">offset</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.pageSize</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pageSize</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.pageNumber</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pageNumber</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.paged</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">paged</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.unpaged</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">unpaged</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>totalElements</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">총 order 개수</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>totalPages</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">전체 페이지</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">size</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>last</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">last</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sort</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort.unsorted</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">unsorted</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort.sorted</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sorted</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort.empty</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">empty</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>first</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">first</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>numberOfElements</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">numberOfElements</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>empty</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">empty</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_get_user_item_likes"><a class="anchor" href="#_get_user_item_likes"></a><a class="link" href="#_get_user_item_likes">10. get_user_item_likes</a></h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/users/item-likes?page=0&amp;size=8&amp;sort=createdDate%2CDESC' -i -X GET \
-    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjQ5LCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5NH0.kGkhJnQMmU0yJYcQ1xssBkgBvsEthphAu-4TCh3vlKk'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/users/item-likes?page=0&amp;size=8&amp;sort=createdDate%2CDESC HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjQ5LCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5NH0.kGkhJnQMmU0yJYcQ1xssBkgBvsEthphAu-4TCh3vlKk
-Host: localhost:8080</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json;charset=UTF-8
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 1; mode=block
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-Pragma: no-cache
-Expires: 0
-Content-Length: 804
-
-{
-  "content" : [ {
-    "id" : 3,
-    "itemResponseDto" : {
-      "id" : 315,
-      "nameKor" : "한글이름",
-      "nameEng" : "englishName",
-      "price" : 10000,
-      "discountPrice" : 500,
-      "mainImgPath" : "http://localhost:8060/upload/mainImgPath",
-      "description" : "제품설명"
-    }
-  } ],
-  "pageable" : {
-    "sort" : {
-      "sorted" : true,
-      "unsorted" : false,
-      "empty" : false
-    },
-    "offset" : 0,
-    "pageNumber" : 0,
-    "pageSize" : 8,
-    "unpaged" : false,
-    "paged" : true
-  },
-  "totalElements" : 1,
-  "last" : true,
-  "totalPages" : 1,
-  "number" : 0,
-  "size" : 8,
-  "sort" : {
-    "sorted" : true,
-    "unsorted" : false,
-    "empty" : false
-  },
-  "numberOfElements" : 1,
-  "first" : true,
-  "empty" : false
-}</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http GET 'http://localhost:8080/v1/users/item-likes?page=0&amp;size=8&amp;sort=createdDate%2CDESC' \
-    'Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjQ5LCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5NH0.kGkhJnQMmU0yJYcQ1xssBkgBvsEthphAu-4TCh3vlKk'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code></code></pre>
-</div>
-</div>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">유저 token</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이지</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">사이즈</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">정렬</p></td>
-</tr>
-</tbody>
-</table>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code>{
-  "content" : [ {
-    "id" : 3,
-    "itemResponseDto" : {
-      "id" : 315,
-      "nameKor" : "한글이름",
-      "nameEng" : "englishName",
-      "price" : 10000,
-      "discountPrice" : 500,
-      "mainImgPath" : "http://localhost:8060/upload/mainImgPath",
-      "description" : "제품설명"
-    }
-  } ],
-  "pageable" : {
-    "sort" : {
-      "sorted" : true,
-      "unsorted" : false,
-      "empty" : false
-    },
-    "offset" : 0,
-    "pageNumber" : 0,
-    "pageSize" : 8,
-    "unpaged" : false,
-    "paged" : true
-  },
-  "totalElements" : 1,
-  "last" : true,
-  "totalPages" : 1,
-  "number" : 0,
-  "size" : 8,
-  "sort" : {
-    "sorted" : true,
-    "unsorted" : false,
-    "empty" : false
-  },
-  "numberOfElements" : 1,
-  "first" : true,
-  "empty" : false
-}</code></pre>
-</div>
-</div>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">itemLike id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemResponseDto</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemResponseDto.id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemResponseDto.nameKor</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 한글 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemResponseDto.nameEng</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 영어 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemResponseDto.price</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 가격</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemResponseDto.discountPrice</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 할인 금액</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemResponseDto.mainImgPath</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">메인 이미지 경로</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemResponseDto.description</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 정보</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 정렬</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.unsorted</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">unsorted</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.sorted</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sorted</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.empty</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">empty</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.offset</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">offset</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.pageSize</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pageSize</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.pageNumber</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">pageNumber</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.paged</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">paged</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.unpaged</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">unpaged</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>totalElements</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">총 order 개수</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>totalPages</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">전체 페이지</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">number</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">size</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>last</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">last</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sort</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort.unsorted</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">unsorted</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort.sorted</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">sorted</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort.empty</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">empty</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>first</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">first</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>numberOfElements</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">numberOfElements</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>empty</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">empty</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_user_item_like_check"><a class="anchor" href="#_user_item_like_check"></a><a class="link" href="#_user_item_like_check">11. user_item_like_check</a></h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/users/check/item-likes?itemId=336' -i -X GET \
-    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjU4LCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5NX0.UxopcSpmhQcM5CdEEEfPnrJvoERBMkCMHk77g9wPX88'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/users/check/item-likes?itemId=336 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjU4LCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5NX0.UxopcSpmhQcM5CdEEEfPnrJvoERBMkCMHk77g9wPX88
-Host: localhost:8080</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json;charset=UTF-8
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 1; mode=block
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-Pragma: no-cache
-Expires: 0
-Content-Length: 4
-
-true</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http GET 'http://localhost:8080/v1/users/check/item-likes?itemId=336' \
-    'Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjU4LCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5NX0.UxopcSpmhQcM5CdEEEfPnrJvoERBMkCMHk77g9wPX88'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code></code></pre>
-</div>
-</div>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">유저 token</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>itemId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 id</p></td>
-</tr>
-</tbody>
-</table>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code>true</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_get_user_qna"><a class="anchor" href="#_get_user_qna"></a><a class="link" href="#_get_user_qna">12. get_user_qna</a></h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/users/qnas?page=0&amp;size=5&amp;sort=createdDate%2CDESC' -i -X GET \
-    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjYzLCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5Nn0.5p5hxpRcNjYGTMXe4qziN7G-R8EWb16eD7Iz_PsYD80'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/users/qnas?page=0&amp;size=5&amp;sort=createdDate%2CDESC HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjYzLCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5Nn0.5p5hxpRcNjYGTMXe4qziN7G-R8EWb16eD7Iz_PsYD80
-Host: localhost:8080</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json;charset=UTF-8
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 1; mode=block
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-Pragma: no-cache
-Expires: 0
-Content-Length: 987
-
-{
-  "content" : [ {
-    "id" : 6,
-    "writer" : null,
-    "content" : "문의내용입니다.",
-    "status" : "WAIT",
-    "wroteAt" : "2021-05-24T21:28:16.0604306",
-    "itemResponseDto" : {
-      "id" : 338,
-      "nameKor" : "한글이름",
-      "nameEng" : "englishName",
-      "price" : 10000,
-      "discountPrice" : 500,
-      "mainImgPath" : "http://localhost:8060/upload/mainImgPath",
-      "description" : "제품설명"
-    },
-    "isSecret" : true,
-    "isOwn" : false
-  } ],
-  "pageable" : {
-    "sort" : {
-      "sorted" : true,
-      "unsorted" : false,
-      "empty" : false
-    },
-    "offset" : 0,
-    "pageNumber" : 0,
-    "pageSize" : 5,
-    "unpaged" : false,
-    "paged" : true
-  },
-  "totalElements" : 1,
-  "last" : true,
-  "totalPages" : 1,
-  "number" : 0,
-  "size" : 5,
-  "sort" : {
-    "sorted" : true,
-    "unsorted" : false,
-    "empty" : false
-  },
-  "numberOfElements" : 1,
-  "first" : true,
-  "empty" : false
-}</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http GET 'http://localhost:8080/v1/users/qnas?page=0&amp;size=5&amp;sort=createdDate%2CDESC' \
-    'Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjYzLCJuYW1lIjoidGVzdG5hbWUiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTYyMjQ2NDA5Nn0.5p5hxpRcNjYGTMXe4qziN7G-R8EWb16eD7Iz_PsYD80'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code></code></pre>
-</div>
-</div>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">유저 token</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이지</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">사이즈</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">정렬</p></td>
-</tr>
-</tbody>
-</table>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code>{
-  "content" : [ {
-    "id" : 6,
-    "writer" : null,
-    "content" : "문의내용입니다.",
-    "status" : "WAIT",
-    "wroteAt" : "2021-05-24T21:28:16.0604306",
-    "itemResponseDto" : {
-      "id" : 338,
-      "nameKor" : "한글이름",
-      "nameEng" : "englishName",
-      "price" : 10000,
-      "discountPrice" : 500,
-      "mainImgPath" : "http://localhost:8060/upload/mainImgPath",
-      "description" : "제품설명"
-    },
-    "isSecret" : true,
-    "isOwn" : false
-  } ],
-  "pageable" : {
-    "sort" : {
-      "sorted" : true,
-      "unsorted" : false,
-      "empty" : false
-    },
-    "offset" : 0,
-    "pageNumber" : 0,
-    "pageSize" : 5,
-    "unpaged" : false,
-    "paged" : true
-  },
-  "totalElements" : 1,
-  "last" : true,
-  "totalPages" : 1,
-  "number" : 0,
-  "size" : 5,
-  "sort" : {
-    "sorted" : true,
-    "unsorted" : false,
-    "empty" : false
-  },
-  "numberOfElements" : 1,
-  "first" : true,
-  "empty" : false
-}</code></pre>
-</div>
-</div>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">content</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">qna id</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].writer</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">작성자</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].content</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">내용</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].isSecret</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">비밀글 여부</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].isOwn</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">본인이 쓴 글인지 여부</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].status</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">답변여부</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].wroteAt</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">작성일</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemResponseDto</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">qna를 작성한 상품</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 dto</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].itemResponseDto.id</code></p></td>
@@ -3238,6 +2314,21 @@ Content-Length: 987
 <td class="tableblock halign-left valign-top"><p class="tableblock">상품 설명</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].reviewImageResponseDtos</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">리뷰 이미지 dtos</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].writer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">리뷰 작성자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content.[].userLike</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">토큰 유저가 좋아요를 했는지 여부</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">페이징</p></td>
@@ -3351,10 +2442,144 @@ Content-Length: 987
 </table>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_get_item_qna_total"><a class="anchor" href="#_get_item_qna_total"></a><a class="link" href="#_get_item_qna_total">9. get_item_qna_total</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/items/14/count/qnas' -i -X GET</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/items/14/count/qnas HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Content-Length: 1
+
+2</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http GET 'http://localhost:8080/v1/items/14/count/qnas'</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 7. /v1/items/{id}/count/qnas</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 id</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code>2</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_get_item_reviews_total"><a class="anchor" href="#_get_item_reviews_total"></a><a class="link" href="#_get_item_reviews_total">10. get_item_reviews_total</a></h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/v1/items/1/count/reviews' -i -X GET</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/items/1/count/reviews HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Content-Length: 1
+
+2</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http GET 'http://localhost:8080/v1/items/1/count/reviews'</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 8. /v1/items/{id}/count/reviews</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 id</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code>2</code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-05-24 18:47:16 KST
+Last updated 2021-05-24 20:24:33 KST
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">

@@ -1,0 +1,57 @@
+:basedir: {docdir}/../../../
+:snippets: {basedir}/build/generated-snippets
+
+= RESTful Notes Api Guide
+:doctype: order
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectnums:
+:sectlinks:
+:sectanchors:
+
+[[api]]
+== get_order
+
+include::{snippets}/get_order/curl-request.adoc[]
+include::{snippets}/get_order/http-request.adoc[]
+include::{snippets}/get_order/http-response.adoc[]
+include::{snippets}/get_order/httpie-request.adoc[]
+include::{snippets}/get_order/path-parameters.adoc[]
+include::{snippets}/get_order/request-body.adoc[]
+include::{snippets}/get_order/response-body.adoc[]
+include::{snippets}/get_order/response-fields.adoc[]
+
+== order_create
+
+include::{snippets}/order_create/curl-request.adoc[]
+include::{snippets}/order_create/http-request.adoc[]
+include::{snippets}/order_create/http-response.adoc[]
+include::{snippets}/order_create/httpie-request.adoc[]
+include::{snippets}/order_create/request-body.adoc[]
+include::{snippets}/order_create/request-fields.adoc[]
+include::{snippets}/order_create/request-headers.adoc[]
+include::{snippets}/order_create/response-body.adoc[]
+
+== order_confirm_update
+
+include::{snippets}/order_confirm_update/curl-request.adoc[]
+include::{snippets}/order_confirm_update/http-request.adoc[]
+include::{snippets}/order_confirm_update/http-response.adoc[]
+include::{snippets}/order_confirm_update/httpie-request.adoc[]
+include::{snippets}/order_confirm_update/path-parameters.adoc[]
+include::{snippets}/order_confirm_update/request-body.adoc[]
+include::{snippets}/order_confirm_update/request-headers.adoc[]
+include::{snippets}/order_confirm_update/response-body.adoc[]
+
+== order_cancel
+
+include::{snippets}/order_cancel/curl-request.adoc[]
+include::{snippets}/order_cancel/http-request.adoc[]
+include::{snippets}/order_cancel/http-response.adoc[]
+include::{snippets}/order_cancel/httpie-request.adoc[]
+include::{snippets}/order_cancel/path-parameters.adoc[]
+include::{snippets}/order_cancel/request-body.adoc[]
+include::{snippets}/order_cancel/request-headers.adoc[]
+include::{snippets}/order_cancel/response-body.adoc[]
