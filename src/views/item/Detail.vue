@@ -605,8 +605,11 @@ export default {
     justify-content: center;
     height: 470px;
     width: 400px;
-    background-color: #f6f6f6;
+    /* background-color: #f6f6f6; */
     margin: 0 auto;
+    /* border: 1px solid #ddd; */
+    box-shadow: 0px 4px 11px 0px rgba(0, 0, 0, .15);
+    border-radius: 10px;
   }
 
   section.main-container section.info-container ul li.img div.inner-box img {

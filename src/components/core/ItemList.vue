@@ -99,7 +99,7 @@ export default {
   ul li div.inner-box div.img-box {
     cursor: pointer;
     position: relative;
-    background-color: #f6f6f6;
+    //background-color: #f6f6f6;
     height: 351px;
     display: flex;
     animation: ce;
