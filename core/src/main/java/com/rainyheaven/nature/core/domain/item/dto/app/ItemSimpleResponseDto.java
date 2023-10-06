@@ -26,7 +26,7 @@ public class ItemSimpleResponseDto {
         this.nameEng = item.getNameEng();
         this.price = item.getPrice();
         this.discountPrice = item.getDiscountPrice();
-        this.mainImgPath = srcPrefix + item.getMainImgPath();
+        this.mainImgPath = item.getMainImgPath();
         this.description = item.getDescription();
     }
 }

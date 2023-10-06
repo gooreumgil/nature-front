@@ -46,11 +46,11 @@ public class ItemDetailResponseDto {
 
         item.getItemImages()
                 .stream().filter(filterImgType(ImgType.MAIN))
-                .findFirst().ifPresent(itemImage -> this.mainImgPath = srcPrefix + itemImage.getS3Key());
+                .findFirst().ifPresent(itemImage -> this.mainImgPath = item.getMainImgPath());
 
         item.getItemImages()
                 .stream().filter(filterImgType(ImgType.DETAIL))
-                .findFirst().ifPresent(itemImage -> this.detailImgPath = srcPrefix + itemImage.getS3Key());
+                .findFirst().ifPresent(itemImage -> this.detailImgPath = itemImage.getUrl());
 
     }
 

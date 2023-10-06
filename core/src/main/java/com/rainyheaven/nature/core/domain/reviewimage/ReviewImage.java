@@ -20,6 +20,7 @@ public class ReviewImage extends BaseTimeEntity {
     @Column(name = "review_src_id")
     private Long id;
     private String s3Key;
+    private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")

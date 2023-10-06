@@ -23,6 +23,7 @@ public class ItemImage extends BaseTimeEntity {
     private ImgType imgType;
 
     private String s3Key;
+    private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")

@@ -56,9 +56,6 @@ subprojects {
         testImplementation lombok
         testAnnotationProcessor lombok
 
-        implementation "org.flywaydb:flyway-core:7.8.1"
-
-
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation 'org.springframework.security:spring-security-test'
 
