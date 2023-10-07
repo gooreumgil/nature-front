@@ -33,7 +33,7 @@ public class OrderItemResponseDto {
         this.itemPrice = orderItem.getItemPrice();
         this.itemDiscountPrice = orderItem.getItemDiscountPrice();
         this.itemQuantity = orderItem.getItemQuantity();
-        this.mainImgPath = srcPrefix + orderItem.getItem().getMainImgPath();
+        this.mainImgPath = orderItem.getItem().getMainImgPath();
         this.isLeaveReview = orderItem.isLeaveReview();
 
     }

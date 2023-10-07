@@ -14,9 +14,11 @@ public class ReviewImageResponseDto {
 
     private Long id;
     private String s3Key;
+    private String url;
 
     public ReviewImageResponseDto(ReviewImage reviewImage) {
         this.id = reviewImage.getId();
         this.s3Key = reviewImage.getS3Key();
+        this.url = reviewImage.getUrl();
     }
 }
