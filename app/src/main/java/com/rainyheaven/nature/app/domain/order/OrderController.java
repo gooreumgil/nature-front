@@ -23,14 +23,11 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @Value("${src-prefix}")
-    private String imgSrcPrefix;
-
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponseDto> get(@PathVariable Long id) {
         Order order = orderService.findById(id);
         OrderResponseDto orderResponseDto = new OrderResponseDto(order);
-        orderResponseDto.addAllOrderItems(order.getOrderItems(), imgSrcPrefix);
+        orderResponseDto.addAllOrderItems(order.getOrderItems());
 
         return ResponseEntity.ok(orderResponseDto);
     }

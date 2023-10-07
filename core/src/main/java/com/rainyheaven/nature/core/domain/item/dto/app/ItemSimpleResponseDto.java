@@ -20,7 +20,7 @@ public class ItemSimpleResponseDto {
     private String mainImgPath;
     private String description;
 
-    public ItemSimpleResponseDto(Item item, String srcPrefix) {
+    public ItemSimpleResponseDto(Item item) {
         this.id = item.getId();
         this.nameKor = item.getNameKor();
         this.nameEng = item.getNameEng();

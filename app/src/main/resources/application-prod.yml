@@ -8,9 +8,6 @@ spring:
     hibernate:
       ddl-auto: validate
 
-src-prefix:
-  http://nature-portfolio-api.rainy-heaven.com/upload/
-
 custom:
   upload-path: /home/ljs/Works/nature/upload
 

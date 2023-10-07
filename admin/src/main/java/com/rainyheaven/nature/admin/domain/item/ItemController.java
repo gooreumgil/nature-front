@@ -21,14 +21,11 @@ public class ItemController {
 
     private final ItemService itemService;
 
-    @Value("${src-prefix}")
-    private String imgSrcPrefix;
-
     @GetMapping
     public ResponseEntity<Page<ItemSimpleResponseDto>> findAll(@PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Item> itemPage = itemService.findAll(pageable);
-        Page<ItemSimpleResponseDto> pageMap = itemPage.map(item -> new ItemSimpleResponseDto(item, imgSrcPrefix));
+        Page<ItemSimpleResponseDto> pageMap = itemPage.map(item -> new ItemSimpleResponseDto(item));
 
         return ResponseEntity.ok(pageMap);
     }

@@ -38,15 +38,7 @@ public class QnaResponseDto {
         this.isSecret = qna.isSecret();
         this.status = qna.getQnaStatus().name();
         this.wroteAt = qna.getCreatedDate();
-    }
-
-    public QnaResponseDto(Qna qna, String imgSrcPrefix) {
-        this.id = qna.getId();
-        this.content = qna.getContent();
-        this.isSecret = qna.isSecret();
-        this.status = qna.getQnaStatus().name();
-        this.wroteAt = qna.getCreatedDate();
-        this.itemResponseDto = new ItemSimpleResponseDto(qna.getItem(), imgSrcPrefix);
+        this.itemResponseDto = new ItemSimpleResponseDto(qna.getItem());
     }
 
     public QnaResponseDto(Qna qna, Long userId) {

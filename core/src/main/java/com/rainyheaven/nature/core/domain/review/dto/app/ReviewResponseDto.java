@@ -31,13 +31,13 @@ public class ReviewResponseDto {
     private String writer;
     private Boolean userLike;
 
-    public ReviewResponseDto(Review review, String srcPrefix) {
+    public ReviewResponseDto(Review review) {
         this.id = review.getId();
         this.content = review.getContent();
         this.likesCount = review.getLikesCount();
         this.rating = review.getRating();
         this.wroteAt = review.getCreatedDate();
-        this.itemResponseDto = new ItemSimpleResponseDto(review.getItem(), srcPrefix);
+        this.itemResponseDto = new ItemSimpleResponseDto(review.getItem());
         List<ReviewImage> reviewImages = review.getReviewImages();
         if (!reviewImages.isEmpty()) {
             this.reviewImageResponseDtos = reviewImages.stream().map(ReviewImageResponseDto::new).collect(Collectors.toList());

@@ -45,13 +45,10 @@ public class ItemController {
 
     private static final String ALL = "ALL";
 
-    @Value("${src-prefix}")
-    private String imgSrcPrefix;
-
     @GetMapping("/{id}")
     public ResponseEntity<ItemDetailResponseDto> get(@PathVariable Long id) {
         Item item = itemService.findByIdWithImages(id);
-        return ResponseEntity.ok(new ItemDetailResponseDto(item, imgSrcPrefix));
+        return ResponseEntity.ok(new ItemDetailResponseDto(item));
     }
 
     @GetMapping
@@ -63,7 +60,7 @@ public class ItemController {
         if (StringUtils.isNotEmpty(category) && !StringUtils.equals(category, ALL)) {
 
             Page<ItemSimpleResponseDto> itemSimpleResponseDtos = itemService.findAllByCategory(pageable, category)
-                    .map(item -> new ItemSimpleResponseDto(item, imgSrcPrefix));
+                    .map(item -> new ItemSimpleResponseDto(item));
 
             return ResponseEntity.ok(itemSimpleResponseDtos);
         }
@@ -71,7 +68,7 @@ public class ItemController {
         if (ids != null && !ids.isEmpty()) {
             List<Item> items = itemService.findByIds(ids);
             List<ItemSimpleResponseDto> ItemSimpleResponseDtos = items.stream()
-                            .map(item -> new ItemSimpleResponseDto(item, imgSrcPrefix))
+                            .map(item -> new ItemSimpleResponseDto(item))
                             .collect(Collectors.toList());
 
             return ResponseEntity.ok(ItemSimpleResponseDtos);
@@ -79,7 +76,7 @@ public class ItemController {
         }
 
         Page<Item> items = itemService.findAll(pageable);
-        return ResponseEntity.ok(items.map(item -> new ItemSimpleResponseDto(item, imgSrcPrefix)));
+        return ResponseEntity.ok(items.map(item -> new ItemSimpleResponseDto(item)));
     }
 
     @GetMapping("/search")
@@ -88,7 +85,7 @@ public class ItemController {
             @PageableDefault(sort = "sellTotal", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Item> searchPage = itemService.search(keyword, pageable);
-        Page<ItemSimpleResponseDto> searchMap = searchPage.map(item -> new ItemSimpleResponseDto(item, imgSrcPrefix));
+        Page<ItemSimpleResponseDto> searchMap = searchPage.map(item -> new ItemSimpleResponseDto(item));
 
         return ResponseEntity.ok(searchMap);
 
@@ -146,7 +143,7 @@ public class ItemController {
 
         Page<Review> reviewPage = reviewService.getPageByItem(id, pageable);
         Page<ReviewResponseDto> reviewPageMap = reviewPage.map(review -> {
-            ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review, imgSrcPrefix);
+            ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review);
             reviewResponseDto.setWriter(review.getUser().getName());
 
             // 토큰을 가진 유저일때 해당 리뷰를 좋아요 했는지 체크

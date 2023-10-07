@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      dialect: org.hibernate.dialect.MySQL8Dialect
+      default_batch_size: 100
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 10MB

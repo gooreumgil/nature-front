@@ -59,9 +59,6 @@ public class UserController {
     private final UserValidator userValidator;
     private final EmailSender emailSender;
 
-    @Value("${src-prefix}")
-    private String imgSrcPrefix;
-
     @Value("${front-url-prefix}")
     private String frontUrlPrefix;
 
@@ -86,7 +83,7 @@ public class UserController {
         Page<Order> orderPages = orderService.findByUserId(tokenUser.getId(), pageable);
         Page<OrderResponseDto> orderResponseDtoPages = orderPages.map(order -> {
             OrderResponseDto orderResponseDto = new OrderResponseDto(order);
-            orderResponseDto.addAllOrderItems(order.getOrderItems(), imgSrcPrefix);
+            orderResponseDto.addAllOrderItems(order.getOrderItems());
             return orderResponseDto;
         });
         return ResponseEntity.ok(orderResponseDtoPages);
@@ -107,7 +104,7 @@ public class UserController {
             @PageableDefault(size = 5, sort = "createdDate",  direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Review> reviewPage = reviewService.getPageByUser(tokenUser.getId(), pageable);
-        Page<ReviewResponseDto> reviewPageMap = reviewPage.map(review -> new ReviewResponseDto(review, imgSrcPrefix));
+        Page<ReviewResponseDto> reviewPageMap = reviewPage.map(review -> new ReviewResponseDto(review));
         return ResponseEntity.ok(reviewPageMap);
 
 
@@ -149,7 +146,7 @@ public class UserController {
         Page<OrderItem> orderItemPage = orderItemService.pageByUserIdAndOrderStatus(tokenUser.getId(), OrderStatus.COMP, pageable);
         Page<OrderItemResponseDto> orderItemPageMap = orderItemPage
                 .map(orderItem -> {
-                    OrderItemResponseDto orderItemResponseDto = new OrderItemResponseDto(orderItem, imgSrcPrefix);
+                    OrderItemResponseDto orderItemResponseDto = new OrderItemResponseDto(orderItem);
                     orderItemResponseDto.setOrderedAt(orderItem.getOrder().getCreatedDate());
                     return orderItemResponseDto;
                 });
@@ -165,7 +162,7 @@ public class UserController {
 
         Page<ItemLike> itemLikePage = itemLikeService.pageByUser(tokenUser.getId(), pageable);
         Page<ItemLikeResponseDto> itemLikePageMap = itemLikePage
-                .map(itemLike -> new ItemLikeResponseDto(itemLike, imgSrcPrefix));
+                .map(itemLike -> new ItemLikeResponseDto(itemLike));
 
         return ResponseEntity.ok(itemLikePageMap);
 
@@ -183,7 +180,7 @@ public class UserController {
             @PageableDefault(size = 5, sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Qna> qnaPage = qnaService.pageByUser(tokenUser.getId(), pageable);
-        Page<QnaResponseDto> qnaPageMap = qnaPage.map(qna -> new QnaResponseDto(qna, imgSrcPrefix));
+        Page<QnaResponseDto> qnaPageMap = qnaPage.map(qna -> new QnaResponseDto(qna));
 
         return ResponseEntity.ok(qnaPageMap);
 

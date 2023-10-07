@@ -25,7 +25,7 @@ public class OrderItemResponseDto {
     private LocalDateTime orderedAt;
     private Boolean isLeaveReview;
 
-    public OrderItemResponseDto(OrderItem orderItem, String srcPrefix) {
+    public OrderItemResponseDto(OrderItem orderItem) {
         this.id = orderItem.getId();
         this.itemId = orderItem.getItem().getId();
         this.itemNameKor = orderItem.getItem().getNameKor();

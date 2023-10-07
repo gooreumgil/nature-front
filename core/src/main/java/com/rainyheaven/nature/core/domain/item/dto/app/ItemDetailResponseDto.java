@@ -30,7 +30,7 @@ public class ItemDetailResponseDto {
     private String mainImgPath;
     private String detailImgPath;
 
-    public ItemDetailResponseDto(Item item, String srcPrefix) {
+    public ItemDetailResponseDto(Item item) {
 
         this.id = item.getId();
         item.getCategoryItems().

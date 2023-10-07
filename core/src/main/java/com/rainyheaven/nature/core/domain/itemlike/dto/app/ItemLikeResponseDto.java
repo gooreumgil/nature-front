@@ -13,8 +13,8 @@ public class ItemLikeResponseDto {
     private Long id;
     private ItemSimpleResponseDto itemResponseDto;
 
-    public ItemLikeResponseDto(ItemLike itemLike, String srcPrefix) {
+    public ItemLikeResponseDto(ItemLike itemLike) {
         this.id = itemLike.getId();
-        this.itemResponseDto = new ItemSimpleResponseDto(itemLike.getItem(), srcPrefix);
+        this.itemResponseDto = new ItemSimpleResponseDto(itemLike.getItem());
     }
 }

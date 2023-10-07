@@ -42,10 +42,10 @@ public class OrderResponseDto {
 
     }
 
-    public void addAllOrderItems(List<OrderItem> orderItems, String srcPrefix) {
+    public void addAllOrderItems(List<OrderItem> orderItems) {
         this.orderItemResponseDtos.addAll(
                 orderItems.stream()
-                .map(orderItem -> new OrderItemResponseDto(orderItem, srcPrefix))
+                .map(orderItem -> new OrderItemResponseDto(orderItem))
                 .collect(Collectors.toList()));
     }
 }
