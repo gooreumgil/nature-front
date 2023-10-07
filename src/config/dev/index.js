@@ -1,5 +1,5 @@
 export default {
     api: {
-        baseUrl: "http://dev-nature-portfolio-api.old-team.net"
+        baseUrl: "https://dev-nature-portfolio-api.old-team.net"
     }
 }
