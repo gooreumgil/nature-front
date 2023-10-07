@@ -8,4 +8,4 @@ rm ${jar}
 ./gradlew :app:bootJar
 fuser -k ${port}/tcp
 rm nohup.out
-java -jar -Dspring.profiles.active=prod ${jar}
+java -jar -Dspring.profiles.active=dev ${jar}
