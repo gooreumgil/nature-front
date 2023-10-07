@@ -69,7 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private List<String> allowedOrigins() {
         return Arrays.asList(
                 "http://localhost:8082",
-                "http://nature-portfolio.rainy-heaven.com"
+                "https://dev-nature-portfolio.old-team.net"
         );
     }
 }
