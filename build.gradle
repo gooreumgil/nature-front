@@ -2,7 +2,7 @@ buildscript {
     ext {
         springVersion = "2.4.2"
         boot = "org.springframework.boot"
-        lombok = "org.projectlombok:lombok"
+        lombok = "org.projectlombok:lombok:1.18.20"
     }
     repositories {
         mavenCentral()
@@ -24,7 +24,7 @@ subprojects {
     apply plugin: "io.spring.dependency-management"
     apply plugin: boot
 
-    sourceCompatibility = '11'
+    sourceCompatibility = '17'
 
 
     configurations {

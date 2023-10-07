@@ -10,10 +10,14 @@ dependencies {
 	implementation project(':core')
 
 	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
-	testRuntime("com.h2database:h2")
+	testCompileOnly("com.h2database:h2")
 
 	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 }
 
 test {
