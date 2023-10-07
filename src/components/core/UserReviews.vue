@@ -394,7 +394,7 @@ export default {
   ul div.my-review-container ul.my-review-wrapper li.my-review-list div.inner-box div.item-info div.img-box {
     width: 100px;
     height: 118px;
-    background-color: #f6f6f6;
+    //background-color: #f6f6f6;
     margin-right: 20px;
     display: flex;
     align-items: center;

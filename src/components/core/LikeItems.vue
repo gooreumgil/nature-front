@@ -261,7 +261,7 @@ export default {
   ul li div.inner-box div.img-box {
     cursor: pointer;
     position: relative;
-    background-color: #f6f6f6;
+    //background-color: #f6f6f6;
     height: 280px;
     display: flex;
     animation: ce;
