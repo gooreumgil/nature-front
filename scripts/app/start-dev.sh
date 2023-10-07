@@ -3,11 +3,11 @@ port="8090"
 
 cd ../../
 rm ${jar}
+fuser -k ${port}/tcp
 
 chmod +x ./gradlew
 ./gradlew :core:clean
 ./gradlew :core:cleanQuerydslSourcesDir
 ./gradlew :app:bootJar -x asciidoctor
-fuser -k ${port}/tcp
 rm nohup.out
 java -jar -Dspring.profiles.active=dev ${jar}
