@@ -3,6 +3,8 @@ port="8090"
 
 cd ../../
 rm ${jar}
+
+chmod +x ./gradlew
 ./gradlew :core:clean
 ./gradlew :core:cleanQuerydslSourcesDir
 ./gradlew :app:bootJar
