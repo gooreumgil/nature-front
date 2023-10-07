@@ -7,7 +7,7 @@ rm ${jar}
 chmod +x ./gradlew
 ./gradlew :core:clean
 ./gradlew :core:cleanQuerydslSourcesDir
-./gradlew :app:bootJar -x test
+./gradlew :app:bootJar -x asciidoctor
 fuser -k ${port}/tcp
 rm nohup.out
 java -jar -Dspring.profiles.active=dev ${jar}
