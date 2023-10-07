@@ -1,5 +1,5 @@
 jar="./app/build/libs/app-0.0.1-SNAPSHOT.jar"
-port="8060"
+port="8090"
 
 cd ../../
 rm ${jar}
