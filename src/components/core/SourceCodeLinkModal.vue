@@ -5,14 +5,18 @@
         <CloseIcon v-bind:stroke="'#fff'"/>
       </span>
       <div class="title-box">
-        <h2>Bitbucket Link</h2>
+        <h2>Github Link</h2>
       </div>
       <div class="content-box">
         <p>백엔드 소스코드</p>
-        <a href="https://bitbucket.org/gooreumgil47/nature/src/master/" target="_blank">https://bitbucket.org/gooreumgil47/nature/src/master/</a><br>
+        <a href="https://github.com/gooreumgil/nature-server" target="_blank">https://github.com/gooreumgil/nature-server</a><br>
 
         <p>프론트엔드 소스코드</p>
-        <a href="https://bitbucket.org/gooreumgil47/nature-front/src/master/" target="_blank">https://bitbucket.org/gooreumgil47/nature-front/src/master/</a>
+        <a href="https://github.com/gooreumgil/nature-front" target="_blank">https://github.com/gooreumgil/nature-front</a>
+
+        <p>[테스터 계정]</p>
+        <span class="email">이메일: hunter407@naver.com</span><br>
+        <span class="password">패스워드: skwdkwla132</span>
       </div>
     </div>
   </div>
@@ -97,6 +101,15 @@ export default {
   }
 
   div.modal-container div.modal-inner div.content-box p {
+  }
+
+  div.modal-container div.modal-inner div.content-box span {
+    display: inline-block;
+    margin-top: 5px;
+  }
+
+  div.modal-container div.modal-inner div.content-box span.email {
+    margin-top: 15px;
   }
 
   div.modal-container div.modal-inner div.content-box a {

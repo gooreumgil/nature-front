@@ -9,7 +9,7 @@
         <router-link v-bind:class="{textBoldWhite: isHeaderTab('brand')}" to="/brand">브랜드</router-link>
         <router-link v-bind:class="{textBold: isHeaderTab('item')}" to="/items">상품</router-link>
         <router-link v-bind:class="{textBold: isHeaderTab('my-page')}" to="/my-page" v-if="authenticated">마이페이지</router-link>
-        <button @click="sourceCodeLinkModalShow" type="button">소스코드 링크</button>
+        <button @click="sourceCodeLinkModalShow" type="button">소스코드 링크 & 테스터 계정</button>
       </nav>
 
       <ul>
