@@ -1,0 +1,107 @@
+import commonUtils from "@/utils/commonUtils";
+import axios from "axios";
+
+export default {
+  getItems(page, size, sort, category) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items?sort=${sort}`;
+    return axios.get(url, {
+      params: {
+        page,
+        size,
+        category
+      }
+    });
+  },
+
+
+  getItem(id) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}`;
+    return axios.get(url);
+  },
+
+
+  getItemsByIds(ids) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items`;
+    return axios.get(url, {
+      params: {
+        ids: ids.join(",")
+      }
+    })
+  },
+
+  searchItems(page, size, sort, keyword) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/search?sort=${sort}`;
+    return axios.get(url, {
+      params: {
+        page,
+        size,
+        keyword
+      }
+    })
+  },
+
+  itemLike(token, id) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/item-likes`;
+    return axios.post(url, {}, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
+  },
+  itemLikeDelete(token, id) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/item-likes`;
+    return axios.delete(url, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
+  },
+
+  addQna(token, id, qnaContent, qnaSecret) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/qnas`;
+    return axios.post(url, {
+      content: qnaContent,
+      isSecret: qnaSecret
+    }, {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
+  },
+
+  getQnaList(token, id, page) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/qnas?page=${page}`;
+    if (token) {
+      return axios.get(url, {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+    } else {
+      return axios.get(url);
+    }
+  },
+
+  getReviews(token, id, page) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/reviews?page=${page}`;
+    if (token) {
+      return axios.get(url, {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      });
+    } else {
+      return axios.get(url);
+    }
+  },
+
+  getQnaTotal(id) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/count/qnas`;
+    return axios.get(url);
+  },
+
+  getReviewTotal(id) {
+    const url = `${commonUtils.getApiBaseUrl()}/v1/items/${id}/count/reviews`;
+    return axios.get(url);
+  }
+}
